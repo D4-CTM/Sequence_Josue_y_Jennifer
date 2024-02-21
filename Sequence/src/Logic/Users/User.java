@@ -10,8 +10,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 public class User implements Serializable{
+    private final ArrayList<String> Historial;
     private ImageIcon PlayerIcon, Ficha;
-    private ArrayList<String> Historial;
     private String Name, Password;
     
     public User(String Name, String Password, ImageIcon PlayerIcon){
@@ -20,13 +20,13 @@ public class User implements Serializable{
     }
     
     public static User LoadFile(String nombreArchivo) throws IOException, ClassNotFoundException{
-        try (ObjectInputStream entrada = new ObjectInputStream(new FileInputStream("Accounts\\Cuentas\\" + nombreArchivo+".USER"))) {
+        try (ObjectInputStream entrada = new ObjectInputStream(new FileInputStream("Accounts\\Cuentas\\" + nombreArchivo))) {
             return (User) entrada.readObject();
         }
     }
     
     public void SaveData(String nombreArchivo) throws IOException {
-        try (ObjectOutputStream salida = new ObjectOutputStream(new FileOutputStream("Accounts\\Cuentas\\" + nombreArchivo+".USER"))) {
+        try (ObjectOutputStream salida = new ObjectOutputStream(new FileOutputStream("Accounts\\Cuentas\\" + nombreArchivo))) {
             salida.writeObject(this);
             salida.close();
         }
