@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
  * @author josue
  */
 public class Tablero extends javax.swing.JFrame implements Runnable {
+
     private int Min, Sec, MiliSec;
     private Thread TimerTXT;
 
@@ -208,18 +209,18 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
 
     private void UpdateTimer() {
         MiliSec--;
-        if (MiliSec < 0){
+        if (MiliSec < 0) {
             Sec--;
             MiliSec = 59;
         }
-        if (Sec < 0){
-            if (Min <= 0){
+        if (Sec < 0) {
+            if (Min <= 0) {
                 JOptionPane.showMessageDialog(this, "Turno de: ", "Cambio de turno", JOptionPane.INFORMATION_MESSAGE);
             }
-            Min = (Min != 0)?0:1;
+            Min = (Min != 0) ? 0 : 1;
             Sec = 59;
         }
-        Timer.setText(Min+":"+Sec+":"+MiliSec);
+        Timer.setText(Min + ":" + Sec + ":" + MiliSec);
     }
 
     // -- SWING ELEMENTS --
