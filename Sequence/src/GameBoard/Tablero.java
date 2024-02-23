@@ -6,6 +6,10 @@ package GameBoard;
 
 import Logic.UI_Elements.JCard;
 import java.awt.event.ActionEvent;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import javax.swing.JOptionPane;
 
 /**
@@ -13,7 +17,6 @@ import javax.swing.JOptionPane;
  * @author josue
  */
 public class Tablero extends javax.swing.JFrame implements Runnable {
-
     private int Min, Sec, MiliSec;
     private Thread TimerTXT;
 
@@ -36,27 +39,38 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
 
         Fondo = new javax.swing.JPanel();
         Tablero = new javax.swing.JPanel();
-        Team_1_Panel = new javax.swing.JPanel();
-        Player2Team1 = new javax.swing.JLabel();
-        Team1Name = new javax.swing.JLabel();
-        Player1Team1 = new javax.swing.JLabel();
+        TeamPanel = new javax.swing.JPanel();
+        Player2 = new javax.swing.JLabel();
+        Team = new javax.swing.JLabel();
+        Player1 = new javax.swing.JLabel();
         LastCardTXT = new javax.swing.JLabel();
         LastCardIcon = new javax.swing.JLabel();
         BarajaDeCartasTXT = new javax.swing.JLabel();
         CardDeckIcon = new javax.swing.JLabel();
-        Team_3_Panel = new javax.swing.JPanel();
-        Player2Team3 = new javax.swing.JLabel();
-        Team3Name1 = new javax.swing.JLabel();
-        Player1Team3 = new javax.swing.JLabel();
-        Team_4_Panel = new javax.swing.JPanel();
-        Player2Team4 = new javax.swing.JLabel();
-        Team4Name = new javax.swing.JLabel();
-        Player1Team4 = new javax.swing.JLabel();
-        Team_2_Panel = new javax.swing.JPanel();
-        Player2Team2 = new javax.swing.JLabel();
-        Team2Name = new javax.swing.JLabel();
-        Player1Team2 = new javax.swing.JLabel();
         Timer = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        Card2 = new javax.swing.JLabel();
+        Card1 = new javax.swing.JLabel();
+        Card3 = new javax.swing.JLabel();
+        Card4 = new javax.swing.JLabel();
+        Card5 = new javax.swing.JLabel();
+        Card6 = new javax.swing.JLabel();
+        Team4 = new javax.swing.JPanel();
+        Team4Members1 = new javax.swing.JLabel();
+        Team3 = new javax.swing.JPanel();
+        Team3Members1 = new javax.swing.JLabel();
+        Team2 = new javax.swing.JPanel();
+        Team2Members1 = new javax.swing.JLabel();
+        Team1 = new javax.swing.JPanel();
+        Team1Members1 = new javax.swing.JLabel();
+        Team5 = new javax.swing.JPanel();
+        Team4Members2 = new javax.swing.JLabel();
+        Team6 = new javax.swing.JPanel();
+        Team3Members2 = new javax.swing.JLabel();
+        Team7 = new javax.swing.JPanel();
+        Team2Members2 = new javax.swing.JLabel();
+        Team8 = new javax.swing.JPanel();
+        Team1Members2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1100, 600));
@@ -79,93 +93,138 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
             .addGap(0, 500, Short.MAX_VALUE)
         );
 
-        Fondo.add(Tablero, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 50, 700, 500));
+        Fondo.add(Tablero, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 50, 700, 500));
 
-        Team_1_Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        TeamPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        Player2Team1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Player2Team1.setText("[Player 2 Icon]");
-        Team_1_Panel.add(Player2Team1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, 75, 75));
+        Player2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Player2.setText("[Player 2 Icon]");
+        TeamPanel.add(Player2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, 90, 90));
 
-        Team1Name.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Team1Name.setText("Team 1");
-        Team_1_Panel.add(Team1Name, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 200, -1));
+        Team.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Team.setText("Team ");
+        TeamPanel.add(Team, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 220, -1));
 
-        Player1Team1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Player1Team1.setText("[Player 1 Icon]");
-        Team_1_Panel.add(Player1Team1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 75, 75));
+        Player1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Player1.setText("[Player 1 Icon]");
+        TeamPanel.add(Player1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 90, 90));
 
-        Fondo.add(Team_1_Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 200));
+        Fondo.add(TeamPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 220, 190));
 
         LastCardTXT.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         LastCardTXT.setText("Ultima carta jugada");
-        Fondo.add(LastCardTXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 200, -1));
+        Fondo.add(LastCardTXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 50, 160, -1));
 
         LastCardIcon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         LastCardIcon.setText("[CONO DE LA ULTIMA CARTA]");
-        Fondo.add(LastCardIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 200, 140));
+        Fondo.add(LastCardIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 80, 160, 140));
 
         BarajaDeCartasTXT.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         BarajaDeCartasTXT.setText("Baraja de cartas");
-        Fondo.add(BarajaDeCartasTXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 210, 200, -1));
+        Fondo.add(BarajaDeCartasTXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 380, 160, -1));
 
         CardDeckIcon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        CardDeckIcon.setText("[ICONO DEL DECK]");
-        Fondo.add(CardDeckIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 240, 200, 140));
-
-        Team_3_Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        Player2Team3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Player2Team3.setText("[Player 2 Icon]");
-        Team_3_Panel.add(Player2Team3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, 75, 75));
-
-        Team3Name1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Team3Name1.setText("Team 3");
-        Team_3_Panel.add(Team3Name1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 200, -1));
-
-        Player1Team3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Player1Team3.setText("[Player 1 Icon]");
-        Team_3_Panel.add(Player1Team3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 75, 75));
-
-        Fondo.add(Team_3_Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 400, 200, 200));
-
-        Team_4_Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        Player2Team4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Player2Team4.setText("[Player 2 Icon]");
-        Team_4_Panel.add(Player2Team4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, 75, 75));
-
-        Team4Name.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Team4Name.setText("Team 4");
-        Team_4_Panel.add(Team4Name, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 200, -1));
-
-        Player1Team4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Player1Team4.setText("[Player 1 Icon]");
-        Team_4_Panel.add(Player1Team4, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 75, 75));
-
-        Fondo.add(Team_4_Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 400, 200, 200));
-
-        Team_2_Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        Player2Team2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Player2Team2.setText("[Player 2 Icon]");
-        Team_2_Panel.add(Player2Team2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, 75, 75));
-
-        Team2Name.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Team2Name.setText("Team 2");
-        Team_2_Panel.add(Team2Name, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 200, -1));
-
-        Player1Team2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Player1Team2.setText("[Player 1 Icon]");
-        Team_2_Panel.add(Player1Team2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 75, 75));
-
-        Fondo.add(Team_2_Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 0, 200, 200));
+        CardDeckIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GameBoard/Icons/Deck.png"))); // NOI18N
+        Fondo.add(CardDeckIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 410, 160, 140));
 
         Timer.setForeground(new java.awt.Color(255, 255, 255));
         Timer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Timer.setText("Timer");
         Timer.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        Fondo.add(Timer, new org.netbeans.lib.awtextra.AbsoluteConstraints(375, 10, 350, 30));
+        Fondo.add(Timer, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 10, 350, 30));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 160, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 140, Short.MAX_VALUE)
+        );
+
+        Fondo.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 230, 160, 140));
+
+        Card2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Card2.setText("Card2");
+        Fondo.add(Card2, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 550, 70, 50));
+
+        Card1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Card1.setText("Card1");
+        Fondo.add(Card1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 550, 70, 50));
+
+        Card3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Card3.setText("Card3");
+        Fondo.add(Card3, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 550, 70, 50));
+
+        Card4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Card4.setText("Card4");
+        Fondo.add(Card4, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 550, 70, 50));
+
+        Card5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Card5.setText("Card5");
+        Fondo.add(Card5, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 550, 70, 50));
+
+        Card6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Card6.setText("Card6");
+        Fondo.add(Card6, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 550, 70, 50));
+
+        Team4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        Team4Members1.setText("Equipo 4: integrante 1");
+        Team4.add(Team4Members1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 30));
+
+        Fondo.add(Team4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 360, 210, 30));
+
+        Team3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        Team3Members1.setText("Equipo 3: integrante 1");
+        Team3.add(Team3Members1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 30));
+
+        Fondo.add(Team3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 310, 210, 30));
+
+        Team2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        Team2Members1.setText("Equipo 2: integrante 1");
+        Team2.add(Team2Members1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 30));
+
+        Fondo.add(Team2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 260, 210, 30));
+
+        Team1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        Team1Members1.setText("Equipo 1: integrante 1");
+        Team1.add(Team1Members1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 30));
+
+        Fondo.add(Team1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 210, 30));
+
+        Team5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        Team4Members2.setText("Equipo 4: integrante 2");
+        Team5.add(Team4Members2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 30));
+
+        Fondo.add(Team5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 560, 210, 30));
+
+        Team6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        Team3Members2.setText("Equipo 3: integrante 2");
+        Team6.add(Team3Members2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 30));
+
+        Fondo.add(Team6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 510, 210, 30));
+
+        Team7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        Team2Members2.setText("Equipo 2: integrante 2");
+        Team7.add(Team2Members2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 30));
+
+        Fondo.add(Team7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 460, 210, 30));
+
+        Team8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        Team1Members2.setText("Equipo 1: integrante 2");
+        Team8.add(Team1Members2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 30));
+
+        Fondo.add(Team8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 410, 210, 30));
 
         getContentPane().add(Fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 600));
 
@@ -175,20 +234,41 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
 
     //Los botones que se observan en en el tablero, si, es un tanto intuitivo solo con el nombre.
     private void setBoardBTNS() {
-        CartasDelTablero = new JCard[10][10];
-        for (int Fila = 0; Fila < 10; Fila++) {
+        try {
+            CartasDelTablero = new JCard[10][10];
+            InputStream in = getClass().getResourceAsStream("Board");
+            BufferedReader br = new BufferedReader(new InputStreamReader(in));
             for (int Columna = 0; Columna < 10; Columna++) {
-                CartasDelTablero[Fila][Columna] = new JCard(Fila, Columna);
-
-                CartasDelTablero[Fila][Columna].addActionListener((ActionEvent Ex) -> {
-
-                });
-                CartasDelTablero[Fila][Columna].setBounds(70 * Fila, 50 * Columna, 70, 50);
-                Tablero.add(CartasDelTablero[Fila][Columna]);
+                String Line = br.readLine();
+                String Num[] = Line.split(" ");
+                for (int Fila = 0; Fila < 10; Fila++) {
+                    CartasDelTablero[Fila][Columna] = new JCard(Columna, Fila);
+                    
+                    try {
+                        CartasDelTablero[Fila][Columna].setBorder(null);
+                        CartasDelTablero[Fila][Columna].setCard(Num[Fila], new javax.swing.ImageIcon(getClass().getResource("Icons\\"+Num[Fila]+".png")));
+                    } catch (Exception Ex){}
+                    
+                    CartasDelTablero[Fila][Columna].addActionListener((ActionEvent Ex) -> {
+                        int Row = ((JCard) Ex.getSource()).getFila();
+                        int Column = ((JCard) Ex.getSource()).getColumna();
+                        Action(Row, Column);
+                    });
+                    
+                    CartasDelTablero[Fila][Columna].setBounds(70 * Fila, 50 * Columna, 70, 50);
+                    Tablero.add(CartasDelTablero[Fila][Columna]);
+                }
             }
+            br.close();
+        } catch (IOException e) { 
+            System.out.println("Error");
         }
     }
-
+    
+    private void Action(int Row, int Column){
+        System.out.println("Nice");
+    }
+    
     public static void main(String args[]) {
         new Tablero().setVisible(true);
     }
@@ -222,34 +302,44 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         }
         Timer.setText(Min + ":" + Sec + ":" + MiliSec);
     }
-
+    
     // -- SWING ELEMENTS --
     private JCard[][] CartasDelTablero;
     // -- SWING ELEMENTS --
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel BarajaDeCartasTXT;
+    private javax.swing.JLabel Card1;
+    private javax.swing.JLabel Card2;
+    private javax.swing.JLabel Card3;
+    private javax.swing.JLabel Card4;
+    private javax.swing.JLabel Card5;
+    private javax.swing.JLabel Card6;
     private javax.swing.JLabel CardDeckIcon;
     private javax.swing.JPanel Fondo;
     private javax.swing.JLabel LastCardIcon;
     private javax.swing.JLabel LastCardTXT;
-    private javax.swing.JLabel Player1Team1;
-    private javax.swing.JLabel Player1Team2;
-    private javax.swing.JLabel Player1Team3;
-    private javax.swing.JLabel Player1Team4;
-    private javax.swing.JLabel Player2Team1;
-    private javax.swing.JLabel Player2Team2;
-    private javax.swing.JLabel Player2Team3;
-    private javax.swing.JLabel Player2Team4;
+    private javax.swing.JLabel Player1;
+    private javax.swing.JLabel Player2;
     private javax.swing.JPanel Tablero;
-    private javax.swing.JLabel Team1Name;
-    private javax.swing.JLabel Team2Name;
-    private javax.swing.JLabel Team3Name1;
-    private javax.swing.JLabel Team4Name;
-    private javax.swing.JPanel Team_1_Panel;
-    private javax.swing.JPanel Team_2_Panel;
-    private javax.swing.JPanel Team_3_Panel;
-    private javax.swing.JPanel Team_4_Panel;
+    private javax.swing.JLabel Team;
+    private javax.swing.JPanel Team1;
+    private javax.swing.JLabel Team1Members1;
+    private javax.swing.JLabel Team1Members2;
+    private javax.swing.JPanel Team2;
+    private javax.swing.JLabel Team2Members1;
+    private javax.swing.JLabel Team2Members2;
+    private javax.swing.JPanel Team3;
+    private javax.swing.JLabel Team3Members1;
+    private javax.swing.JLabel Team3Members2;
+    private javax.swing.JPanel Team4;
+    private javax.swing.JLabel Team4Members1;
+    private javax.swing.JLabel Team4Members2;
+    private javax.swing.JPanel Team5;
+    private javax.swing.JPanel Team6;
+    private javax.swing.JPanel Team7;
+    private javax.swing.JPanel Team8;
+    private javax.swing.JPanel TeamPanel;
     private javax.swing.JLabel Timer;
+    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
-
 }
