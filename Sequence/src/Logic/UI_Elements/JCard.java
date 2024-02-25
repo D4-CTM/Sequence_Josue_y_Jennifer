@@ -25,11 +25,12 @@ public class JCard extends javax.swing.JButton{
         this.Card = Card;
     }
     
+    public void takeLine(){
+        Line = true;
+    }
+    
     public boolean TakeCard(){
-        if (!Taken){
-            Taken = true;
-        }
-        return Taken;
+        return Taken = true;
     }
     
     public boolean isLineComplete(){

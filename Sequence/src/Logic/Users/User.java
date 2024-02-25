@@ -11,11 +11,11 @@ import java.io.ObjectOutputStream;
 
 public class User implements Serializable{
     private final ArrayList<String> Historial;
+    private String Name, Username, Password;
     private ImageIcon PlayerIcon, Ficha;
-    private String Name, Password;
     
-    public User(String Name, String Password, ImageIcon PlayerIcon){
-        EditData(Name, Password, PlayerIcon);
+    public User(String Name, String Username, String Password, ImageIcon PlayerIcon){
+        EditData(Name, Username, Password, PlayerIcon);
         Historial = new ArrayList();
     }
     
@@ -32,8 +32,9 @@ public class User implements Serializable{
         }
     }
     
-    public final void EditData(String Name, String Password, ImageIcon PlayerIcon){
+    public final void EditData(String Name, String Username,String Password, ImageIcon PlayerIcon){
         this.PlayerIcon = PlayerIcon;
+        this.Username = Username;
         this.Password = Password;
         this.Name = Name;
     }
@@ -46,8 +47,16 @@ public class User implements Serializable{
         return Historial;
     }
     
+    public void setficha(ImageIcon Ficha){
+        this.Ficha = Ficha;
+    }
+    
     public ImageIcon getPlayerIcon(){
         return PlayerIcon;
+    }
+    
+    public String getUsername(){
+        return Username;
     }
     
     public String getPassword(){
