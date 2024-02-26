@@ -11,7 +11,7 @@ public class Deck {
         for (int Card = 0; Card <= 12; Card++){
             if (Card != 1){
                 Deck.add(String.valueOf(Card) + "S");
-                Deck.add(String.valueOf(Card) + "C");
+                Deck.add(String.valueOf(Card) + "T");
                 Deck.add(String.valueOf(Card) + "H");
                 Deck.add(String.valueOf(Card) + "D");
             }

@@ -1,10 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package GameBoard;
 
 import Logic.UI_Elements.JCard;
+import Logic.Users.Player;
+import Logic.Users.User;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -20,28 +18,35 @@ import javax.swing.border.Border;
  * @author josue
  */
 public class Tablero extends javax.swing.JFrame implements Runnable {
+
     //Timer elements
     private int Min, Sec, MiliSec;
     private Thread TimerTXT;
     //variables used for changing the turn
-    private final String[] Player = new String[8];
+    private final Player[] Player = new Player[8];
     private final int Players;
     private boolean Pause;
     private int Turn;
     //Variables used for taking a card
     private String SelectedCard = "IDK";
-    public Tablero(int Players) {
+    private int CardCant, CartaJugada;
+
+    public Tablero(int Players) throws IOException, ClassNotFoundException {
         initComponents();
         setBoardBTNS();
-        
+
+        Deck.EmptyDeck();
+        Deck.setDeck();
+        Deck.setDeck();
+
         setResizable(false);
         setPlayersinfo(Players);
         StartThread();
-        
+
         setIconImage(new javax.swing.ImageIcon(getClass().getResource("/Elementos/GameIcon.png")).getImage());
 
         this.Players = Players;
-        Turn = Players - 1;
+        Turn = 0;
         Pause = false;
     }
 
@@ -50,8 +55,8 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
 
         TimerTXT.start();
     }
-    
-    private void setPlayersinfo(int Players){
+
+    private void setPlayersinfo(int Players) throws IOException, ClassNotFoundException {
         BGPlayer1.setVisible(true);
         BGPlayer2.setVisible(true);
         BGPlayer3.setVisible(Players >= 3);
@@ -60,16 +65,35 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         BGPlayer6.setVisible(Players >= 6);
         BGPlayer7.setVisible(Players >= 8);
         BGPlayer8.setVisible(Players >= 8);
+
+        CardCant = switch (Players) {
+            case 3 -> 6;
+            case 6 -> 5;
+            case 8 -> 4;
+            default -> 7;
+        };
+
+        Player[0] = new Player(User.LoadFile("Josh"), CardCant, 0);
+        Player[1] = new Player(User.LoadFile("Jennifer"), CardCant, 1);
         
-        Player[0] = Player1.getText();
-        Player[1] = Player2.getText();
-        Player[2] = Player3.getText();
-        Player[3] = Player4.getText();
-        Player[4] = Player5.getText();
-        Player[5] = Player6.getText();
-        Player[6] = Player7.getText();
-        Player[7] = Player8.getText();
+        try {
+            Player1.setText(Player[0].getPlayer().getUsername());
+            Player2.setText(Player[1].getPlayer().getUsername());
+            Player3.setText(Player[2].getPlayer().getUsername());
+            Player4.setText(Player[3].getPlayer().getUsername());
+            Player5.setText(Player[4].getPlayer().getUsername());
+            Player6.setText(Player[5].getPlayer().getUsername());
+            Player7.setText(Player[6].getPlayer().getUsername());
+        } catch (Exception Ex){}
         
+        Card1.setText(null);
+        Card2.setText(null);
+        Card3.setText(null);
+        Card4.setText(null);
+        Card5.setText(null);
+        Card6.setText(null);
+        Card7.setText(null);
+
         Card1.setVisible(true);
         Card2.setVisible(true);
         Card3.setVisible(true);
@@ -77,7 +101,15 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         Card5.setVisible(Players == 2 || Players == 3 || Players == 4 || Players == 6);
         Card6.setVisible(Players == 2 || Players == 3 || Players == 4);
         Card7.setVisible(Players == 2 || Players == 4);
+        
+        Image scaledCard = Player[Turn].getPlayer().getPlayerIcon().getImage().getScaledInstance(PlayerIcon.getWidth()/2, PlayerIcon.getHeight()/2, Image.SCALE_SMOOTH);
+            
+        PlayerIcon.setIcon(new ImageIcon(scaledCard));
+        PlayerIcon.setText(Player1.getText());
+        
+        PlayerCards();
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -85,13 +117,12 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         Fondo = new javax.swing.JPanel();
         Tablero = new javax.swing.JPanel();
         TeamPanel = new javax.swing.JPanel();
-        Team = new javax.swing.JLabel();
         PlayerIcon = new javax.swing.JLabel();
+        Timer = new javax.swing.JLabel();
         LastCardTXT = new javax.swing.JLabel();
         LastCardIcon = new javax.swing.JLabel();
         BarajaDeCartasTXT = new javax.swing.JLabel();
         CardDeckIcon = new javax.swing.JLabel();
-        Timer = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         ScrollInfo = new javax.swing.JScrollPane();
         TeamReport = new javax.swing.JTextArea();
@@ -145,14 +176,17 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
 
         TeamPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        Team.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Team.setText("Team ");
-        TeamPanel.add(Team, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 220, -1));
-
         PlayerIcon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         PlayerIcon.setText("[Player 1 Icon]");
+        PlayerIcon.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         PlayerIcon.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        TeamPanel.add(PlayerIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, 120, 120));
+        TeamPanel.add(PlayerIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 160, 160));
+
+        Timer.setForeground(new java.awt.Color(0, 0, 0));
+        Timer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Timer.setText("Timer");
+        Timer.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        TeamPanel.add(Timer, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 220, 30));
 
         Fondo.add(TeamPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 220, 190));
 
@@ -171,12 +205,6 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         CardDeckIcon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         CardDeckIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GameBoard/Icons/Deck.png"))); // NOI18N
         Fondo.add(CardDeckIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 410, 160, 140));
-
-        Timer.setForeground(new java.awt.Color(255, 255, 255));
-        Timer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Timer.setText("Timer");
-        Timer.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        Fondo.add(Timer, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 10, 350, 30));
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -202,7 +230,7 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         Fondo.add(Card2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 550, 70, 50));
 
         Card1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Card1.setText("0T");
+        Card1.setText("Card1");
         Card1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 Card1MouseClicked(evt);
@@ -318,37 +346,44 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
     }// </editor-fold>//GEN-END:initComponents
 
     private void Card1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Card1MouseClicked
-        SelectedCard = Card1.getText();
+        CartaJugada = 0;
+        SelectedCard = Player[Turn].getCard(CartaJugada);
         setBorders(BorderFactory.createLineBorder(Color.yellow, 2), SelectedCard);
     }//GEN-LAST:event_Card1MouseClicked
 
     private void Card2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Card2MouseClicked
-        SelectedCard = Card2.getText();
+        CartaJugada = 1;
+        SelectedCard = Player[Turn].getCard(CartaJugada);
         setBorders(BorderFactory.createLineBorder(Color.yellow, 2), SelectedCard);
     }//GEN-LAST:event_Card2MouseClicked
 
     private void Card3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Card3MouseClicked
-        SelectedCard = Card3.getText();
+        CartaJugada = 2;
+        SelectedCard = Player[Turn].getCard(CartaJugada);
         setBorders(BorderFactory.createLineBorder(Color.yellow, 2), SelectedCard);
     }//GEN-LAST:event_Card3MouseClicked
 
     private void Card4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Card4MouseClicked
-        SelectedCard = Card4.getText();
+        CartaJugada = 3;
+        SelectedCard = Player[Turn].getCard(CartaJugada);
         setBorders(BorderFactory.createLineBorder(Color.yellow, 2), SelectedCard);
     }//GEN-LAST:event_Card4MouseClicked
 
     private void Card5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Card5MouseClicked
-        SelectedCard = Card5.getText();
+        CartaJugada = 4;
+        SelectedCard = Player[Turn].getCard(CartaJugada);
         setBorders(BorderFactory.createLineBorder(Color.yellow, 2), SelectedCard);
     }//GEN-LAST:event_Card5MouseClicked
 
     private void Card6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Card6MouseClicked
-        SelectedCard = Card6.getText();
+        CartaJugada = 5;
+        SelectedCard = Player[Turn].getCard(CartaJugada);
         setBorders(BorderFactory.createLineBorder(Color.yellow, 2), SelectedCard);
     }//GEN-LAST:event_Card6MouseClicked
 
     private void Card7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Card7MouseClicked
-        SelectedCard = Card7.getText();
+        CartaJugada = 6;
+        SelectedCard = Player[Turn].getCard(CartaJugada);
         setBorders(BorderFactory.createLineBorder(Color.yellow, 2), SelectedCard);
     }//GEN-LAST:event_Card7MouseClicked
 
@@ -363,79 +398,105 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
                 String Num[] = Line.split(" ");
                 for (int Columna = 0; Columna < 10; Columna++) {
                     CartasDelTablero[Fila][Columna] = new JCard(Fila, Columna);
-                    CartasDelTablero[Fila][Columna].setBounds((Tablero.getWidth()/10)*Fila, (Tablero.getHeight()/10)*Columna, Tablero.getWidth()/10, Tablero.getHeight()/10);
+                    CartasDelTablero[Fila][Columna].setBounds((Tablero.getWidth() / 10) * Fila, (Tablero.getHeight() / 10) * Columna, Tablero.getWidth() / 10, Tablero.getHeight() / 10);
 
                     try {
                         CartasDelTablero[Fila][Columna].setBorder(null);
-                        CartasDelTablero[Fila][Columna].setCard(Num[Columna], ScaledImage("Icons\\"+Num[Columna]+".png", CartasDelTablero[Fila][Columna].getWidth(), CartasDelTablero[Fila][Columna].getHeight()));
-                    } catch (Exception Ex){System.out.print("Fila: "+Fila+"\tColumna: "+Columna+"\n");}
+                        CartasDelTablero[Fila][Columna].setCard(Num[Columna], ScaledImage("Icons\\" + Num[Columna] + ".png", CartasDelTablero[Fila][Columna].getWidth(), CartasDelTablero[Fila][Columna].getHeight()));
+                    } catch (Exception Ex) {
+                        System.out.print("Fila: " + Fila + "\tColumna: " + Columna + "\n");
+                    }
 
                     CartasDelTablero[Fila][Columna].addActionListener((ActionEvent Ex) -> {
                         int Row = ((JCard) Ex.getSource()).getFila();
                         int Column = ((JCard) Ex.getSource()).getColumna();
-                        
+
                         TakeCard(Row, Column);
                     });
-                    
+
                     Tablero.add(CartasDelTablero[Fila][Columna]);
                 }
             }
             br.close();
-        } catch (IOException e) { 
+        } catch (IOException e) {
             System.out.println("Error");
         }
     }
-    
-    private ImageIcon ScaledImage(String Url, int Width, int Height){
+
+    private ImageIcon ScaledImage(String Url, int Width, int Height) {
         ImageIcon neoIcon = new ImageIcon(getClass().getResource(Url));
         Image scaledCard = neoIcon.getImage().getScaledInstance(Width, Height, Image.SCALE_SMOOTH);
         neoIcon = new ImageIcon(scaledCard);
         return neoIcon;
     }
-    
-    private void TakeCard(int Row, int Column){
-        if (!SelectedCard.equals("IDK")){
+
+    private void TakeCard(int Row, int Column) {
+        if (!SelectedCard.equals("IDK")) {
             Pause = true;
-            if (!CartasDelTablero[Row][Column].getCard().equals("0F")){
-                if (SelectedCard.equals(CartasDelTablero[Row][Column].getCard())){
-                    if (!CartasDelTablero[Row][Column].isCardTaken()){
-                        if (!CartasDelTablero[Row][Column].isLineComplete()){
-                            if (CartasDelTablero[Row][Column].TakeCard(ScaledImage("Icons\\Tokens1.png",CartasDelTablero[Row][Column].getWidth(), CartasDelTablero[Row][Column].getHeight()))){
+            if (!CartasDelTablero[Row][Column].getCard().equals("0F")) {
+                if (SelectedCard.equals(CartasDelTablero[Row][Column].getCard())) {
+                    if (!CartasDelTablero[Row][Column].isCardTaken()) {
+                        if (!CartasDelTablero[Row][Column].isLineComplete()) {
+                            ImageIcon neoCard = ScaledImage("Icons\\Tokens1.png", CartasDelTablero[Row][Column].getWidth(), CartasDelTablero[Row][Column].getHeight());
+                            if (CartasDelTablero[Row][Column].TakeCard(neoCard, Player[Turn].getPlayer().getUsername(), Player[Turn].getTeam())) {
                                 LastCardIcon.setIcon(ScaledImage(CartasDelTablero[Row][Column].getCardUrl(), LastCardIcon.getWidth(), LastCardIcon.getHeight()));
+                                Player[Turn].PlayCard(CartaJugada);
                                 SelectedCard = "IDK";
                                 ChangeTurn("");
                                 setBorders(null, "");
-                            } else JOptionPane.showMessageDialog(this, "¡No se ha podido tomar esta carta!", "ERROR", JOptionPane.WARNING_MESSAGE);
-                        } else JOptionPane.showMessageDialog(this, "¡Esta ficha conforma una linea!\nIntente tomar otro espacio","Tomar espacio", JOptionPane.INFORMATION_MESSAGE);
-                    } else JOptionPane.showMessageDialog(this, "¡El espacio que esta intentando tomar ya esta ocupado!","Tomar espacio", JOptionPane.INFORMATION_MESSAGE);
-                } else JOptionPane.showMessageDialog(this, "¡La carta que esta intentando tomar no coincide con la seleccionada!","Tomar espacio", JOptionPane.INFORMATION_MESSAGE);
-            } else JOptionPane.showMessageDialog(this,"¡No puede ocupar este tipo de espacios!","Zona neutra", JOptionPane.INFORMATION_MESSAGE);
+                            } else {
+                                JOptionPane.showMessageDialog(this, "¡No se ha podido tomar esta carta!", "ERROR", JOptionPane.WARNING_MESSAGE);
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(this, "¡Esta ficha conforma una linea!\nIntente tomar otro espacio", "Tomar espacio", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(this, "¡El espacio que esta intentando tomar ya esta ocupado!", "Tomar espacio", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "¡La carta que esta intentando tomar no coincide con la seleccionada!", "Tomar espacio", JOptionPane.INFORMATION_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "¡No puede ocupar este tipo de espacios!", "Zona neutra", JOptionPane.INFORMATION_MESSAGE);
+            }
             Pause = false;
         }
     }
-    
-    private void setBorders(Border Borde, String CardSearch){
+
+    private void setBorders(Border Borde, String CardSearch) {
         for (int Fila = 0; Fila < 10; Fila++) {
             for (int Columna = 0; Columna < 10; Columna++) {
-                if (Borde == null && CartasDelTablero[Fila][Columna].getBorder() != null){
-                    CartasDelTablero[Fila][Columna].setBorder(Borde);
-                } else if (CartasDelTablero[Fila][Columna].getCard().equals(CardSearch) && !CartasDelTablero[Fila][Columna].isCardTaken()){
+                CartasDelTablero[Fila][Columna].setBorder(null);
+                if (CartasDelTablero[Fila][Columna].getCard().equals(CardSearch) && !CartasDelTablero[Fila][Columna].isCardTaken()) {
                     CartasDelTablero[Fila][Columna].setBorder(Borde);
                 }
             }
         }
     }
-    
-    public static void main(String args[]) {
-        new Tablero(8).setVisible(true);
+
+    public static void main(String args[]) throws IOException, ClassNotFoundException {
+        new Tablero(2).setVisible(true);
+    }
+
+    private void PlayerCards() {
+        try {
+            Card1.setIcon(ScaledImage("Icons\\" + Player[Turn].getCard(0) + ".png", Card1.getWidth(), Card1.getHeight()));
+            Card2.setIcon(ScaledImage("Icons\\" + Player[Turn].getCard(1) + ".png", Card2.getWidth(), Card2.getHeight()));
+            Card3.setIcon(ScaledImage("Icons\\" + Player[Turn].getCard(2) + ".png", Card3.getWidth(), Card3.getHeight()));
+            Card4.setIcon(ScaledImage("Icons\\" + Player[Turn].getCard(3) + ".png", Card4.getWidth(), Card4.getHeight()));
+            Card5.setIcon(ScaledImage("Icons\\" + Player[Turn].getCard(4) + ".png", Card5.getWidth(), Card5.getHeight()));
+            Card6.setIcon(ScaledImage("Icons\\" + Player[Turn].getCard(5) + ".png", Card6.getWidth(), Card6.getHeight()));
+            Card7.setIcon(ScaledImage("Icons\\" + Player[Turn].getCard(6) + ".png", Card7.getWidth(), Card7.getHeight()));
+        } catch (Exception Ex) {
+
+        }
     }
 
     @Override
     public void run() {
-        Min = 0;
-        Sec = 0;
-        MiliSec = 0;
-        ChangeTurn("");
+        Min = 1;
+        Sec = 59;
+        MiliSec = 59;
         float LastFrame = 0;
         do {
             if (((System.nanoTime() - LastFrame) >= 1000000000 / 60) && !Pause) {
@@ -453,7 +514,7 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         }
         if (Sec < 0) {
             if (Min <= 0) {
-                ChangeTurn("¡Se ha quedado sin tiempo!\n");
+                ChangeTurn("¡" + Player[Turn] + "se ha quedado sin tiempo!\n");
             } else {
                 Min--;
                 Sec = 59;
@@ -461,16 +522,21 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         }
         Timer.setText(Min + ":" + Sec + ":" + MiliSec);
     }
-    
-    private void ChangeTurn(String ExtraInfo){
-        Turn = (Turn + 1 == Players)?0:Turn + 1;
-        JOptionPane.showMessageDialog(this, ExtraInfo + "Turno de: " + Player[Turn], "Cambio de turno", JOptionPane.INFORMATION_MESSAGE);
+
+    private void ChangeTurn(String ExtraInfo) {
+        Turn = (Turn + 1 >= Players) ? 0 : Turn + 1;
+        JOptionPane.showMessageDialog(this, ExtraInfo + "Turno de: " + Player[Turn].getPlayer().getUsername(), "Cambio de turno", JOptionPane.INFORMATION_MESSAGE);
         Min = 1;
         Sec = 59;
         MiliSec = 59;
+        PlayerCards();
+        Image scaledCard = Player[Turn].getPlayer().getPlayerIcon().getImage().getScaledInstance(PlayerIcon.getWidth()/2, PlayerIcon.getHeight()/2, Image.SCALE_SMOOTH);
+            
+        PlayerIcon.setIcon(new ImageIcon(scaledCard));
+        PlayerIcon.setText(Player[Turn].getPlayer().getUsername());
         Pause = false;
     }
-    
+
     // -- SWING ELEMENTS --
     private JCard[][] CartasDelTablero;
     // -- SWING ELEMENTS --
@@ -506,7 +572,6 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
     private javax.swing.JLabel PlayerIcon;
     private javax.swing.JScrollPane ScrollInfo;
     private javax.swing.JPanel Tablero;
-    private javax.swing.JLabel Team;
     private javax.swing.JPanel TeamPanel;
     private javax.swing.JTextArea TeamReport;
     private javax.swing.JLabel Timer;

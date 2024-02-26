@@ -8,9 +8,10 @@ import javax.swing.JLabel;
  * @author josue
  */
 public class JCard extends javax.swing.JButton{
+    private String Card, TakenBy, CardUrl;
     private final int Fila, Columna;
-    private String Card, CardUrl;
     private boolean Line, Taken;
+    private int FromTeam;
     
     public JCard(int Fila, int Columna){
         Ficha = new JLabel();
@@ -35,9 +36,11 @@ public class JCard extends javax.swing.JButton{
         Line = true;
     }
     
-    public boolean TakeCard(ImageIcon Ficha){
+    public boolean TakeCard(ImageIcon Ficha, String TakenBy, int FromTeam){
         try {
             this.Ficha.setIcon(Ficha);
+            this.FromTeam = FromTeam;
+            this.TakenBy = TakenBy;
             return Taken = true;
         } catch (Exception Ex){
             return false;
