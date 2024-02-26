@@ -131,14 +131,14 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         Tablero.setLayout(TableroLayout);
         TableroLayout.setHorizontalGroup(
             TableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 700, Short.MAX_VALUE)
+            .addGap(0, 600, Short.MAX_VALUE)
         );
         TableroLayout.setVerticalGroup(
             TableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 500, Short.MAX_VALUE)
+            .addGap(0, 390, Short.MAX_VALUE)
         );
 
-        Fondo.add(Tablero, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 50, 700, 500));
+        Fondo.add(Tablero, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 50, 600, 390));
 
         TeamPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -158,6 +158,7 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         Fondo.add(LastCardTXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 50, 160, -1));
 
         LastCardIcon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        LastCardIcon.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 204, 204), 2, true));
         Fondo.add(LastCardIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 100, 140, 100));
 
         BarajaDeCartasTXT.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -359,10 +360,13 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
                 String Num[] = Line.split(" ");
                 for (int Columna = 0; Columna < 10; Columna++) {
                     CartasDelTablero[Fila][Columna] = new JCard(Fila, Columna);
+                    CartasDelTablero[Fila][Columna].setBounds((Tablero.getWidth()/10)*Fila, (Tablero.getHeight()/10)*Columna, Tablero.getWidth()/10, Tablero.getHeight()/10);
+
                     try {
                         CartasDelTablero[Fila][Columna].setBorder(null);
-                        CartasDelTablero[Fila][Columna].setCard(Num[Columna], new javax.swing.ImageIcon(getClass().getResource("Icons\\"+Num[Columna]+".png")));
+                        CartasDelTablero[Fila][Columna].setCard(Num[Columna], ScaledImage("Icons\\"+Num[Columna]+".png", CartasDelTablero[Fila][Columna].getWidth(), CartasDelTablero[Fila][Columna].getHeight()));
                     } catch (Exception Ex){System.out.print("Fila: "+Fila+"\tColumna: "+Columna+"\n");}
+
                     CartasDelTablero[Fila][Columna].addActionListener((ActionEvent Ex) -> {
                         int Row = ((JCard) Ex.getSource()).getFila();
                         int Column = ((JCard) Ex.getSource()).getColumna();
@@ -370,7 +374,6 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
                         TakeCard(Row, Column);
                     });
                     
-                    CartasDelTablero[Fila][Columna].setBounds((Tablero.getWidth()/10)*Fila, (Tablero.getHeight()/10)*Columna, Tablero.getWidth()/10, Tablero.getHeight()/10);
                     Tablero.add(CartasDelTablero[Fila][Columna]);
                 }
             }
@@ -378,6 +381,13 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         } catch (IOException e) { 
             System.out.println("Error");
         }
+    }
+    
+    private ImageIcon ScaledImage(String Url, int Width, int Height){
+        ImageIcon neoIcon = new ImageIcon(getClass().getResource(Url));
+        Image scaledCard = neoIcon.getImage().getScaledInstance(Width, Height, Image.SCALE_SMOOTH);
+        neoIcon = new ImageIcon(scaledCard);
+        return neoIcon;
     }
     
     private void TakeCard(int Row, int Column){
@@ -388,8 +398,7 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
                     if (!CartasDelTablero[Row][Column].isCardTaken()){
                         if (!CartasDelTablero[Row][Column].isLineComplete()){
                             if (CartasDelTablero[Row][Column].TakeCard()){
-                                Image Scalecard = ((ImageIcon) CartasDelTablero[Row][Column].getIcon()).getImage().getScaledInstance(LastCardIcon.getWidth(), LastCardIcon.getHeight(), Image.SCALE_SMOOTH);
-                                LastCardIcon.setIcon(new ImageIcon(Scalecard));
+                                LastCardIcon.setIcon(ScaledImage(CartasDelTablero[Row][Column].getCardUrl(), LastCardIcon.getWidth(), LastCardIcon.getHeight()));
                                 SelectedCard = "IDK";
                                 ChangeTurn("");
                                 setBorders(null, "");

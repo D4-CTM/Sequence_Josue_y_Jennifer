@@ -8,8 +8,8 @@ import javax.swing.ImageIcon;
  */
 public class JCard extends javax.swing.JButton{
     private final int Fila, Columna;
+    private String Card, CardUrl;
     private boolean Line, Taken;
-    private String Card;
     
     public JCard(int Fila, int Columna){
         this.Columna = Columna;
@@ -21,6 +21,7 @@ public class JCard extends javax.swing.JButton{
     public void setCard(String Card, ImageIcon Icon){
         if (Icon != null){
             setIcon(Icon);
+            this.CardUrl = "Icons\\"+Card+".png";
         }
         this.Card = Card;
     }
@@ -39,6 +40,10 @@ public class JCard extends javax.swing.JButton{
     
     public boolean isCardTaken(){
         return Taken;
+    }
+    
+    public String getCardUrl(){
+        return CardUrl;
     }
     
     public String getCard(){
