@@ -1,6 +1,7 @@
 package Logic.UI_Elements;
 
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 /**
  *
@@ -12,6 +13,8 @@ public class JCard extends javax.swing.JButton{
     private boolean Line, Taken;
     
     public JCard(int Fila, int Columna){
+        Ficha = new JLabel();
+        
         this.Columna = Columna;
         this.Fila = Fila;
         Taken = false;
@@ -22,6 +25,8 @@ public class JCard extends javax.swing.JButton{
         if (Icon != null){
             setIcon(Icon);
             this.CardUrl = "Icons\\"+Card+".png";
+            Ficha.setBounds(getBounds());
+            add(Ficha);
         }
         this.Card = Card;
     }
@@ -30,8 +35,13 @@ public class JCard extends javax.swing.JButton{
         Line = true;
     }
     
-    public boolean TakeCard(){
-        return Taken = true;
+    public boolean TakeCard(ImageIcon Ficha){
+        try {
+            this.Ficha.setIcon(Ficha);
+            return Taken = true;
+        } catch (Exception Ex){
+            return false;
+        }
     }
     
     public boolean isLineComplete(){
@@ -58,4 +68,7 @@ public class JCard extends javax.swing.JButton{
         return Fila;
     }
     
+    //-- Swing elements --
+    private final JLabel Ficha;
+    //-- Swing elements --
 }

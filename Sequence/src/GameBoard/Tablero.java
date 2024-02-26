@@ -38,6 +38,8 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         setPlayersinfo(Players);
         StartThread();
         
+        setIconImage(new javax.swing.ImageIcon(getClass().getResource("/Elementos/GameIcon.png")).getImage());
+
         this.Players = Players;
         Turn = Players - 1;
         Pause = false;
@@ -118,6 +120,7 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         Card6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Sequence");
         setMinimumSize(new java.awt.Dimension(1100, 600));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -131,14 +134,14 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         Tablero.setLayout(TableroLayout);
         TableroLayout.setHorizontalGroup(
             TableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
+            .addGap(0, 700, Short.MAX_VALUE)
         );
         TableroLayout.setVerticalGroup(
             TableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 390, Short.MAX_VALUE)
+            .addGap(0, 500, Short.MAX_VALUE)
         );
 
-        Fondo.add(Tablero, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 50, 600, 390));
+        Fondo.add(Tablero, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 50, 700, 500));
 
         TeamPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -397,7 +400,7 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
                 if (SelectedCard.equals(CartasDelTablero[Row][Column].getCard())){
                     if (!CartasDelTablero[Row][Column].isCardTaken()){
                         if (!CartasDelTablero[Row][Column].isLineComplete()){
-                            if (CartasDelTablero[Row][Column].TakeCard()){
+                            if (CartasDelTablero[Row][Column].TakeCard(ScaledImage("Icons\\Tokens1.png",CartasDelTablero[Row][Column].getWidth(), CartasDelTablero[Row][Column].getHeight()))){
                                 LastCardIcon.setIcon(ScaledImage(CartasDelTablero[Row][Column].getCardUrl(), LastCardIcon.getWidth(), LastCardIcon.getHeight()));
                                 SelectedCard = "IDK";
                                 ChangeTurn("");
