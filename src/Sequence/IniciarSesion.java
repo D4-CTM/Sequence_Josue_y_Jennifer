@@ -101,7 +101,7 @@ public class IniciarSesion extends javax.swing.JFrame {
         boolean mostrar = Main_Sequence.gestorUsuarios.iniciarSesion(usuario, contra);
         
         if (mostrar) {
-            JOptionPane.showMessageDialog(null, "¡Bienvenido(a) a Java Ticket, " + usuario + "!", "Inicio de Sesión Exitoso", JOptionPane.INFORMATION_MESSAGE, Main_Sequence.gestorUsuarios.getUsarioLog().getPlayerIcon());
+            JOptionPane.showMessageDialog(null, "¡Bienvenido(a) a Sequence, " + usuario + "!", "Inicio de Sesión Exitoso", JOptionPane.INFORMATION_MESSAGE, Main_Sequence.gestorUsuarios.getUsuarioLog().getPlayerIcon());
             MenuPrincipal menuPrincipal = new MenuPrincipal();
             menuPrincipal.setVisible(true);
             this.setVisible(false);

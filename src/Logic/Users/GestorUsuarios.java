@@ -4,8 +4,12 @@
  */
 package Logic.Users;
 
-import static Logic.Users.User.SaveUsers;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -16,17 +20,55 @@ import javax.swing.JOptionPane;
  */
 public class GestorUsuarios {
     private ArrayList<User> usuariosLista;
-    private User usarioLog;
+    private User usuarioLog;
+    private Configuracion configuracionUsuario;
     
     public GestorUsuarios() {
-        try {
-            usuariosLista = User.LoadUsers("./UsuariosLista");
+        String userFolder = "./UsuariosLista/Cuentas";
+        usuariosLista = new ArrayList<>();
+
+        File folder = new File(userFolder);
+        if (!folder.exists()) {
+            if (folder.mkdirs()) {
+                System.out.println("Carpeta de usuarios creada: " + userFolder);
+            } else {
+                System.err.println("Error al crear la carpeta de usuarios.");
+            }
+        } else {
+            // Cargar los objetos de usuario desde los archivos en la carpeta
+            File[] userFiles = folder.listFiles();
+            if (userFiles != null) {
+                for (File userFile : userFiles) {
+                    if (userFile.isFile()) {
+                        User loadedUser = loadUserFromFolder(userFile);
+                        if (loadedUser != null) {
+                            usuariosLista.add(loadedUser);
+                        }
+                    }
+                }
+            }
+        }
+
+        System.out.println("Cantidad de usuarios cargados: " + usuariosLista.size());
+    }
+
+    private User loadUserFromFolder(File userFile) {
+        try (ObjectInputStream entrada = new ObjectInputStream(new FileInputStream(userFile))) {
+            return (User) entrada.readObject();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
-            usuariosLista = new ArrayList<>();
+            return null;
         }
     }
 
+    public Configuracion getConfiguracionUsuario() {
+        return configuracionUsuario;
+    }
+
+    public void setConfiguracionUsuario(Configuracion configuracionUsuario) {
+        this.configuracionUsuario = configuracionUsuario;
+    }
+    
     public ArrayList<User> getUsuariosLista() {
         return usuariosLista;
     }
@@ -35,12 +77,12 @@ public class GestorUsuarios {
         this.usuariosLista = usuariosLista;
     }
 
-    public User getUsarioLog() {
-        return usarioLog;
+    public User getUsuarioLog() {
+        return usuarioLog;
     }
 
-    public void setUsarioLog(User usarioLog) {
-        this.usarioLog = usarioLog;
+    public void setUsuarioLog(User usuarioLog) {
+        this.usuarioLog = usuarioLog;
     }
     
     private User buscar(String usuario) {
@@ -59,19 +101,30 @@ public class GestorUsuarios {
     }
     
     public boolean agregarUsuario(String nombre, String usuario, String contra, ImageIcon playerIcon) {
-        if (buscar(usuario) == null) {
-            usuariosLista.add(new User(nombre, usuario, contra, playerIcon));
-            JOptionPane.showMessageDialog(null, "¡Bienvenido a Sequence, " + usuario + "!", "Cuenta Creada", 0, playerIcon);
-                try {
-                    SaveUsers(usuariosLista, "./UsuariosLista");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return false;
-                }
+        User user = buscar(usuario);
+        if (user == null) {
+            user = new User(nombre, usuario, contra, playerIcon);
+            usuariosLista.add(user);
+            user.createUserFolderAndSaveObject(usuario);
+            Configuracion configuracionUsuario = new Configuracion(0);
+            configuracionUsuario.createConfigFolderAndSaveObject(usuario);
+            
+            JOptionPane.showMessageDialog(null, "¡Bienvenido(a), " + usuario + "!", "Cuenta Creada", 0, playerIcon);
             return true;
         } else {
             JOptionPane.showMessageDialog(null, "La cuenta " + usuario + " ya existe.", "Cuenta Existente", JOptionPane.ERROR_MESSAGE);
             return false;
+        }
+    }
+
+    private Configuracion cargarConfiguracionUsuario(String usuario) {
+        String userListFolder = "./UsuariosLista/Configuracion/" + usuario;
+
+        try (ObjectInputStream entrada = new ObjectInputStream(new FileInputStream(userListFolder))) {
+            return (Configuracion) entrada.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
         }
     }
     
@@ -85,10 +138,11 @@ public class GestorUsuarios {
             return false;
         }
         
-        User cuenta = usuariosLista.get(0);
-        if (cuenta!=null && cuenta.getUsername().equals(usuario)) {
+        User cuenta = usuariosLista.get(index);
+        if (cuenta != null && cuenta.getUsername().equals(usuario)) {
             if (cuenta.getPassword().equals(contra)) {
-                usarioLog = cuenta;
+                usuarioLog = cuenta;
+                configuracionUsuario = cargarConfiguracionUsuario(usuario);
                 return true;
             } else {
                 JOptionPane.showMessageDialog(null, "La contraseña ingresada es incorrecta. Por favor, inténtelo nuevamente.", "Contraseña Incorrecta", JOptionPane.ERROR_MESSAGE);

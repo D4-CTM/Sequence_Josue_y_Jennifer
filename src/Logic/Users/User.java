@@ -26,24 +26,32 @@ public class User implements Serializable {
         CreationDate = Calendar.getInstance();
     }
     
-    public static ArrayList<User> LoadUsers(String nombreArchivo) throws IOException, ClassNotFoundException {
-        File file = new File(nombreArchivo);
-        if (!file.exists()) {
-            return new ArrayList<>();
-        }
-        try (ObjectInputStream entrada = new ObjectInputStream(new FileInputStream(file))) {
-            return (ArrayList<User>) entrada.readObject();
+    public static User loadFile(String fileName) throws IOException, ClassNotFoundException {
+        try (ObjectInputStream input = new ObjectInputStream(new FileInputStream(fileName))) {
+            return (User) input.readObject();
         }
     }
 
-    public static void SaveUsers(ArrayList<User> users, String nombreArchivo) throws IOException {
-        File file = new File(nombreArchivo);
-        if (!file.exists()) {
-            file.getParentFile().mkdirs();
-            file.createNewFile();
+    public void createUserFolderAndSaveObject(String usuario) {
+        String userFolderName = usuario;
+        String userListFolder = "./UsuariosLista/Cuentas";
+
+        File cuentasFolder = new File(userListFolder);
+        if (!cuentasFolder.exists()) {
+            if (cuentasFolder.mkdirs()) {
+                System.out.println("Carpeta 'Cuentas' creada en: " + cuentasFolder.getAbsolutePath());
+            } else {
+                System.err.println("Error al crear la carpeta 'Cuentas'.");
+                return;
+            }
         }
-        try (ObjectOutputStream salida = new ObjectOutputStream(new FileOutputStream(file))) {
-            salida.writeObject(users);
+
+        File userFile = new File(cuentasFolder, userFolderName);
+        try (ObjectOutputStream salida = new ObjectOutputStream(new FileOutputStream(userFile))) {
+            salida.writeObject(this);
+            System.out.println("Archivo del usuario creado en: " + userFile);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
     
