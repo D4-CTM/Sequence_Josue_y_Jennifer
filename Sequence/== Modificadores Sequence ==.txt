@@ -1,0 +1,25 @@
+								<== Modificadores Sequence ==>
+
+Bloquear espacio:
+	"Al jugar una carta de " + Seleccionada[0] + " se bloqueara un espacio seleccionado por el jugador por 3 turnos seguidos"
+
+Liberar espacio:
+	"Al jugar una carta de " + Seleccionada[1] + " el jugador debera elegir un espacio que este ocupado por una carta rival y debera bloquearla"
+
+Ocupar espacio:
+	"Al jugar una carta de " + Seleccionada[2] + " habra una opurtunidad de 1/5 de que el jugador pueda ocupar el espacio de una carta al azar, en caso de que la carta elegida no este disponible, simplemente se omitira la elección"
+
+Eliminar cartas del oponente:
+	"Al jugar una carta de " + Seleccionada[3] + " habra una oportunidad de 1/10 de que el jugador pueda elegir a un oponente (o aliado!) para eliminar el mazo de este"
+
+Cambiar cartas:
+	"Al jugar una carta de " + Seleccionada[4] + " habra una oportunidad de 1/20 de cambiar los mazos de ¡todos los jugadores!"
+
+Elegir cartas:
+	"Al jugar una carta de " + Seleccionada[5] + " habra una oportunidad de 1/50 de que en vez de agregar una carta al azar, se le de a elegir al jugador entre 3 cartas"
+
+Cambiar fichas:
+	"Al jugar una carta de " + Seleccionada[6] + " habra una oportunidad de darle al jugador la eleccion de cambiar fichas con un equipo rival (en caso de no tener las fichas compartidas activas, se tendra que elegir al jugador con el que desea cambiar fichas)"
+
+Eliminar fichas:
+	"Al jugar una carta de " + Seleccionada[7] + " se eliminaran de 0 ha 5 fichas de un equipo rival (o jugador rival, en caso de no tener las fichas compartidas activas) elegido al azar"

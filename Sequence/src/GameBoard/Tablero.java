@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -73,7 +74,7 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
             default -> 7;
         };
 
-        Player[0] = new Player(User.LoadFile("Josh"), CardCant, 0);
+        Player[0] = new Player(User.LoadFile("Josh"), CardCant, 1);
         Player[1] = new Player(User.LoadFile("Jennifer"), CardCant, 1);
         
         try {
@@ -203,7 +204,7 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         Fondo.add(BarajaDeCartasTXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 380, 160, -1));
 
         CardDeckIcon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        CardDeckIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GameBoard/Icons/Deck.png"))); // NOI18N
+        CardDeckIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Logic/UI_Elements/Deck.png"))); // NOI18N
         Fondo.add(CardDeckIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 410, 160, 140));
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -401,8 +402,9 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
                     CartasDelTablero[Fila][Columna].setBounds((Tablero.getWidth() / 10) * Fila, (Tablero.getHeight() / 10) * Columna, Tablero.getWidth() / 10, Tablero.getHeight() / 10);
 
                     try {
+                        File Carta = new File("Icons\\Estilo retro\\"+Num[Columna]+".png");
                         CartasDelTablero[Fila][Columna].setBorder(null);
-                        CartasDelTablero[Fila][Columna].setCard(Num[Columna], ScaledImage("Icons\\" + Num[Columna] + ".png", CartasDelTablero[Fila][Columna].getWidth(), CartasDelTablero[Fila][Columna].getHeight()));
+                        CartasDelTablero[Fila][Columna].setCard(Num[Columna], ScaledImage(Carta.getAbsolutePath(), CartasDelTablero[Fila][Columna].getWidth(), CartasDelTablero[Fila][Columna].getHeight()));
                     } catch (Exception Ex) {
                         System.out.print("Fila: " + Fila + "\tColumna: " + Columna + "\n");
                     }
@@ -424,7 +426,7 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
     }
 
     private ImageIcon ScaledImage(String Url, int Width, int Height) {
-        ImageIcon neoIcon = new ImageIcon(getClass().getResource(Url));
+        ImageIcon neoIcon = new ImageIcon(Url);
         Image scaledCard = neoIcon.getImage().getScaledInstance(Width, Height, Image.SCALE_SMOOTH);
         neoIcon = new ImageIcon(scaledCard);
         return neoIcon;
@@ -437,11 +439,14 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
                 if (SelectedCard.equals(CartasDelTablero[Row][Column].getCard())) {
                     if (!CartasDelTablero[Row][Column].isCardTaken()) {
                         if (!CartasDelTablero[Row][Column].isLineComplete()) {
-                            ImageIcon neoCard = ScaledImage("Icons\\Tokens1.png", CartasDelTablero[Row][Column].getWidth(), CartasDelTablero[Row][Column].getHeight());
+                            ImageIcon neoCard = ScaledImage(new File("Icons\\Estilo retro\\Tokens1.png").getAbsolutePath(), CartasDelTablero[Row][Column].getWidth(), CartasDelTablero[Row][Column].getHeight());
                             if (CartasDelTablero[Row][Column].TakeCard(neoCard, Player[Turn].getPlayer().getUsername(), Player[Turn].getTeam())) {
                                 LastCardIcon.setIcon(ScaledImage(CartasDelTablero[Row][Column].getCardUrl(), LastCardIcon.getWidth(), LastCardIcon.getHeight()));
                                 Player[Turn].PlayCard(CartaJugada);
                                 SelectedCard = "IDK";
+    
+                                CheckSequence();
+                                
                                 ChangeTurn("");
                                 setBorders(null, "");
                             } else {
@@ -463,6 +468,103 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         }
     }
 
+    private void CheckSequence(){
+        for (int X = 0; X < 10; X++){
+            for (int Y = 0; Y < 10; Y++){
+                if (CheckHorizontal(CartasDelTablero[X][Y].getTeamWhoTakeIt(), X, Y)){
+                    JOptionPane.showMessageDialog(this, "Se ha formado una linea vertical");
+                } else if (CheckVertical(CartasDelTablero[X][Y].getTeamWhoTakeIt(), X, Y)){
+                    JOptionPane.showMessageDialog(this, "Se ha formado una linea Horizontal");
+                } else if (CheckDiagonalFront(CartasDelTablero[X][Y].getTeamWhoTakeIt(), X, Y)){
+                    JOptionPane.showMessageDialog(this, "Se ha formado una linea diagonal (frontal)");
+                } else if (CheckDiagonalBack(CartasDelTablero[X][Y].getTeamWhoTakeIt(), X, Y)){
+                    JOptionPane.showMessageDialog(this, "Se ha formado una linea diagonal (pa'tras)");
+                }
+
+            }
+        }
+    }
+    
+    private boolean CheckDiagonalFront(int Team, int X, int Y){
+        try{
+            for (int i = 0; i < 5; i++){
+                if (!CartasDelTablero[X+i][Y+i].isCardTaken() || CartasDelTablero[X+i][Y+i].getTeamWhoTakeIt() != Team){
+                    if (!CartasDelTablero[X+i][Y+i].isLineComplete()){
+                        return false;
+                    }
+                } else if (!CartasDelTablero[X+i][Y+i].getCard().equals("0F")){
+                    return false;
+                }
+            }
+            if (!CartasDelTablero[X][Y].isLineComplete()){
+                for (int i = 0; i < 5; i++){
+                    CartasDelTablero[X+i][Y+i].takeLine();
+                }
+                return true;
+            } else return false;
+        } catch (IndexOutOfBoundsException e){ return false; }
+    }
+    
+    private boolean CheckDiagonalBack(int Team, int X, int Y){
+        try {
+            for (int i = 0; i < 5; i++){
+                if (!CartasDelTablero[X+i][Y+(i*-1)].isCardTaken() || CartasDelTablero[X+i][Y+(i*-1)].getTeamWhoTakeIt() != Team){
+                    if (!CartasDelTablero[X+i][Y+(i*-1)].isLineComplete()){
+                        return false;
+                    }
+                } else if (!CartasDelTablero[X+i][Y+(i*-1)].getCard().equals("0F")){
+                    return false;
+                }
+            }
+            if (!CartasDelTablero[X][Y].isLineComplete()){
+                for (int i = 0; i < -5; i--){
+                    CartasDelTablero[X+i][Y+(i*-1)].takeLine();
+                }
+                return true;
+            } else return false;
+        } catch (IndexOutOfBoundsException e){ return false; }
+    }
+
+    private boolean CheckHorizontal(int Team, int X, int Y){
+        try{
+            for (int i = 0; i < 5; i++){
+                if (!CartasDelTablero[X][Y+i].isCardTaken() || CartasDelTablero[X][Y+i].getTeamWhoTakeIt() != Team){
+                    if (!CartasDelTablero[X][Y+i].isLineComplete()){
+                        return false;
+                    } 
+                }else if (!CartasDelTablero[X+i][Y+(i*-1)].getCard().equals("0F")){
+                    return false;
+                }
+            }
+            if (!CartasDelTablero[X][Y].isLineComplete()){
+                for (int i = 0; i < 5; i++){
+                    CartasDelTablero[X][Y+i].takeLine();
+                }
+                return true;
+            } else return false;
+        } catch (IndexOutOfBoundsException e){ return false; }
+    }
+
+    private boolean CheckVertical(int Team, int X, int Y){
+        try {
+            for (int i = 0; i < 5; i++){
+                if (!CartasDelTablero[X + i][Y].isCardTaken() || CartasDelTablero[X + i][Y].getTeamWhoTakeIt() != Team){
+                    if (!CartasDelTablero[X + i][Y].isLineComplete()){
+                        return false;
+                    }
+                }else if (!CartasDelTablero[X+i][Y+(i*-1)].getCard().equals("0F")){
+                    return false;
+                }
+            }
+            if (!CartasDelTablero[X][Y].isLineComplete()){
+                for (int i = 0; i < 5; i++){
+                    CartasDelTablero[X + i][Y].takeLine();
+                }
+                return true;
+            } else return false;
+        } catch (IndexOutOfBoundsException e){ return false; }
+    }
+    
     private void setBorders(Border Borde, String CardSearch) {
         for (int Fila = 0; Fila < 10; Fila++) {
             for (int Columna = 0; Columna < 10; Columna++) {
@@ -480,13 +582,13 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
 
     private void PlayerCards() {
         try {
-            Card1.setIcon(ScaledImage("Icons\\" + Player[Turn].getCard(0) + ".png", Card1.getWidth(), Card1.getHeight()));
-            Card2.setIcon(ScaledImage("Icons\\" + Player[Turn].getCard(1) + ".png", Card2.getWidth(), Card2.getHeight()));
-            Card3.setIcon(ScaledImage("Icons\\" + Player[Turn].getCard(2) + ".png", Card3.getWidth(), Card3.getHeight()));
-            Card4.setIcon(ScaledImage("Icons\\" + Player[Turn].getCard(3) + ".png", Card4.getWidth(), Card4.getHeight()));
-            Card5.setIcon(ScaledImage("Icons\\" + Player[Turn].getCard(4) + ".png", Card5.getWidth(), Card5.getHeight()));
-            Card6.setIcon(ScaledImage("Icons\\" + Player[Turn].getCard(5) + ".png", Card6.getWidth(), Card6.getHeight()));
-            Card7.setIcon(ScaledImage("Icons\\" + Player[Turn].getCard(6) + ".png", Card7.getWidth(), Card7.getHeight()));
+            Card1.setIcon(ScaledImage(new File("Icons\\Estilo retro\\" + Player[Turn].getCard(0)).getAbsolutePath() + ".png", Card1.getWidth(), Card1.getHeight()));
+            Card2.setIcon(ScaledImage(new File("Icons\\Estilo retro\\" + Player[Turn].getCard(1)).getAbsolutePath() + ".png", Card2.getWidth(), Card2.getHeight()));
+            Card3.setIcon(ScaledImage(new File("Icons\\Estilo retro\\" + Player[Turn].getCard(2)).getAbsolutePath() + ".png", Card3.getWidth(), Card3.getHeight()));
+            Card4.setIcon(ScaledImage(new File("Icons\\Estilo retro\\" + Player[Turn].getCard(3)).getAbsolutePath() + ".png", Card4.getWidth(), Card4.getHeight()));
+            Card5.setIcon(ScaledImage(new File("Icons\\Estilo retro\\" + Player[Turn].getCard(4)).getAbsolutePath() + ".png", Card5.getWidth(), Card5.getHeight()));
+            Card6.setIcon(ScaledImage(new File("Icons\\Estilo retro\\" + Player[Turn].getCard(5)).getAbsolutePath() + ".png", Card6.getWidth(), Card6.getHeight()));
+            Card7.setIcon(ScaledImage(new File("Icons\\Estilo retro\\" + Player[Turn].getCard(6)).getAbsolutePath() + ".png", Card7.getWidth(), Card7.getHeight()));
         } catch (Exception Ex) {
 
         }
@@ -514,7 +616,7 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         }
         if (Sec < 0) {
             if (Min <= 0) {
-                ChangeTurn("¡" + Player[Turn] + "se ha quedado sin tiempo!\n");
+                ChangeTurn("¡" + Player[Turn].getPlayer().getUsername() + "se ha quedado sin tiempo!\n");
             } else {
                 Min--;
                 Sec = 59;

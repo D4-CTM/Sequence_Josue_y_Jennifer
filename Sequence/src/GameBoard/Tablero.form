@@ -157,7 +157,7 @@
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/GameBoard/Icons/Deck.png"/>
+              <Image iconType="3" name="/Logic/UI_Elements/Deck.png"/>
             </Property>
           </Properties>
           <Constraints>

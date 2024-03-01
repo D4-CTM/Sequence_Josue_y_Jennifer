@@ -24,12 +24,13 @@ public class GestorUsuarios {
         if (Users.isDirectory()){
             for (String Usuarios : Users.list()){
                 try {
-                    usuariosLista.add(User.LoadFile(Usuarios));
+                    String[] UserGet = Usuarios.split("[.]");
+                    usuariosLista.add(User.LoadFile(UserGet[0]));
                 } catch (Exception Ex){
                     
                 }
             }
-        } else System.out.println("Nnmms");
+        }
     }
     
     public ArrayList<User> getUsuariosLista() {

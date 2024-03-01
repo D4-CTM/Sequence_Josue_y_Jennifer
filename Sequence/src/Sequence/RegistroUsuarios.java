@@ -172,6 +172,11 @@ public class RegistroUsuarios extends javax.swing.JFrame {
             return;
         }
         
+        if (!username.matches("^[a-zA-Z0-9]+$")){
+            JOptionPane.showMessageDialog(null, "El nombre de usuario no puede contener caracteres especiales.\nLimitese a numeros y letras", "Campo Erroneo", JOptionPane.ERROR_MESSAGE);
+            return ;
+        }
+         
         if (!passwordConfirmar.equals(password)) {
             JOptionPane.showMessageDialog(null, "Las contraseñas ingresadas no son idénticas. Por favor, verifique e intente nuevamente.", "Validación de Contraseña Fallida", JOptionPane.ERROR_MESSAGE);
             return;

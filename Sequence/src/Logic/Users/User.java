@@ -20,13 +20,13 @@ public class User implements Serializable{
     }
     
     public static User LoadFile(String nombreArchivo) throws IOException, ClassNotFoundException{
-        try (ObjectInputStream entrada = new ObjectInputStream(new FileInputStream("Accounts\\Cuentas\\" + nombreArchivo))) {
+        try (ObjectInputStream entrada = new ObjectInputStream(new FileInputStream("Accounts\\Cuentas\\" + nombreArchivo + ".SQC"))) {
             return (User) entrada.readObject();
         }
     }
     
     public void SaveData(String nombreArchivo) throws IOException {
-        try (ObjectOutputStream salida = new ObjectOutputStream(new FileOutputStream("Accounts\\Cuentas\\" + nombreArchivo))) {
+        try (ObjectOutputStream salida = new ObjectOutputStream(new FileOutputStream("Accounts\\Cuentas\\" + nombreArchivo + ".SQC"))) {
             salida.writeObject(this);
             salida.close();
         }

@@ -15,7 +15,7 @@ public class JCard extends javax.swing.JButton{
     
     public JCard(int Fila, int Columna){
         Ficha = new JLabel();
-        
+ 
         this.Columna = Columna;
         this.Fila = Fila;
         Taken = false;
@@ -53,6 +53,10 @@ public class JCard extends javax.swing.JButton{
     
     public boolean isCardTaken(){
         return Taken;
+    }
+    
+    public int getTeamWhoTakeIt(){
+        return FromTeam;
     }
     
     public String getCardUrl(){
