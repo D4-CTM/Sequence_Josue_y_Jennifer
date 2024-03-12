@@ -1,7 +1,7 @@
 package Sequence;
 
 import Logic.Users.GestorUsuarios;
-import Logic.Users.SettingsManager;
+import Logic.Users.Settings;
 import java.io.IOException;
 
 /**
@@ -10,11 +10,13 @@ import java.io.IOException;
  */
 public class Main_Sequence {
     public static GestorUsuarios gestorUsuarios = new GestorUsuarios();
-    public static SettingsManager getorConfiguraciones;
+    public static Settings ActualSetting;
     
     public static void main(String[] args) throws IOException, ClassNotFoundException{
+        ActualSetting = new Settings();
+        
         PantallaPrincipal pantallaPrincipal = new PantallaPrincipal();
-        getorConfiguraciones = new SettingsManager();
+        ActualSetting = Settings.LoadFile("Default");
         pantallaPrincipal.setVisible(true);
     }
 }

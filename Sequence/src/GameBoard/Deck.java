@@ -8,14 +8,29 @@ public class Deck {
     private final static Random Randy = new Random();
     
     public static void setDeck(){
-        for (int Card = 0; Card <= 12; Card++){
-            if (Card != 1){
+        Deck.add("AS");
+        Deck.add("AT");
+        Deck.add("AH");
+        Deck.add("AD");
+        Deck.add("J1S");
+        Deck.add("J2T");
+        Deck.add("J1H");
+        Deck.add("J1D");
+
+        for (int Card = 2; Card <= 10; Card++){
                 Deck.add(String.valueOf(Card) + "S");
                 Deck.add(String.valueOf(Card) + "T");
                 Deck.add(String.valueOf(Card) + "H");
                 Deck.add(String.valueOf(Card) + "D");
-            }
         }
+        Deck.add("QS");
+        Deck.add("QT");
+        Deck.add("QH");
+        Deck.add("QD");
+        Deck.add("KS");
+        Deck.add("KT");
+        Deck.add("KH");
+        Deck.add("KD");
     }
     
     public static String DrawCard(String Card){
@@ -32,6 +47,10 @@ public class Deck {
     
     public static void EmptyDeck(){
         Deck.clear();
+    }
+    
+    public static int getRemainingCards(){
+        return Deck.size();
     }
     
 }

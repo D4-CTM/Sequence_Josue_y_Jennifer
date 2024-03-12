@@ -8,25 +8,31 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Calendar;
+import javax.swing.JOptionPane;
 
 public class User implements Serializable{
     private final ArrayList<String> Historial;
-    private String Name, Username, Password;
-    private ImageIcon PlayerIcon, Ficha;
+    private String Name, Username, Password, Ficha;
+    private ImageIcon PlayerIcon;
+    private Calendar Created;
+    private int points;
     
     public User(String Name, String Username, String Password, ImageIcon PlayerIcon){
         EditData(Name, Username, Password, PlayerIcon);
+        Created = Calendar.getInstance();
         Historial = new ArrayList();
+        points = 0;
     }
     
     public static User LoadFile(String nombreArchivo) throws IOException, ClassNotFoundException{
-        try (ObjectInputStream entrada = new ObjectInputStream(new FileInputStream("Accounts\\Cuentas\\" + nombreArchivo + ".SQC"))) {
+        try (ObjectInputStream entrada = new ObjectInputStream(new FileInputStream("Accounts\\" + nombreArchivo + ".SQC"))) {
             return (User) entrada.readObject();
         }
     }
     
     public void SaveData(String nombreArchivo) throws IOException {
-        try (ObjectOutputStream salida = new ObjectOutputStream(new FileOutputStream("Accounts\\Cuentas\\" + nombreArchivo + ".SQC"))) {
+        try (ObjectOutputStream salida = new ObjectOutputStream(new FileOutputStream("Accounts\\" + nombreArchivo + ".SQC"))) {
             salida.writeObject(this);
             salida.close();
         }
@@ -47,7 +53,19 @@ public class User implements Serializable{
         return Historial;
     }
     
-    public void setficha(ImageIcon Ficha){
+    public int getPoints(){
+        return points;
+    }
+    
+    public void MatchWon(){
+        points += 3;
+    }
+    
+    public Calendar getCreationDate(){
+        return Created;
+    }
+    
+    public void setficha(String Ficha){
         this.Ficha = Ficha;
     }
     
@@ -63,7 +81,7 @@ public class User implements Serializable{
         return Password;
     }
     
-    public ImageIcon getFicha(){
+    public String getFicha(){
         return Ficha;
     }
     

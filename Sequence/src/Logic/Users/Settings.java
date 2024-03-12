@@ -1,5 +1,6 @@
 package Logic.Users;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -13,13 +14,33 @@ import java.io.Serializable;
  */
 public class Settings implements Serializable {
     private boolean CompartirFichas, ModificadoresActivos;
-    private final boolean[] Active;
     private String CardsUrl, CardStyle;
+    private final boolean[] Active;
     private final String[] MCards; 
     
-    public Settings(){
+    public Settings() throws IOException{
         Active = new boolean[8];
         MCards = new String[8];
+        setDefault();
+    }
+    
+    private void setDefault() throws IOException{
+        File DefaultFile = new File("Configurations\\Default.SQC");
+        if (!DefaultFile.exists()){
+            setCardsUrl("Icons\\Estilo clasico\\", "Estilo clasico");
+            setElegirCarta("GG", false);
+            setBloquearEspacio("J2", true);
+            setCambiarCarta("GG", false);
+            setCambiarFichas("GG", false);
+            setEliminarCarta("GG", false);
+            setEliminarFichas("GG", false);
+            setLiberarEspacio("J1", true);
+            setOcuparEspacio("A", true);
+            
+            setFichasCompartidas(false);
+            setModificadores(true);
+            SaveData("Default");
+        }
     }
     
     public static Settings LoadFile(String nombreArchivo) throws IOException, ClassNotFoundException{
@@ -126,7 +147,6 @@ public class Settings implements Serializable {
     
     public String getElegirCarta(){
         if (Active[5]){
-            System.out.println("Nice");
             return MCards[5];
         } else return "GG";
     }

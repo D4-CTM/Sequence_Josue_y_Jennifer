@@ -3,6 +3,7 @@ package GameBoard;
 import Logic.UI_Elements.JCard;
 import Logic.Users.Player;
 import Logic.Users.User;
+import Sequence.Main_Sequence;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -11,6 +12,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Random;
 import javax.swing.*;
 import javax.swing.border.Border;
 
@@ -19,7 +22,6 @@ import javax.swing.border.Border;
  * @author josue
  */
 public class Tablero extends javax.swing.JFrame implements Runnable {
-
     //Timer elements
     private int Min, Sec, MiliSec;
     private Thread TimerTXT;
@@ -31,24 +33,38 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
     //Variables used for taking a card
     private String SelectedCard = "IDK";
     private int CardCant, CartaJugada;
+    //Variables de Modificadores
+    private boolean BlockMode, FreeMode, SelectCard;
+    private final boolean[] Tryed = new boolean[8];
+    private final Random Randy;
+    private int CardsPlayed;
 
     public Tablero(int Players) throws IOException, ClassNotFoundException {
+        Randy = new Random();
+        SelectCard = true;
+        BlockMode = false;
+        FreeMode = false;
+        CardsPlayed = 0;
+        
+        restartTries();
+        
         initComponents();
         setBoardBTNS();
-
+        
         Deck.EmptyDeck();
         Deck.setDeck();
         Deck.setDeck();
 
         setResizable(false);
         setPlayersinfo(Players);
-        StartThread();
 
         setIconImage(new javax.swing.ImageIcon(getClass().getResource("/Elementos/GameIcon.png")).getImage());
 
         this.Players = Players;
-        Turn = 0;
         Pause = false;
+        Turn = 0;
+
+        StartThread();
     }
 
     private void StartThread() {
@@ -75,8 +91,8 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         };
 
         Player[0] = new Player(User.LoadFile("Josh"), CardCant, 1);
-        Player[1] = new Player(User.LoadFile("Jennifer"), CardCant, 1);
-        
+        Player[1] = new Player(User.LoadFile("Jennifer"), CardCant, 0);
+
         try {
             Player1.setText(Player[0].getPlayer().getUsername());
             Player2.setText(Player[1].getPlayer().getUsername());
@@ -85,8 +101,8 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
             Player5.setText(Player[4].getPlayer().getUsername());
             Player6.setText(Player[5].getPlayer().getUsername());
             Player7.setText(Player[6].getPlayer().getUsername());
-        } catch (Exception Ex){}
-        
+        } catch (Exception Ex) {}
+
         Card1.setText(null);
         Card2.setText(null);
         Card3.setText(null);
@@ -102,12 +118,12 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         Card5.setVisible(Players == 2 || Players == 3 || Players == 4 || Players == 6);
         Card6.setVisible(Players == 2 || Players == 3 || Players == 4);
         Card7.setVisible(Players == 2 || Players == 4);
-        
-        Image scaledCard = Player[Turn].getPlayer().getPlayerIcon().getImage().getScaledInstance(PlayerIcon.getWidth()/2, PlayerIcon.getHeight()/2, Image.SCALE_SMOOTH);
-            
+
+        Image scaledCard = Player[Turn].getPlayer().getPlayerIcon().getImage().getScaledInstance(PlayerIcon.getWidth() / 2, PlayerIcon.getHeight() / 2, Image.SCALE_SMOOTH);
+
         PlayerIcon.setIcon(new ImageIcon(scaledCard));
         PlayerIcon.setText(Player1.getText());
-        
+
         PlayerCards();
     }
 
@@ -347,45 +363,266 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
     }// </editor-fold>//GEN-END:initComponents
 
     private void Card1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Card1MouseClicked
+        if (BlockMode) {
+            JOptionPane.showMessageDialog(this, "Por favor seleccione una de las cartas en el tablero disponibles para bloquear", "Bloquear carta", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        if (FreeMode) {
+            JOptionPane.showMessageDialog(this, "Por favor seleccione una de las cartas que desea liberar", "Liberar carta", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
         CartaJugada = 0;
         SelectedCard = Player[Turn].getCard(CartaJugada);
-        setBorders(BorderFactory.createLineBorder(Color.yellow, 2), SelectedCard);
+        if (SelectedCard.contains("J")){
+            if (CheckEvent(SelectedCard)){
+                Player[Turn].PlayCard(CartaJugada);
+                CardsPlayed++;
+
+                SelectedCard = "IDK";
+                if (!BlockMode && !FreeMode)
+                    ChangeTurn("");
+            }
+        } else {
+            setBorders(BorderFactory.createLineBorder(
+                    switch (Main_Sequence.ActualSetting.getCardsStyle()) {
+                default ->
+                    Color.RED;
+                case "Estilo retro" ->
+                    Color.YELLOW;
+            },
+                    switch (Main_Sequence.ActualSetting.getCardsStyle()) {
+                default ->
+                    4;
+                case "Estilo retro" ->
+                    2;
+            }), SelectedCard);   
+        }
     }//GEN-LAST:event_Card1MouseClicked
 
     private void Card2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Card2MouseClicked
-        CartaJugada = 1;
-        SelectedCard = Player[Turn].getCard(CartaJugada);
-        setBorders(BorderFactory.createLineBorder(Color.yellow, 2), SelectedCard);
+        if (BlockMode) {
+            JOptionPane.showMessageDialog(this, "Por favor seleccione una de las cartas en el tablero disponibles para bloquear", "Bloquear carta", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        if (FreeMode) {
+            JOptionPane.showMessageDialog(this, "Por favor seleccione una de las cartas que desea liberar", "Liberar carta", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        if (SelectedCard.contains("J")){
+            if (CheckEvent(SelectedCard)){
+                Player[Turn].PlayCard(CartaJugada);
+                CardsPlayed++;
+
+                SelectedCard = "IDK";
+                if (!BlockMode && !FreeMode)
+                    ChangeTurn("");
+            }
+        } else {
+            CartaJugada = 1;
+            SelectedCard = Player[Turn].getCard(CartaJugada);
+            setBorders(BorderFactory.createLineBorder(
+                    switch (Main_Sequence.ActualSetting.getCardsStyle()) {
+                default ->
+                    Color.RED;
+                case "Estilo retro" ->
+                    Color.YELLOW;
+            },
+            switch (Main_Sequence.ActualSetting.getCardsStyle()) {
+                default ->
+                    4;
+                case "Estilo retro" ->
+                    2;
+            }), SelectedCard);
+}        
     }//GEN-LAST:event_Card2MouseClicked
 
     private void Card3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Card3MouseClicked
+        if (BlockMode) {
+            JOptionPane.showMessageDialog(this, "Por favor seleccione una de las cartas en el tablero disponibles para bloquear", "Bloquear carta", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        if (FreeMode) {
+            JOptionPane.showMessageDialog(this, "Por favor seleccione una de las cartas que desea liberar", "Liberar carta", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
         CartaJugada = 2;
         SelectedCard = Player[Turn].getCard(CartaJugada);
-        setBorders(BorderFactory.createLineBorder(Color.yellow, 2), SelectedCard);
+        
+        if (SelectedCard.contains("J")){
+            if (CheckEvent(SelectedCard)){
+                Player[Turn].PlayCard(CartaJugada);
+                CardsPlayed++;
+
+                SelectedCard = "IDK";
+                if (!BlockMode && !FreeMode)
+                    ChangeTurn("");
+            }
+        } else {
+            setBorders(BorderFactory.createLineBorder(
+                    switch (Main_Sequence.ActualSetting.getCardsStyle()) {
+                default ->
+                    Color.RED;
+                case "Estilo retro" ->
+                    Color.YELLOW;
+            },
+                    switch (Main_Sequence.ActualSetting.getCardsStyle()) {
+                default ->
+                    4;
+                case "Estilo retro" ->
+                    2;
+            }), SelectedCard);
+        }
     }//GEN-LAST:event_Card3MouseClicked
 
     private void Card4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Card4MouseClicked
+        if (BlockMode) {
+            JOptionPane.showMessageDialog(this, "Por favor seleccione una de las cartas en el tablero disponibles para bloquear", "Bloquear carta", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        if (FreeMode) {
+            JOptionPane.showMessageDialog(this, "Por favor seleccione una de las cartas que desea liberar", "Liberar carta", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
         CartaJugada = 3;
         SelectedCard = Player[Turn].getCard(CartaJugada);
-        setBorders(BorderFactory.createLineBorder(Color.yellow, 2), SelectedCard);
+        if (SelectedCard.contains("J")){
+            if (CheckEvent(SelectedCard)){
+                Player[Turn].PlayCard(CartaJugada);
+                CardsPlayed++;
+
+                SelectedCard = "IDK";
+                if (!BlockMode && !FreeMode)
+                    ChangeTurn("");
+            }
+        } else {
+            setBorders(BorderFactory.createLineBorder(
+                    switch (Main_Sequence.ActualSetting.getCardsStyle()) {
+                default ->
+                    Color.RED;
+                case "Estilo retro" ->
+                    Color.YELLOW;
+            },
+                    switch (Main_Sequence.ActualSetting.getCardsStyle()) {
+                default ->
+                    4;
+                case "Estilo retro" ->
+                    2;
+            }), SelectedCard);
+        }
     }//GEN-LAST:event_Card4MouseClicked
 
     private void Card5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Card5MouseClicked
+        if (BlockMode) {
+            JOptionPane.showMessageDialog(this, "Por favor seleccione una de las cartas en el tablero disponibles para bloquear", "Bloquear carta", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        if (FreeMode) {
+            JOptionPane.showMessageDialog(this, "Por favor seleccione una de las cartas que desea liberar", "Liberar carta", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
         CartaJugada = 4;
         SelectedCard = Player[Turn].getCard(CartaJugada);
-        setBorders(BorderFactory.createLineBorder(Color.yellow, 2), SelectedCard);
+        
+        if (SelectedCard.contains("J")){
+            if (CheckEvent(SelectedCard)){
+                Player[Turn].PlayCard(CartaJugada);
+                CardsPlayed++;
+
+                SelectedCard = "IDK";
+                if (!BlockMode && !FreeMode)
+                    ChangeTurn("");
+            }
+        } else {
+            setBorders(BorderFactory.createLineBorder(
+            switch (Main_Sequence.ActualSetting.getCardsStyle()) {
+                default ->
+                    Color.RED;
+                case "Estilo retro" ->
+                    Color.YELLOW;
+            },
+            switch (Main_Sequence.ActualSetting.getCardsStyle()) {
+                default ->
+                    4;
+                case "Estilo retro" ->
+                    2;
+            }), SelectedCard);
+        }
     }//GEN-LAST:event_Card5MouseClicked
 
     private void Card6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Card6MouseClicked
+        if (BlockMode) {
+            JOptionPane.showMessageDialog(this, "Por favor seleccione una de las cartas en el tablero disponibles para bloquear", "Bloquear carta", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        if (FreeMode) {
+            JOptionPane.showMessageDialog(this, "Por favor seleccione una de las cartas que desea liberar", "Liberar carta", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
         CartaJugada = 5;
         SelectedCard = Player[Turn].getCard(CartaJugada);
-        setBorders(BorderFactory.createLineBorder(Color.yellow, 2), SelectedCard);
+        if (SelectedCard.contains("J")){
+            if (CheckEvent(SelectedCard)){
+                Player[Turn].PlayCard(CartaJugada);
+                CardsPlayed++;
+
+                SelectedCard = "IDK";
+                if (!BlockMode && !FreeMode)
+                    ChangeTurn("");
+            }
+        } else {
+            setBorders(BorderFactory.createLineBorder(
+                    switch (Main_Sequence.ActualSetting.getCardsStyle()) {
+                default ->
+                    Color.RED;
+                case "Estilo retro" ->
+                    Color.YELLOW;
+            },
+            switch (Main_Sequence.ActualSetting.getCardsStyle()) {
+                default ->
+                    4;
+                case "Estilo retro" ->
+                    2;
+            }), SelectedCard);
+        }
     }//GEN-LAST:event_Card6MouseClicked
 
     private void Card7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Card7MouseClicked
+        if (BlockMode) {
+            JOptionPane.showMessageDialog(this, "Por favor seleccione una de las cartas en el tablero disponibles para bloquear", "Bloquear carta", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        if (FreeMode) {
+            JOptionPane.showMessageDialog(this, "Por favor seleccione una de las cartas que desea liberar", "Liberar carta", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
         CartaJugada = 6;
         SelectedCard = Player[Turn].getCard(CartaJugada);
-        setBorders(BorderFactory.createLineBorder(Color.yellow, 2), SelectedCard);
+        
+        if (SelectedCard.contains("J")){
+            if (CheckEvent(SelectedCard)){
+                Player[Turn].PlayCard(CartaJugada);
+                CardsPlayed++;
+
+                SelectedCard = "IDK";
+                if (!BlockMode && !FreeMode)
+                    ChangeTurn("");
+            }
+        } else {
+            setBorders(BorderFactory.createLineBorder(
+            switch (Main_Sequence.ActualSetting.getCardsStyle()) {
+                default ->
+                    Color.RED;
+                case "Estilo retro" ->
+                    Color.YELLOW;
+            },
+            switch (Main_Sequence.ActualSetting.getCardsStyle()) {
+                default ->
+                    4;
+                case "Estilo retro" ->
+                    2;
+            }), SelectedCard);
+        }
     }//GEN-LAST:event_Card7MouseClicked
 
     //Los botones que se observan en en el tablero, si, es un tanto intuitivo solo con el nombre.
@@ -402,9 +639,9 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
                     CartasDelTablero[Fila][Columna].setBounds((Tablero.getWidth() / 10) * Fila, (Tablero.getHeight() / 10) * Columna, Tablero.getWidth() / 10, Tablero.getHeight() / 10);
 
                     try {
-                        File Carta = new File("Icons\\Estilo retro\\"+Num[Columna]+".png");
+                        File Carta = new File(Main_Sequence.ActualSetting.getCardsUrl() + Num[Columna] + ".png");
                         CartasDelTablero[Fila][Columna].setBorder(null);
-                        CartasDelTablero[Fila][Columna].setCard(Num[Columna], ScaledImage(Carta.getAbsolutePath(), CartasDelTablero[Fila][Columna].getWidth(), CartasDelTablero[Fila][Columna].getHeight()));
+                        CartasDelTablero[Fila][Columna].setCard(Num[Columna], Main_Sequence.ActualSetting.getCardsUrl(), ScaledImage(Carta.getAbsolutePath(), CartasDelTablero[Fila][Columna].getWidth(), CartasDelTablero[Fila][Columna].getHeight()));
                     } catch (Exception Ex) {
                         System.out.print("Fila: " + Fila + "\tColumna: " + Columna + "\n");
                     }
@@ -433,22 +670,31 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
     }
 
     private void TakeCard(int Row, int Column) {
-        if (!SelectedCard.equals("IDK")) {
-            Pause = true;
+        File CartaPNG = new File(Main_Sequence.ActualSetting.getCardsUrl() + Player[Turn].getPlayer().getFicha());
+        ImageIcon neoIcon = ScaledImage(CartaPNG.getAbsolutePath(), CartasDelTablero[Row][Column].getWidth(), CartasDelTablero[Row][Column].getHeight());
+        Pause = true;
+        if (!SelectedCard.equals("IDK") && !BlockMode && !FreeMode) {
             if (!CartasDelTablero[Row][Column].getCard().equals("0F")) {
                 if (SelectedCard.equals(CartasDelTablero[Row][Column].getCard())) {
                     if (!CartasDelTablero[Row][Column].isCardTaken()) {
                         if (!CartasDelTablero[Row][Column].isLineComplete()) {
-                            ImageIcon neoCard = ScaledImage(new File("Icons\\Estilo retro\\Tokens1.png").getAbsolutePath(), CartasDelTablero[Row][Column].getWidth(), CartasDelTablero[Row][Column].getHeight());
-                            if (CartasDelTablero[Row][Column].TakeCard(neoCard, Player[Turn].getPlayer().getUsername(), Player[Turn].getTeam())) {
+
+                            if (!BlockMode && CartasDelTablero[Row][Column].TakeCard(neoIcon, Player[Turn].getPlayer().getUsername(), Player[Turn].getTeam())) {
                                 LastCardIcon.setIcon(ScaledImage(CartasDelTablero[Row][Column].getCardUrl(), LastCardIcon.getWidth(), LastCardIcon.getHeight()));
-                                Player[Turn].PlayCard(CartaJugada);
-                                SelectedCard = "IDK";
-    
-                                CheckSequence();
-                                
-                                ChangeTurn("");
                                 setBorders(null, "");
+
+                                CheckSequence();
+                                CheckEvent(SelectedCard);
+
+                                if (!SelectCard) Player[Turn].PlayCard(CartaJugada);
+                                CardsPlayed++;
+                                
+                                SelectCard = false;
+                                SelectedCard = "IDK";
+                                if (!BlockMode && !FreeMode) {
+                                    ChangeTurn("");
+                                }
+                                Player[Turn].RemoveCoin(1);
                             } else {
                                 JOptionPane.showMessageDialog(this, "¡No se ha podido tomar esta carta!", "ERROR", JOptionPane.WARNING_MESSAGE);
                             }
@@ -464,131 +710,447 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
             } else {
                 JOptionPane.showMessageDialog(this, "¡No puede ocupar este tipo de espacios!", "Zona neutra", JOptionPane.INFORMATION_MESSAGE);
             }
-            Pause = false;
+        } else if (BlockMode) {
+            if (!CartasDelTablero[Row][Column].getCard().equals("0F")) {
+                if (!CartasDelTablero[Row][Column].isCardTaken()) {
+                    if (!CartasDelTablero[Row][Column].isLineComplete()) {
+                        CartasDelTablero[Row][Column].BlockCard(neoIcon);
+                        SelectedCard = "IDK";
+                        ChangeTurn("");
+                        setBorders(null, "");
+
+                        BlockMode = false;
+                    } else {
+                        JOptionPane.showMessageDialog(this, "¡Esta ficha conforma una linea!\nIntente tomar otro espacio", "Tomar espacio", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "¡El espacio que esta intentando tomar ya esta ocupado!", "Tomar espacio", JOptionPane.INFORMATION_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "¡No puede ocupar este tipo de espacios!", "Zona neutra", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } else if (FreeMode) {
+            if (!CartasDelTablero[Row][Column].getCard().equals("0F")) {
+                if (CartasDelTablero[Row][Column].isCardTaken()) {
+                    if (!CartasDelTablero[Row][Column].isLineComplete()) {
+                        CartasDelTablero[Row][Column].FreeCard();
+                        SelectedCard = "IDK";
+                        ChangeTurn("");
+                        setBorders(null, "");
+
+                        FreeMode = false;
+                        CardsPlayed--;
+                    } else {
+                        JOptionPane.showMessageDialog(this, "¡Esta ficha conforma una linea!\nIntente tomar otro espacio", "Tomar espacio", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "¡Esta carta no cuenta con una ficha!\nIntente tomar otro espacio", "Tomar espacio", JOptionPane.INFORMATION_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "¡No puede ocupar este tipo de espacios!", "Zona neutra", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+        Pause = false;
+    }
+
+    private boolean CheckEvent(String Selected) {
+        System.out.println("Prueba!");
+        
+        if (!Tryed[0] && Selected.contains(Main_Sequence.ActualSetting.getBloquearEspacio()) || BlockMode) {
+            
+            Tryed[0] = true;
+            BlockCard();
+            return true;
+            
+        } else if (!Tryed[1] && Selected.contains(Main_Sequence.ActualSetting.getCambiarCarta())) {
+            
+            Tryed[1] = true;
+            ShuffleCards();
+            return true;
+            
+        } else if (!Tryed[2] && Selected.contains(Main_Sequence.ActualSetting.getCambiarFichas())) {
+            
+            Tryed[2] = true;
+            ChangeTokens();
+            return true;
+            
+        } else if (!Tryed[3] && Selected.contains(Main_Sequence.ActualSetting.getElegirCarta())) {
+            
+            Tryed[3] = true;
+            if (Randy.nextInt(50) == 1){
+                SelectCard = true;
+                Player[Turn].SelectCard(Main_Sequence.ActualSetting.getCardsUrl(), new ImageIcon(getIconImage()), CartaJugada, CartasDelTablero[0][0].getWidth(), CartasDelTablero[0][0].getHeight());
+            }
+            return true;
+            
+        } else if (!Tryed[4] && Selected.contains(Main_Sequence.ActualSetting.getEliminarCarta())) {
+            
+            Tryed[4] = true;
+            if (Randy.nextInt(10) == 1){
+                DeleteDeck();
+            }
+            return true;
+            
+        } else if (!Tryed[5] && Selected.contains(Main_Sequence.ActualSetting.getEliminarFichas())) {
+            
+            Tryed[5] = true;
+            DeleteTokens();
+            return true;
+            
+        } else if (!Tryed[6] && (Selected.contains(Main_Sequence.ActualSetting.getLiberarEspacio()) || FreeMode) && CardsPlayed > 1) {
+            
+            Tryed[6] = true;
+            FreeCard();
+            return true;
+            
+        } else if (!Tryed[7] && Selected.contains(Main_Sequence.ActualSetting.getOcuparEspacio())) {
+            
+            Tryed[7] = true;
+            TakeRandomCard();
+            return true;
+            
+        } else if (SelectedCard.contains("J")){
+            for (boolean Try : Tryed){
+                if (Try) return false;
+            }
+            JOptionPane.showMessageDialog(this, "La carta: "+SelectedCard+" no cuenta con efecto alguno, sera cambiada por una nueva", "Sin efecto", JOptionPane.INFORMATION_MESSAGE);
+            Player[Turn].PlayCard(CartaJugada);
+            PlayerCards();
+        }
+        return false;
+    }
+    
+    private void restartTries(){
+        for (int i = 0; i < 8; i++){
+            Tryed[i] = false;
+        }
+    }
+    
+    private void ChangeTokens(){
+        if (Randy.nextInt(10) == 5){
+            ArrayList<String> Usernames = new ArrayList();
+            for (Player Jugadores : Player){
+                if (Jugadores != null){
+                    Usernames.add(Jugadores.getPlayer().getUsername());
+                }
+            }
+
+            try {
+                Object Selected = JOptionPane.showInputDialog(this, "Por favor seleccione al jugador con el que desea cambiar de fichas: ", "Cambiar fichas", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(getIconImage()), Usernames.toArray(), 0);
+                if (!Selected.toString().isBlank()){
+                    for (Player Jugadores : Player){
+                        if (Jugadores.getPlayer().getUsername().equals(Selected)){
+                            int temp = Player[Turn].getCoins();
+                            Player[Turn].setcoins(Jugadores.getCoins());
+                            Jugadores.setcoins(temp);
+                            JOptionPane.showMessageDialog(this, "Se han cambiado la cantidad de fichas con " + Selected + " exitosamente!", "Cambiar fichas", JOptionPane.INFORMATION_MESSAGE);
+                            return ;
+                        }
+                    }
+                }
+            } catch (Exception Ex){}
+        }
+    }
+    
+    private void DeleteTokens(){
+        int DeleteFrom;
+        do {
+            DeleteFrom = Randy.nextInt(Player.length);
+            if (Player[DeleteFrom] == null) DeleteFrom = Turn;
+        } while (Player[Turn].getTeam() == Player[DeleteFrom].getTeam());
+        int Delete = Randy.nextInt(5);
+        
+        
+        Player[DeleteFrom].RemoveCoin(Randy.nextInt(Delete));
+        JOptionPane.showMessageDialog(this, "¡Se han eliminado " + Delete + " fichas de " + Player[DeleteFrom].getPlayer().getUsername() + "!", "Eliminar fichas", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    private void ShuffleCards(){
+        ArrayList<String> Shuffle = new ArrayList();
+        for (Player Jugador : Player){
+            if (Jugador != null){
+                for (int loop = 0; loop < Jugador.getDeckSize(); loop++){
+                    Shuffle.add(Jugador.getCard(loop));
+                }
+                Jugador.ClearDeck();
+            }
+        }
+        
+        for (Player Jugador : Player){
+            if (Jugador != null){
+                for (int loop = 0; loop < Jugador.getDeckSize(); loop++){
+                    String CartaSeleccionada = Shuffle.get(Randy.nextInt(Shuffle.size()));
+                    Jugador.InsertCard(loop, CartaSeleccionada);
+                    Shuffle.remove(CartaSeleccionada);
+                }
+            }
+        }
+        
+        JOptionPane.showMessageDialog(this, "Se han cambiada las cartas entre todos los jugadores!", "Cambiar cartas", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    private void DeleteDeck(){
+        try {
+            ArrayList<String> Jugadores = new ArrayList();
+            for (Player Jugador : Player){
+                if (Jugador != null){
+                    Jugadores.add(Jugador.getPlayer().getUsername());
+                }
+            }
+            
+            Object Jugador = JOptionPane.showInputDialog(this, 
+                    "Eliga el jugador al que desea eliminar la baraja: ", 
+                    "Eliminar carta",
+                    JOptionPane.QUESTION_MESSAGE, 
+                    new ImageIcon(this.getIconImage()),
+                    Jugadores.toArray(),
+                    0);
+
+            for (Player Gioca : Player){
+                if (Gioca.getPlayer().getUsername().equals(Jugador.toString())){
+                    Gioca.startDeck();
+                }
+            }
+            
+            JOptionPane.showMessageDialog(this, "Se ha reiniciado la baraja de " + Jugador.toString(), "Reiniciar deck", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(getIconImage()));
+        } catch (Exception Ex){}
+    }
+    
+    private void BlockCard() {
+        for (int X = 0; X < 10; X++) {
+            for (int Y = 0; Y < 10; Y++) {
+                if (!CartasDelTablero[X][Y].isCardTaken()) {
+                    CartasDelTablero[X][Y].setBorder(BorderFactory.createLineBorder(
+                            switch (Main_Sequence.ActualSetting.getCardsStyle()) {
+                        default ->
+                            Color.RED;
+                        case "Estilo retro" ->
+                            Color.YELLOW;
+                    },
+                            switch (Main_Sequence.ActualSetting.getCardsStyle()) {
+                        default ->
+                            4;
+                        case "Estilo retro" ->
+                            2;
+                    }));
+                }
+            }
+        }
+
+        BlockMode = true;
+        JOptionPane.showMessageDialog(this, "Seleccione la carta que desea bloquear (debera estar libre)", "Bloquear carta", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void FreeCard() {
+        for (int X = 0; X < 10; X++) {
+            for (int Y = 0; Y < 10; Y++) {
+                if (CartasDelTablero[X][Y].isCardTaken()) {
+                    CartasDelTablero[X][Y].setBorder(BorderFactory.createLineBorder(
+                    switch (Main_Sequence.ActualSetting.getCardsStyle()) {
+                        default ->
+                            Color.RED;
+                        case "Estilo retro" ->
+                            Color.YELLOW;
+                    },
+                            switch (Main_Sequence.ActualSetting.getCardsStyle()) {
+                        default ->
+                            4;
+                        case "Estilo retro" ->
+                            2;
+                    }));
+                }
+            }
+        }
+
+        FreeMode = true;
+        JOptionPane.showMessageDialog(this, "Seleccione un espacio que desea liberar", "Liberar espacio", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void TakeRandomCard() {
+        if (Randy.nextInt(5) == 0) {
+            try {
+                int[] Row = new int[3];
+                int[] Col = new int[3];
+                int pos = 0;
+                while (pos < Row.length) {
+                    Row[pos] = Randy.nextInt(10);
+                    Col[pos] = Randy.nextInt(10);
+
+                    if (!CartasDelTablero[Row[pos]][Col[pos]].getCard().equals("0F")) {
+                        pos++;
+                    }
+                }
+                int Elegido;
+                String[] Selector = {CartasDelTablero[Row[0]][Col[0]].getCard(), CartasDelTablero[Row[1]][Col[1]].getCard(), CartasDelTablero[Row[2]][Col[2]].getCard()};
+                ImageIcon Boton1 = ScaledImage(new File(Main_Sequence.ActualSetting.getCardsUrl() + Selector[0] + ".png").getAbsolutePath(), CartasDelTablero[Row[0]][Col[0]].getWidth(), CartasDelTablero[Row[0]][Col[0]].getHeight());
+                ImageIcon Boton2 = ScaledImage(new File(Main_Sequence.ActualSetting.getCardsUrl() + Selector[1] + ".png").getAbsolutePath(), CartasDelTablero[Row[1]][Col[1]].getWidth(), CartasDelTablero[Row[1]][Col[1]].getHeight());
+                ImageIcon Boton3 = ScaledImage(new File(Main_Sequence.ActualSetting.getCardsUrl() + Selector[2] + ".png").getAbsolutePath(), CartasDelTablero[Row[2]][Col[2]].getWidth(), CartasDelTablero[Row[2]][Col[2]].getHeight());
+                Elegido = JOptionPane.showOptionDialog(this,
+                        "Seleccione una de las siguientes cartas para reclamarla: ",
+                        "Espacio extra",
+                        JOptionPane.YES_NO_CANCEL_OPTION,
+                        JOptionPane.INFORMATION_MESSAGE,
+                        new ImageIcon(getIconImage()),
+                        new ImageIcon[]{Boton1, Boton2, Boton3},
+                        0);
+                File CartaPNG = new File(Main_Sequence.ActualSetting.getCardsUrl() + Player[Turn].getPlayer().getFicha());
+                ImageIcon neoIcon = ScaledImage(CartaPNG.getAbsolutePath(), CartasDelTablero[Row[Elegido]][Col[Elegido]].getWidth(), CartasDelTablero[Row[Elegido]][Col[Elegido]].getHeight());
+
+                CartasDelTablero[Row[Elegido]][Col[Elegido]].TakeCard(neoIcon, Player[Turn].getPlayer().getUsername(), Player[Turn].getTeam());
+            } catch (Exception Ex) {}
         }
     }
 
-    private void CheckSequence(){
-        for (int X = 0; X < 10; X++){
-            for (int Y = 0; Y < 10; Y++){
-                if (CheckHorizontal(CartasDelTablero[X][Y].getTeamWhoTakeIt(), X, Y)){
+    private void CheckSequence() {
+        for (int X = 0; X < 10; X++) {
+            for (int Y = 0; Y < 10; Y++) {
+                if (CheckHorizontal(CartasDelTablero[X][Y].getTeamWhoTakeIt(), X, Y)) {
                     JOptionPane.showMessageDialog(this, "Se ha formado una linea vertical");
-                } else if (CheckVertical(CartasDelTablero[X][Y].getTeamWhoTakeIt(), X, Y)){
+                } else if (CheckVertical(CartasDelTablero[X][Y].getTeamWhoTakeIt(), X, Y)) {
                     JOptionPane.showMessageDialog(this, "Se ha formado una linea Horizontal");
-                } else if (CheckDiagonalFront(CartasDelTablero[X][Y].getTeamWhoTakeIt(), X, Y)){
+                } else if (CheckDiagonalFront(CartasDelTablero[X][Y].getTeamWhoTakeIt(), X, Y)) {
                     JOptionPane.showMessageDialog(this, "Se ha formado una linea diagonal (frontal)");
-                } else if (CheckDiagonalBack(CartasDelTablero[X][Y].getTeamWhoTakeIt(), X, Y)){
+                } else if (CheckDiagonalBack(CartasDelTablero[X][Y].getTeamWhoTakeIt(), X, Y)) {
                     JOptionPane.showMessageDialog(this, "Se ha formado una linea diagonal (pa'tras)");
                 }
-
+                CartasDelTablero[X][Y].isCardBlock();
             }
         }
     }
-    
-    private boolean CheckDiagonalFront(int Team, int X, int Y){
-        try{
-            for (int i = 0; i < 5; i++){
-                if (!CartasDelTablero[X+i][Y+i].isCardTaken() || CartasDelTablero[X+i][Y+i].getTeamWhoTakeIt() != Team){
-                    if (!CartasDelTablero[X+i][Y+i].isLineComplete()){
-                        return false;
-                    }
-                } else if (!CartasDelTablero[X+i][Y+i].getCard().equals("0F")){
-                    return false;
-                }
-            }
-            if (!CartasDelTablero[X][Y].isLineComplete()){
-                for (int i = 0; i < 5; i++){
-                    CartasDelTablero[X+i][Y+i].takeLine();
-                }
-                return true;
-            } else return false;
-        } catch (IndexOutOfBoundsException e){ return false; }
-    }
-    
-    private boolean CheckDiagonalBack(int Team, int X, int Y){
+
+    private boolean CheckDiagonalFront(int Team, int X, int Y) {
         try {
-            for (int i = 0; i < 5; i++){
-                if (!CartasDelTablero[X+i][Y+(i*-1)].isCardTaken() || CartasDelTablero[X+i][Y+(i*-1)].getTeamWhoTakeIt() != Team){
-                    if (!CartasDelTablero[X+i][Y+(i*-1)].isLineComplete()){
+            for (int i = 0; i < 5; i++) {
+                if (!CartasDelTablero[X + i][Y + i].isCardTaken() || CartasDelTablero[X + i][Y + i].getTeamWhoTakeIt() != Team) {
+                    if (!CartasDelTablero[X + i][Y + i].isLineComplete()) {
                         return false;
                     }
-                } else if (!CartasDelTablero[X+i][Y+(i*-1)].getCard().equals("0F")){
+                } else if (!CartasDelTablero[X + i][Y + i].getCard().equals("0F")) {
                     return false;
                 }
             }
-            if (!CartasDelTablero[X][Y].isLineComplete()){
-                for (int i = 0; i < -5; i--){
-                    CartasDelTablero[X+i][Y+(i*-1)].takeLine();
+            if (!CartasDelTablero[X][Y].isLineComplete()) {
+                for (int i = 0; i < 5; i++) {
+                    CartasDelTablero[X + i][Y + i].takeLine();
                 }
                 return true;
-            } else return false;
-        } catch (IndexOutOfBoundsException e){ return false; }
+            } else {
+                return false;
+            }
+        } catch (IndexOutOfBoundsException e) {
+            return false;
+        }
     }
 
-    private boolean CheckHorizontal(int Team, int X, int Y){
-        try{
-            for (int i = 0; i < 5; i++){
-                if (!CartasDelTablero[X][Y+i].isCardTaken() || CartasDelTablero[X][Y+i].getTeamWhoTakeIt() != Team){
-                    if (!CartasDelTablero[X][Y+i].isLineComplete()){
-                        return false;
-                    } 
-                }else if (!CartasDelTablero[X+i][Y+(i*-1)].getCard().equals("0F")){
-                    return false;
-                }
-            }
-            if (!CartasDelTablero[X][Y].isLineComplete()){
-                for (int i = 0; i < 5; i++){
-                    CartasDelTablero[X][Y+i].takeLine();
-                }
-                return true;
-            } else return false;
-        } catch (IndexOutOfBoundsException e){ return false; }
-    }
-
-    private boolean CheckVertical(int Team, int X, int Y){
+    private boolean CheckDiagonalBack(int Team, int X, int Y) {
         try {
-            for (int i = 0; i < 5; i++){
-                if (!CartasDelTablero[X + i][Y].isCardTaken() || CartasDelTablero[X + i][Y].getTeamWhoTakeIt() != Team){
-                    if (!CartasDelTablero[X + i][Y].isLineComplete()){
+            for (int i = 0; i < 5; i++) {
+                if (!CartasDelTablero[X + i][Y + (i * -1)].isCardTaken() || CartasDelTablero[X + i][Y + (i * -1)].getTeamWhoTakeIt() != Team) {
+                    if (!CartasDelTablero[X + i][Y + (i * -1)].isLineComplete()) {
                         return false;
                     }
-                }else if (!CartasDelTablero[X+i][Y+(i*-1)].getCard().equals("0F")){
+                } else if (!CartasDelTablero[X + i][Y + (i * -1)].getCard().equals("0F")) {
                     return false;
                 }
             }
-            if (!CartasDelTablero[X][Y].isLineComplete()){
-                for (int i = 0; i < 5; i++){
+            if (!CartasDelTablero[X][Y].isLineComplete()) {
+                for (int i = 0; i < -5; i--) {
+                    CartasDelTablero[X + i][Y + (i * -1)].takeLine();
+                }
+                return true;
+            } else {
+                return false;
+            }
+        } catch (IndexOutOfBoundsException e) {
+            return false;
+        }
+    }
+
+    private boolean CheckHorizontal(int Team, int X, int Y) {
+        try {
+            for (int i = 0; i < 5; i++) {
+                if (!CartasDelTablero[X][Y + i].isCardTaken() || CartasDelTablero[X][Y + i].getTeamWhoTakeIt() != Team) {
+                    if (!CartasDelTablero[X][Y + i].isLineComplete()) {
+                        return false;
+                    }
+                } else if (!CartasDelTablero[X + i][Y + (i * -1)].getCard().equals("0F")) {
+                    return false;
+                }
+            }
+            if (!CartasDelTablero[X][Y].isLineComplete()) {
+                for (int i = 0; i < 5; i++) {
+                    CartasDelTablero[X][Y + i].takeLine();
+                }
+                return true;
+            } else {
+                return false;
+            }
+        } catch (IndexOutOfBoundsException e) {
+            return false;
+        }
+    }
+
+    private boolean CheckVertical(int Team, int X, int Y) {
+        try {
+            for (int i = 0; i < 5; i++) {
+                if (!CartasDelTablero[X + i][Y].isCardTaken() || CartasDelTablero[X + i][Y].getTeamWhoTakeIt() != Team) {
+                    if (!CartasDelTablero[X + i][Y].isLineComplete()) {
+                        return false;
+                    }
+                } else if (!CartasDelTablero[X + i][Y + (i * -1)].getCard().equals("0F")) {
+                    return false;
+                }
+            }        
+            if (!CartasDelTablero[X][Y].isLineComplete()) {
+                for (int i = 0; i < 5; i++) {
                     CartasDelTablero[X + i][Y].takeLine();
                 }
                 return true;
-            } else return false;
-        } catch (IndexOutOfBoundsException e){ return false; }
+            } else {
+                return false;
+            }
+        } catch (IndexOutOfBoundsException e) {
+            return false;
+        }
     }
-    
+
     private void setBorders(Border Borde, String CardSearch) {
+        boolean Found = false;
         for (int Fila = 0; Fila < 10; Fila++) {
             for (int Columna = 0; Columna < 10; Columna++) {
                 CartasDelTablero[Fila][Columna].setBorder(null);
                 if (CartasDelTablero[Fila][Columna].getCard().equals(CardSearch) && !CartasDelTablero[Fila][Columna].isCardTaken()) {
                     CartasDelTablero[Fila][Columna].setBorder(Borde);
+                    Found = true;
                 }
             }
         }
+        if (!Found && !CardSearch.isBlank() && !CardSearch.contains("J")){
+            try {
+                if (JOptionPane.showConfirmDialog(this, "¡No se han encontrado cartas de: " + CardSearch + "!\n¿Desea cambiarla por una nueva?", "Cambio de carta", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, new ImageIcon(getIconImage())) == JOptionPane.YES_OPTION){
+                    Player[Turn].PlayCard(CartaJugada);
+                    PlayerCards();
+                }
+            } catch (Exception Ex){}
+        }
     }
-
-    public static void main(String args[]) throws IOException, ClassNotFoundException {
-        new Tablero(2).setVisible(true);
-    }
-
+    
     private void PlayerCards() {
         try {
-            Card1.setIcon(ScaledImage(new File("Icons\\Estilo retro\\" + Player[Turn].getCard(0)).getAbsolutePath() + ".png", Card1.getWidth(), Card1.getHeight()));
-            Card2.setIcon(ScaledImage(new File("Icons\\Estilo retro\\" + Player[Turn].getCard(1)).getAbsolutePath() + ".png", Card2.getWidth(), Card2.getHeight()));
-            Card3.setIcon(ScaledImage(new File("Icons\\Estilo retro\\" + Player[Turn].getCard(2)).getAbsolutePath() + ".png", Card3.getWidth(), Card3.getHeight()));
-            Card4.setIcon(ScaledImage(new File("Icons\\Estilo retro\\" + Player[Turn].getCard(3)).getAbsolutePath() + ".png", Card4.getWidth(), Card4.getHeight()));
-            Card5.setIcon(ScaledImage(new File("Icons\\Estilo retro\\" + Player[Turn].getCard(4)).getAbsolutePath() + ".png", Card5.getWidth(), Card5.getHeight()));
-            Card6.setIcon(ScaledImage(new File("Icons\\Estilo retro\\" + Player[Turn].getCard(5)).getAbsolutePath() + ".png", Card6.getWidth(), Card6.getHeight()));
-            Card7.setIcon(ScaledImage(new File("Icons\\Estilo retro\\" + Player[Turn].getCard(6)).getAbsolutePath() + ".png", Card7.getWidth(), Card7.getHeight()));
+            if (Card1.isVisible())
+                Card1.setIcon(ScaledImage(Main_Sequence.ActualSetting.getCardsUrl() + Player[Turn].getCard(0) + ".png", Card1.getWidth(), Card1.getHeight()));
+            if (Card2.isVisible())
+                Card2.setIcon(ScaledImage(Main_Sequence.ActualSetting.getCardsUrl() + Player[Turn].getCard(1) + ".png", Card2.getWidth(), Card2.getHeight()));
+            if (Card3.isVisible())
+                Card3.setIcon(ScaledImage(Main_Sequence.ActualSetting.getCardsUrl() + Player[Turn].getCard(2) + ".png", Card3.getWidth(), Card3.getHeight()));
+            if (Card4.isVisible())
+                Card4.setIcon(ScaledImage(Main_Sequence.ActualSetting.getCardsUrl() + Player[Turn].getCard(3) + ".png", Card4.getWidth(), Card4.getHeight()));
+            if (Card5.isVisible())
+                Card5.setIcon(ScaledImage(Main_Sequence.ActualSetting.getCardsUrl() + Player[Turn].getCard(4) + ".png", Card5.getWidth(), Card5.getHeight()));
+            if (Card6.isVisible())
+                Card6.setIcon(ScaledImage(Main_Sequence.ActualSetting.getCardsUrl() + Player[Turn].getCard(5) + ".png", Card6.getWidth(), Card6.getHeight()));
+            if (Card7.isVisible())
+                Card7.setIcon(ScaledImage(Main_Sequence.ActualSetting.getCardsUrl() + Player[Turn].getCard(6) + ".png", Card7.getWidth(), Card7.getHeight()));
         } catch (Exception Ex) {
 
         }
@@ -601,13 +1163,14 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         MiliSec = 59;
         float LastFrame = 0;
         do {
+            this.requestFocus();
             if (((System.nanoTime() - LastFrame) >= 1000000000 / 60) && !Pause) {
                 LastFrame = System.nanoTime();
                 UpdateTimer();
             }
         } while (TimerTXT != null);
     }
-
+    
     private void UpdateTimer() {
         MiliSec--;
         if (MiliSec < 0) {
@@ -632,8 +1195,10 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         Sec = 59;
         MiliSec = 59;
         PlayerCards();
-        Image scaledCard = Player[Turn].getPlayer().getPlayerIcon().getImage().getScaledInstance(PlayerIcon.getWidth()/2, PlayerIcon.getHeight()/2, Image.SCALE_SMOOTH);
-            
+        Image scaledCard = Player[Turn].getPlayer().getPlayerIcon().getImage().getScaledInstance(PlayerIcon.getWidth() / 2, PlayerIcon.getHeight() / 2, Image.SCALE_SMOOTH);
+
+        restartTries();
+        
         PlayerIcon.setIcon(new ImageIcon(scaledCard));
         PlayerIcon.setText(Player[Turn].getPlayer().getUsername());
         Pause = false;

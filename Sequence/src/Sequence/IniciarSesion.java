@@ -35,6 +35,7 @@ public class IniciarSesion extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sequence");
+        setResizable(false);
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -99,7 +100,7 @@ public class IniciarSesion extends javax.swing.JFrame {
         boolean mostrar = Main_Sequence.gestorUsuarios.iniciarSesion(usuario, contra);
         
         if (mostrar) {
-            JOptionPane.showMessageDialog(null, "¡Bienvenido(a), " + usuario + "!", "Inicio de Sesión Exitoso", JOptionPane.INFORMATION_MESSAGE, Main_Sequence.gestorUsuarios.getUsarioLog().getPlayerIcon());
+            JOptionPane.showMessageDialog(null, "¡Bienvenido(a), " + usuario + "!", "Inicio de Sesión Exitoso", JOptionPane.INFORMATION_MESSAGE, Main_Sequence.gestorUsuarios.getUserLog().getPlayerIcon());
             MenuPrincipal menuPrincipal = new MenuPrincipal();
             menuPrincipal.setVisible(true);
             this.setVisible(false);

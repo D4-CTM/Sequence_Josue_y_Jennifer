@@ -15,8 +15,8 @@ import javax.swing.JToggleButton;
  * @author josue
  */
 public class GameConfig extends javax.swing.JFrame {
-    private final String[] Type = {"Seleccione un tipo de carta", "Ases", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Reyes", "Reinas"};
-    private final String[] Cards = {"GG","0","2","3","4","5","6","7","8","9","10","11","12"};
+    private final String[] Type = {"Seleccione un tipo de carta", "Ases","Reinas", "Reyes", "Joker 1", "Joker 2"};
+    private final String[] Cards = {"GG","A", "Q","K", "J1", "J2"};
     private final ArrayList<String> Iconos;
     private final File Cartas;
     private int Pos;
@@ -35,10 +35,10 @@ public class GameConfig extends javax.swing.JFrame {
         
         ModificadoresActivos.setSelected(true);
         ModificadoresActivos.setBackground(Color.green);
-        ModificadoresActivos.setText("Activos");
+        ModificadoresActivos.setText("Activo");
         
-        Left.setVisible(false);
-        Right.setVisible(false);
+        Left.setVisible(true);
+        Right.setVisible(true);
         ExampleIcon.setText(null);
     }
     
@@ -211,6 +211,7 @@ public class GameConfig extends javax.swing.JFrame {
         ActivarModificadoresTXT.setText("Activar modificadores");
         jPanel1.add(ActivarModificadoresTXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 510, 180, -1));
 
+        ModificadoresActivos.setFocusable(false);
         ModificadoresActivos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ModificadoresActivosActionPerformed(evt);
@@ -218,6 +219,7 @@ public class GameConfig extends javax.swing.JFrame {
         });
         jPanel1.add(ModificadoresActivos, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 510, 100, 20));
 
+        CompartirFichas.setFocusable(false);
         CompartirFichas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CompartirFichasActionPerformed(evt);
@@ -306,6 +308,7 @@ public class GameConfig extends javax.swing.JFrame {
         });
         ComboBoxes.add(EliminarFichas, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 190, 20));
 
+        CambiarFichasBTN.setFocusable(false);
         CambiarFichasBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CambiarFichasBTNActionPerformed(evt);
@@ -313,6 +316,7 @@ public class GameConfig extends javax.swing.JFrame {
         });
         ComboBoxes.add(CambiarFichasBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 180, 100, 20));
 
+        ElegirCartaBTN.setFocusable(false);
         ElegirCartaBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ElegirCartaBTNActionPerformed(evt);
@@ -320,6 +324,7 @@ public class GameConfig extends javax.swing.JFrame {
         });
         ComboBoxes.add(ElegirCartaBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 150, 100, 20));
 
+        CambiarCartaBTN.setFocusable(false);
         CambiarCartaBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CambiarCartaBTNActionPerformed(evt);
@@ -327,6 +332,7 @@ public class GameConfig extends javax.swing.JFrame {
         });
         ComboBoxes.add(CambiarCartaBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 120, 100, 20));
 
+        EliminarCartaBTN.setFocusable(false);
         EliminarCartaBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 EliminarCartaBTNActionPerformed(evt);
@@ -334,6 +340,7 @@ public class GameConfig extends javax.swing.JFrame {
         });
         ComboBoxes.add(EliminarCartaBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 90, 100, 20));
 
+        OcuparEspacioBTN.setFocusable(false);
         OcuparEspacioBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 OcuparEspacioBTNActionPerformed(evt);
@@ -341,6 +348,7 @@ public class GameConfig extends javax.swing.JFrame {
         });
         ComboBoxes.add(OcuparEspacioBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 60, 100, 20));
 
+        LiberarEspacioBTN.setFocusable(false);
         LiberarEspacioBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 LiberarEspacioBTNActionPerformed(evt);
@@ -348,6 +356,7 @@ public class GameConfig extends javax.swing.JFrame {
         });
         ComboBoxes.add(LiberarEspacioBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 30, 100, 20));
 
+        BloquearEspacioBTN.setFocusable(false);
         BloquearEspacioBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BloquearEspacioBTNActionPerformed(evt);
@@ -355,6 +364,7 @@ public class GameConfig extends javax.swing.JFrame {
         });
         ComboBoxes.add(BloquearEspacioBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 0, 100, 20));
 
+        EliminarFichaBTN.setFocusable(false);
         EliminarFichaBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 EliminarFichaBTNActionPerformed(evt);
@@ -364,7 +374,8 @@ public class GameConfig extends javax.swing.JFrame {
 
         jPanel1.add(ComboBoxes, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 200, 310, 230));
 
-        Cargar.setText("Cargar configuracion");
+        Cargar.setText("Cargar ajustes");
+        Cargar.setFocusable(false);
         Cargar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CargarActionPerformed(evt);
@@ -372,7 +383,8 @@ public class GameConfig extends javax.swing.JFrame {
         });
         jPanel1.add(Cargar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 550, 160, 30));
 
-        Guardar.setText("Guardar configuracion");
+        Guardar.setText("Guardar ajustes");
+        Guardar.setFocusable(false);
         Guardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 GuardarActionPerformed(evt);
@@ -381,6 +393,7 @@ public class GameConfig extends javax.swing.JFrame {
         jPanel1.add(Guardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 550, 160, 30));
 
         Right.setBorder(null);
+        Right.setFocusable(false);
         Right.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 RightActionPerformed(evt);
@@ -388,6 +401,7 @@ public class GameConfig extends javax.swing.JFrame {
         });
         jPanel1.add(Right, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 0, 30, 170));
 
+        Left.setFocusable(false);
         Left.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 LeftActionPerformed(evt);
@@ -395,15 +409,16 @@ public class GameConfig extends javax.swing.JFrame {
         });
         jPanel1.add(Left, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 0, 30, 170));
 
-        jButton1.setText("jButton1");
+        jButton1.setFocusable(false);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 30, -1));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 30, 30));
 
-        Reiniciar.setText("Reiniciar configuracion");
+        Reiniciar.setText("Reiniciar ajustes");
+        Reiniciar.setFocusable(false);
         Reiniciar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ReiniciarActionPerformed(evt);
@@ -465,6 +480,9 @@ public class GameConfig extends javax.swing.JFrame {
 
     private void CompartirFichasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CompartirFichasActionPerformed
         PresionarBTN((javax.swing.JToggleButton) evt.getSource());
+        if (((javax.swing.JToggleButton) evt.getSource()).isSelected()){
+            Description.setText("Compartir fichas\nAntes de iniciar la partida debera elegirse una ficha que represente al equipo en cuestion.");
+        } else Description.setText("Fichas individuales\nAntes de iniciar la partida cada jugador tendra la posibilidad de elegir sus propias fichas que usara para representarse a si mismo en el juago (este es un cambio meramente visual, el equipo que llegue primero a 2 Sequences siempre habra ganado)");
     }//GEN-LAST:event_CompartirFichasActionPerformed
 
     private void CargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CargarActionPerformed
@@ -488,18 +506,18 @@ public class GameConfig extends javax.swing.JFrame {
                 changeInfo(Ajustes.getBloquearEspacio(), BloquearEspacio, BloquearEspacioBTN);
                 changeInfo(Ajustes.getCambiarCarta(), CambiarCartas,CambiarCartaBTN);
                 changeInfo(Ajustes.getCambiarFichas(), CambiarFichas, CambiarFichasBTN);
-                changeInfo(Ajustes.getElegirCarta(), EliminarCarta, EliminarCartaBTN);
+                changeInfo(Ajustes.getEliminarCarta(), EliminarCarta, EliminarCartaBTN);
                 changeInfo(Ajustes.getEliminarFichas(), EliminarFichas, EliminarFichaBTN);
                 changeInfo(Ajustes.getLiberarEspacio(), LiberarEspacio, LiberarEspacioBTN);
                 changeInfo(Ajustes.getOcuparEspacio(), OcuparEspacio, OcuparEspacioBTN);
                 
                 ModificadoresActivos.setSelected(Ajustes.areModificadoresActivos());
                 ModificadoresActivos.setBackground((Ajustes.areModificadoresActivos())?Color.GREEN:Color.RED);
-                ModificadoresActivos.setText((Ajustes.areModificadoresActivos())?"Activo":"Desactivado");
+                ModificadoresActivos.setText((Ajustes.areModificadoresActivos())?"Activo":"Desactivo");
                 
                 CompartirFichas.setSelected(Ajustes.areFichasCompartidas());
                 CompartirFichas.setBackground((Ajustes.areFichasCompartidas())?Color.GREEN:Color.RED);
-                CompartirFichas.setText((Ajustes.areFichasCompartidas())?"Activo":"Desactivado");
+                CompartirFichas.setText((Ajustes.areFichasCompartidas())?"Activo":"Desactivo");
                 
                 ElegirTipoDeCartas.setSelectedItem(Ajustes.getCardsStyle());
             } catch (Exception Ex){
@@ -509,14 +527,20 @@ public class GameConfig extends javax.swing.JFrame {
     
     private void changeInfo(String Selected, JComboBox Combo, JToggleButton Boton){
         if (!Selected.equals("GG")){
-            Combo.setSelectedItem(Selected);
+            Combo.setSelectedItem(switch (Selected){
+                case "A" -> Type[1];
+                case "Q" -> Type[2];
+                case "K" -> Type[3];
+                case "J1" -> Type[4];
+                default -> Type[5];
+            });
             Boton.setSelected(true);
             Boton.setBackground(Color.GREEN);
             Boton.setText("Activo");
         } else {
             Boton.setSelected(false);
             Combo.setSelectedItem(Type[0]);
-            Boton.setText("Desactivado");
+            Boton.setText("Desactivo");
             Boton.setBackground(Color.RED);
         }
     }
@@ -570,14 +594,12 @@ public class GameConfig extends javax.swing.JFrame {
                     }
                 }
                 Settings Ajustes = new Settings();
-                String CardsUrl = Cartas.getAbsolutePath();
+                String CardsUrl = "Icons\\";
                 
                 switch(ElegirTipoDeCartas.getSelectedIndex()){
                     case 0-> CardsUrl += "Estilo clasico\\";
                     case 1 -> CardsUrl += "Estilo retro\\";
                 }
-                
-                System.out.println(CardsUrl);
                 
                 Ajustes.setCardsUrl(CardsUrl, ElegirTipoDeCartas.getSelectedItem().toString());
                 Ajustes.setElegirCarta(this.Cards[ElegirCartas.getSelectedIndex()], ElegirCartaBTN.isSelected());
@@ -593,7 +615,6 @@ public class GameConfig extends javax.swing.JFrame {
                 Ajustes.setModificadores(ModificadoresActivos.isSelected());
                 
                 Ajustes.SaveData(Nombre);
-                //Main_Sequence.getorConfiguraciones.AgregarConfiguracion(Ajustes);
                 JOptionPane.showMessageDialog(this, "Configuracion guardad con exito!", "Configuracion", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(getIconImage()));
                 RestartData();
             } else JOptionPane.showMessageDialog(this, "¡Por favor no deje el campo de nombre vacio!", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -626,7 +647,7 @@ public class GameConfig extends javax.swing.JFrame {
 
     private void EliminarCartaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarCartaActionPerformed
         if (((JComboBox) evt.getSource()).getSelectedIndex() != 0){
-            Description.setText("Al jugar una carta de \"" + ((JComboBox) evt.getSource()).getSelectedItem() + "\" habra una oportunidad de 1/10 de que el jugador pueda elegir a un oponente (o aliado!) para eliminar el mazo de este");
+            Description.setText("Al jugar una carta de \"" + ((JComboBox) evt.getSource()).getSelectedItem() + "\" habra una oportunidad de 1/10 de que el jugador pueda elegir a un oponente, aliado, o incluso el suyo propio para eliminar el mazo de este");
             Left.setVisible(false);
             Right.setVisible(false);
         }
@@ -634,7 +655,7 @@ public class GameConfig extends javax.swing.JFrame {
 
     private void CambiarCartasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CambiarCartasActionPerformed
         if (((JComboBox) evt.getSource()).getSelectedIndex() != 0){
-            Description.setText("Al jugar una carta de \"" + ((JComboBox) evt.getSource()).getSelectedItem() + "\" habra una oportunidad de 1/20 de cambiar los mazos de ¡todos los jugadores!");
+            Description.setText("Al jugar una carta de \"" + ((JComboBox) evt.getSource()).getSelectedItem() + "\" habra una oportunidad de 1/20 de cambiar las cartas en los mazos de ¡todos los jugadores!");
             Left.setVisible(false);
             Right.setVisible(false);
         }
@@ -650,7 +671,7 @@ public class GameConfig extends javax.swing.JFrame {
 
     private void CambiarFichasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CambiarFichasActionPerformed
         if (((JComboBox) evt.getSource()).getSelectedIndex() != 0){
-            Description.setText("Al jugar una carta de \"" + ((JComboBox) evt.getSource()).getSelectedItem() + "\" habra una oportunidad de darle al jugador la eleccion de cambiar fichas con un equipo rival (en caso de no tener las fichas compartidas activas, se tendra que elegir al jugador con el que desea cambiar fichas)");
+            Description.setText("Al jugar una carta de \"" + ((JComboBox) evt.getSource()).getSelectedItem() + "\" habra una oportunidad de 1/10 de darle al jugador la eleccion de cambiar fichas con un jugador del equipo rival o del mismo equipo");
             Left.setVisible(false);
             Right.setVisible(false);
         }
@@ -658,7 +679,7 @@ public class GameConfig extends javax.swing.JFrame {
 
     private void EliminarFichasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarFichasActionPerformed
         if (((JComboBox) evt.getSource()).getSelectedIndex() != 0){
-            Description.setText("Al jugar una carta de \"" + ((JComboBox) evt.getSource()).getSelectedItem() + "\" se eliminaran de 0 ha 5 fichas de un equipo rival (o jugador rival, en caso de no tener las fichas compartidas activas) elegido al azar");
+            Description.setText("Al jugar una carta de \"" + ((JComboBox) evt.getSource()).getSelectedItem() + "\" se eliminaran de 0 ha 5 fichas a un jugador rival");
             Left.setVisible(false);
             Right.setVisible(false);
         }
@@ -716,16 +737,16 @@ public class GameConfig extends javax.swing.JFrame {
                 ((JComboBox) Combo).setSelectedIndex(0);
             } else if (Combo instanceof JToggleButton){
                 ((JToggleButton) Combo).setBackground(Color.RED);
-                ((JToggleButton) Combo).setText("Desactivado");
+                ((JToggleButton) Combo).setText("Desactivo");
                 ((JToggleButton) Combo).setSelected(false);
             }
         }
         ModificadoresActivos.setBackground(Color.GREEN);
-        ModificadoresActivos.setText("activado");
+        ModificadoresActivos.setText("activo");
         ModificadoresActivos.setSelected(true);
         
         CompartirFichas.setBackground(Color.RED);
-        CompartirFichas.setText("Desactivado");
+        CompartirFichas.setText("Desactivo");
         CompartirFichas.setSelected(false);
         
         ElegirTipoDeCartas.setSelectedIndex(0);
@@ -733,44 +754,9 @@ public class GameConfig extends javax.swing.JFrame {
     
     private void PresionarBTN(javax.swing.JToggleButton Toggle){
         Toggle.setBackground((Toggle.isSelected())?Color.GREEN:Color.RED);
-        Toggle.setText((Toggle.isSelected())?"Activo":"Desactivado");
+        Toggle.setText((Toggle.isSelected())?"Activo":"Desactivo");
     }
     
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GameConfig.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GameConfig.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GameConfig.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GameConfig.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new GameConfig().setVisible(true);
-            }
-        });
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ActivarModificadoresTXT;
     private javax.swing.JComboBox BloquearEspacio;

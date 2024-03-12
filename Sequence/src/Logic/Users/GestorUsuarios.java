@@ -7,6 +7,8 @@ package Logic.Users;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -20,28 +22,52 @@ public class GestorUsuarios {
     
     public GestorUsuarios() {
         usuariosLista = new ArrayList();
-        File Users = new File("Accounts\\Cuentas");
-        if (Users.isDirectory()){
-            for (String Usuarios : Users.list()){
-                try {
-                    String[] UserGet = Usuarios.split("[.]");
-                    usuariosLista.add(User.LoadFile(UserGet[0]));
-                } catch (Exception Ex){
-                    
+        try {
+            File Users = new File("Accounts");
+            setDir(new File("Accounts"));
+            if (Users.isDirectory()){
+                for (String Usuarios : Users.list()){
+                    try {
+                        String[] UserGet = Usuarios.split("[.]");
+                        usuariosLista.add(User.LoadFile(UserGet[0]));
+                    } catch (Exception Ex){
+                        
+                    }
                 }
+                
             }
+        } catch (IOException ex) {            
+            Logger.getLogger(GestorUsuarios.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    private void setDir(File Accounts) throws IOException{
+        if (Accounts.mkdir() || Accounts.list().length < 4){
+            User Jennifer = new User("Jennifer","Jennifer","Bueso", new ImageIcon(getClass().getResource("/Elementos/Icono2.png")));
+            Jennifer.setficha("Tokens1.png");
+            Jennifer.SaveData("Jennifer");
+            User Josh = new User("Josh","Josh","Delcid", new ImageIcon(getClass().getResource("/Elementos/Icono1.png")));
+            Josh.setficha("Tokens2.png");
+            Josh.SaveData("Josh");
+            User Eleana = new User("Eleana","Eleana","Reyes", new ImageIcon(getClass().getResource("/Elementos/Icono3.png")));
+            Eleana.setficha("Tokens3.png");
+            Eleana.SaveData("Eleana");
+            User Andrea = new User("Andrea","Andrea","Quin", new ImageIcon(getClass().getResource("/Elementos/Icono4.png")));
+            Andrea.setficha("Tokens4.png");
+            Andrea.SaveData("Andrea");
+        }
+    }
+    
     
     public ArrayList<User> getUsuariosLista() {
         return usuariosLista;
     }
 
-    public User getUsarioLog() {
+    public User getUserLog() {
         return usarioLog;
     }
 
-    public void setUsarioLog(User usarioLog) {
+    public void setUserLog(User usarioLog) {
         this.usarioLog = usarioLog;
     }
     

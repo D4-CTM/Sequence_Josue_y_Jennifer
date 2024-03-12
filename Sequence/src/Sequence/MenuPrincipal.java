@@ -1,5 +1,17 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
 package Sequence;
 
+import GameBoard.Tablero;
+import Logic.Users.Settings;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -27,13 +39,15 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         BotonCerrarSesion = new javax.swing.JLabel();
+        BotonCartasEspeciales = new javax.swing.JLabel();
         BotonReportes = new javax.swing.JLabel();
+        BotonJugar = new javax.swing.JLabel();
         BotonConfiguracion = new javax.swing.JLabel();
-        BotonJuar = new javax.swing.JLabel();
         Fondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sequence");
+        setResizable(false);
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -45,14 +59,32 @@ public class MenuPrincipal extends javax.swing.JFrame {
         });
         jPanel1.add(BotonCerrarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 70, 50, 60));
 
+        BotonCartasEspeciales.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        BotonCartasEspeciales.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BotonCartasEspecialesMouseClicked(evt);
+            }
+        });
+        jPanel1.add(BotonCartasEspeciales, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 410, 250, 70));
+
         BotonReportes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jPanel1.add(BotonReportes, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 420, 280, 70));
+        jPanel1.add(BotonReportes, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 410, 250, 70));
+
+        BotonJugar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        BotonJugar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BotonJugarMouseClicked(evt);
+            }
+        });
+        jPanel1.add(BotonJugar, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 300, 350, 80));
 
         BotonConfiguracion.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jPanel1.add(BotonConfiguracion, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 420, 280, 70));
-
-        BotonJuar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jPanel1.add(BotonJuar, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 290, 370, 90));
+        BotonConfiguracion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BotonConfiguracionMouseClicked(evt);
+            }
+        });
+        jPanel1.add(BotonConfiguracion, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 410, 250, 70));
 
         Fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Elementos/MenuPrincipal.png"))); // NOI18N
         jPanel1.add(Fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -75,17 +107,36 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private void BotonCerrarSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotonCerrarSesionMouseClicked
         int opcionSalir = JOptionPane.showConfirmDialog(null, "¿Desea cerrar sesión?", "Confirmar", JOptionPane.YES_NO_OPTION);
         if (opcionSalir == JOptionPane.YES_OPTION) {
-            Main_Sequence.gestorUsuarios.setUsarioLog(null);
+            Main_Sequence.gestorUsuarios.setUserLog(null);
             PantallaPrincipal pantallaPrincipal = new PantallaPrincipal();
             pantallaPrincipal.setVisible(true);
-            dispose();
+            this.setVisible(false);
         }
     }//GEN-LAST:event_BotonCerrarSesionMouseClicked
 
+    private void BotonConfiguracionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotonConfiguracionMouseClicked
+        Configuracion configuracion = new Configuracion();
+        configuracion.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_BotonConfiguracionMouseClicked
+
+    private void BotonJugarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotonJugarMouseClicked
+        try {
+            new CharacterSelect().setVisible(true);
+            dispose();
+        } catch (Exception Ex){}
+    }//GEN-LAST:event_BotonJugarMouseClicked
+
+    private void BotonCartasEspecialesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotonCartasEspecialesMouseClicked
+        new GameConfig().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_BotonCartasEspecialesMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel BotonCartasEspeciales;
     private javax.swing.JLabel BotonCerrarSesion;
     private javax.swing.JLabel BotonConfiguracion;
-    private javax.swing.JLabel BotonJuar;
+    private javax.swing.JLabel BotonJugar;
     private javax.swing.JLabel BotonReportes;
     private javax.swing.JLabel Fondo;
     private javax.swing.JPanel jPanel1;

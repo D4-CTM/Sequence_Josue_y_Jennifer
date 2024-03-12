@@ -262,6 +262,9 @@
           </Constraints>
         </Component>
         <Component class="javax.swing.JToggleButton" name="ModificadoresActivos">
+          <Properties>
+            <Property name="focusable" type="boolean" value="false"/>
+          </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ModificadoresActivosActionPerformed"/>
           </Events>
@@ -272,6 +275,9 @@
           </Constraints>
         </Component>
         <Component class="javax.swing.JToggleButton" name="CompartirFichas">
+          <Properties>
+            <Property name="focusable" type="boolean" value="false"/>
+          </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CompartirFichasActionPerformed"/>
           </Events>
@@ -522,6 +528,9 @@
               </Constraints>
             </Component>
             <Component class="javax.swing.JToggleButton" name="CambiarFichasBTN">
+              <Properties>
+                <Property name="focusable" type="boolean" value="false"/>
+              </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CambiarFichasBTNActionPerformed"/>
               </Events>
@@ -532,6 +541,9 @@
               </Constraints>
             </Component>
             <Component class="javax.swing.JToggleButton" name="ElegirCartaBTN">
+              <Properties>
+                <Property name="focusable" type="boolean" value="false"/>
+              </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ElegirCartaBTNActionPerformed"/>
               </Events>
@@ -542,6 +554,9 @@
               </Constraints>
             </Component>
             <Component class="javax.swing.JToggleButton" name="CambiarCartaBTN">
+              <Properties>
+                <Property name="focusable" type="boolean" value="false"/>
+              </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CambiarCartaBTNActionPerformed"/>
               </Events>
@@ -552,6 +567,9 @@
               </Constraints>
             </Component>
             <Component class="javax.swing.JToggleButton" name="EliminarCartaBTN">
+              <Properties>
+                <Property name="focusable" type="boolean" value="false"/>
+              </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="EliminarCartaBTNActionPerformed"/>
               </Events>
@@ -562,6 +580,9 @@
               </Constraints>
             </Component>
             <Component class="javax.swing.JToggleButton" name="OcuparEspacioBTN">
+              <Properties>
+                <Property name="focusable" type="boolean" value="false"/>
+              </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="OcuparEspacioBTNActionPerformed"/>
               </Events>
@@ -572,6 +593,9 @@
               </Constraints>
             </Component>
             <Component class="javax.swing.JToggleButton" name="LiberarEspacioBTN">
+              <Properties>
+                <Property name="focusable" type="boolean" value="false"/>
+              </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="LiberarEspacioBTNActionPerformed"/>
               </Events>
@@ -582,6 +606,9 @@
               </Constraints>
             </Component>
             <Component class="javax.swing.JToggleButton" name="BloquearEspacioBTN">
+              <Properties>
+                <Property name="focusable" type="boolean" value="false"/>
+              </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BloquearEspacioBTNActionPerformed"/>
               </Events>
@@ -592,6 +619,9 @@
               </Constraints>
             </Component>
             <Component class="javax.swing.JToggleButton" name="EliminarFichaBTN">
+              <Properties>
+                <Property name="focusable" type="boolean" value="false"/>
+              </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="EliminarFichaBTNActionPerformed"/>
               </Events>
@@ -605,7 +635,8 @@
         </Container>
         <Component class="javax.swing.JButton" name="Cargar">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Cargar configuracion"/>
+            <Property name="text" type="java.lang.String" value="Cargar ajustes"/>
+            <Property name="focusable" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CargarActionPerformed"/>
@@ -618,7 +649,8 @@
         </Component>
         <Component class="javax.swing.JButton" name="Guardar">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Guardar configuracion"/>
+            <Property name="text" type="java.lang.String" value="Guardar ajustes"/>
+            <Property name="focusable" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="GuardarActionPerformed"/>
@@ -634,6 +666,7 @@
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="null"/>
             </Property>
+            <Property name="focusable" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RightActionPerformed"/>
@@ -645,6 +678,9 @@
           </Constraints>
         </Component>
         <Component class="javax.swing.JButton" name="Left">
+          <Properties>
+            <Property name="focusable" type="boolean" value="false"/>
+          </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="LeftActionPerformed"/>
           </Events>
@@ -656,20 +692,21 @@
         </Component>
         <Component class="javax.swing.JButton" name="jButton1">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jButton1"/>
+            <Property name="focusable" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="10" y="10" width="30" height="-1"/>
+              <AbsoluteConstraints x="10" y="10" width="30" height="30"/>
             </Constraint>
           </Constraints>
         </Component>
         <Component class="javax.swing.JButton" name="Reiniciar">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Reiniciar configuracion"/>
+            <Property name="text" type="java.lang.String" value="Reiniciar ajustes"/>
+            <Property name="focusable" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ReiniciarActionPerformed"/>
