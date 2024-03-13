@@ -30,6 +30,7 @@ public class Configuracion extends javax.swing.JFrame {
     private final File fichaNaranja = new File(Main_Sequence.ActualSetting.getCardsUrl() + "Tokens8.png");
     private String fichaSeleccionada;
     private int cantidadJugadores;
+    private int CantidadCartas;
 
     public Configuracion() {
         initComponents();
@@ -47,6 +48,19 @@ public class Configuracion extends javax.swing.JFrame {
         BotonFichaGris.setIcon(new ImageIcon(ScaledImage(fichaGris.getAbsolutePath(), BotonFichaGris.getWidth(), BotonFichaGris.getHeight()).getImage()));
         BotonFichaMorada.setIcon(new ImageIcon(ScaledImage(fichaMorada.getAbsolutePath(), BotonFichaMorada.getWidth(), BotonFichaMorada.getHeight()).getImage()));
         BotonFichaNaranja.setIcon(new ImageIcon(ScaledImage(fichaNaranja.getAbsolutePath(), BotonFichaNaranja.getWidth(), BotonFichaNaranja.getHeight()).getImage()));
+        
+        switch (Main_Sequence.gestorUsuarios.getUserLog().getFicha()){
+            case "Tokens1.png" -> BotonFichaRoja.doClick();
+            case "Tokens2.png" -> BotonFichaAzul.doClick();
+            case "Tokens3.png" -> BotonFichaVerde.doClick();
+            case "Tokens4.png" -> BotonFichaAmarilla.doClick();
+            case "Tokens5.png" -> BotonFichaRosa.doClick();
+            case "Tokens6.png" -> BotonFichaGris.doClick();
+            case "Tokens7.png" -> BotonFichaMorada.doClick();
+            default -> BotonFichaNaranja.doClick();
+        }
+        
+        JugadoresBox.setSelectedItem(String.valueOf(Main_Sequence.ActualSetting.getPlayersCant()));
     }
 
     private ImageIcon ScaledImage(String Url, int Width, int Height) {
@@ -196,13 +210,14 @@ public class Configuracion extends javax.swing.JFrame {
 
         jScrollPane1.setBorder(null);
 
-        InfoPartidaArea.setEditable(false);
         InfoPartidaArea.setBackground(new java.awt.Color(60, 132, 194));
         InfoPartidaArea.setColumns(20);
         InfoPartidaArea.setFont(new java.awt.Font("Avenir Next Condensed", 1, 20)); // NOI18N
         InfoPartidaArea.setForeground(new java.awt.Color(255, 255, 255));
         InfoPartidaArea.setLineWrap(true);
         InfoPartidaArea.setRows(5);
+        InfoPartidaArea.setWrapStyleWord(true);
+        InfoPartidaArea.setAutoscrolls(false);
         jScrollPane1.setViewportView(InfoPartidaArea);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(84, 411, 240, 100));
@@ -243,6 +258,10 @@ public class Configuracion extends javax.swing.JFrame {
 
             Main_Sequence.gestorUsuarios.getUserLog().setficha(fichaSeleccionada);
             Main_Sequence.gestorUsuarios.getUserLog().SaveData(Main_Sequence.gestorUsuarios.getUserLog().getUsername());
+            
+            Main_Sequence.ActualSetting.setPlayerCant(cantidadJugadores);
+            Main_Sequence.ActualSetting.SaveData(Main_Sequence.ActualSetting.getName());
+            
             JOptionPane.showMessageDialog(null, "Se han aplicado los cambios en la configuración de su partida correctamente.", "ConfiguraciÃ³n Aplicada", JOptionPane.INFORMATION_MESSAGE);
 
             MenuPrincipal menuPrincipal = new MenuPrincipal();
@@ -282,24 +301,36 @@ public class Configuracion extends javax.swing.JFrame {
     private void JugadoresBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JugadoresBoxActionPerformed
         String cantidad = JugadoresBox.getSelectedItem().toString();
 
-        if (cantidad.equals(" ")) {
-            InfoPartidaArea.setText("");
-            cantidadJugadores = 0;
-        } else if (cantidad.equals("2")) {
-            InfoPartidaArea.setText("Equipos: 2 \nSe repartirán 7 fichas por jugador.");
-            cantidadJugadores = 2;
-        } else if (cantidad.equals("3")) {
-            InfoPartidaArea.setText("Equipos: 3 \nSe repartirán 6 fichas por jugador.");
-            cantidadJugadores = 3;
-        } else if (cantidad.equals("4")) {
-            InfoPartidaArea.setText("Equipos: 2 \nSe repartirán 7 fichas por jugador.");
-            cantidadJugadores = 4;
-        } else if (cantidad.equals("6")) {
-            InfoPartidaArea.setText("Equipos: 3 \nSe repartirán 5 fichas por jugador.");
-            cantidadJugadores = 6;
-        } else if (cantidad.equals("8")) {
-            InfoPartidaArea.setText("Equipos: 2 \nSe repartirán 6 fichas por jugador.");
-            cantidadJugadores = 8;
+        switch (cantidad) {
+            case "2" -> {
+                InfoPartidaArea.setText("Equipos: 2 \nSe repartirán 7 cartas por jugador.");
+                cantidadJugadores = 2;
+                CantidadCartas = 7;
+            }
+            case "3" -> {
+                InfoPartidaArea.setText("Equipos: 3 \nSe repartirán 6 cartas por jugador.");
+                cantidadJugadores = 3;
+                CantidadCartas = 6;
+            }
+            case "4" -> {
+                InfoPartidaArea.setText("Equipos: 2 \nSe repartirán 7 cartas por jugador.");
+                cantidadJugadores = 4;
+                CantidadCartas = 7;
+            }
+            case "6" -> {
+                InfoPartidaArea.setText("Equipos: 3 \nSe repartirán 5 cartas por jugador.");
+                cantidadJugadores = 6;
+                CantidadCartas = 5;
+            }
+            case "8" -> {
+                InfoPartidaArea.setText("Equipos: 2 \nSe repartirán 4 cartas por jugador.");
+                cantidadJugadores = 8;
+                CantidadCartas = 4;
+            }
+            default -> {
+                InfoPartidaArea.setText("");
+                cantidadJugadores = 0;
+            }
         }
     }//GEN-LAST:event_JugadoresBoxActionPerformed
 

@@ -2,7 +2,6 @@ package GameBoard;
 
 import Logic.UI_Elements.JCard;
 import Logic.Users.Player;
-import Logic.Users.User;
 import Sequence.Main_Sequence;
 import java.awt.Color;
 import java.awt.Image;
@@ -32,14 +31,14 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
     private int Turn;
     //Variables used for taking a card
     private String SelectedCard = "IDK";
-    private int CardCant, CartaJugada;
+    private int CartaJugada;
     //Variables de Modificadores
     private boolean BlockMode, FreeMode, SelectCard;
     private final boolean[] Tryed = new boolean[8];
     private final Random Randy;
     private int CardsPlayed;
 
-    public Tablero(int Players) throws IOException, ClassNotFoundException {
+    public Tablero(ArrayList<Player> Jugadores, int Players) throws IOException, ClassNotFoundException {
         Randy = new Random();
         SelectCard = true;
         BlockMode = false;
@@ -55,9 +54,9 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         Deck.setDeck();
         Deck.setDeck();
 
-        setResizable(false);
+        setTeams(Jugadores);
         setPlayersinfo(Players);
-
+        setResizable(false);
         setIconImage(new javax.swing.ImageIcon(getClass().getResource("/Elementos/GameIcon.png")).getImage());
 
         this.Players = Players;
@@ -65,6 +64,30 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         Turn = 0;
 
         StartThread();
+    }
+
+    private void setTeams(ArrayList<Player> Jugadores){
+        int Limit = Jugadores.size();
+        int JugadoresAgregados = 0;
+        int LastTeamPlayer = 3;
+        int ActPlayer = 0;
+
+        do {
+            
+            if (Player[JugadoresAgregados] == null && LastTeamPlayer != Jugadores.get(ActPlayer).getTeam()){
+                Player[JugadoresAgregados] = Jugadores.get(ActPlayer);
+                LastTeamPlayer = Player[JugadoresAgregados].getTeam();
+                
+                
+                
+                Jugadores.remove(ActPlayer);
+                JugadoresAgregados++;
+            }
+            
+            ActPlayer = (ActPlayer + 1 >= Jugadores.size())?0:ActPlayer + 1;
+        
+        } while (JugadoresAgregados < Limit);
+        
     }
 
     private void StartThread() {
@@ -82,16 +105,6 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         BGPlayer6.setVisible(Players >= 6);
         BGPlayer7.setVisible(Players >= 8);
         BGPlayer8.setVisible(Players >= 8);
-
-        CardCant = switch (Players) {
-            case 3 -> 6;
-            case 6 -> 5;
-            case 8 -> 4;
-            default -> 7;
-        };
-
-        Player[0] = new Player(User.LoadFile("Josh"), CardCant, 1);
-        Player[1] = new Player(User.LoadFile("Jennifer"), CardCant, 0);
 
         try {
             Player1.setText(Player[0].getPlayer().getUsername());
@@ -753,9 +766,7 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         Pause = false;
     }
 
-    private boolean CheckEvent(String Selected) {
-        System.out.println("Prueba!");
-        
+    private boolean CheckEvent(String Selected) {        
         if (!Tryed[0] && Selected.contains(Main_Sequence.ActualSetting.getBloquearEspacio()) || BlockMode) {
             
             Tryed[0] = true;

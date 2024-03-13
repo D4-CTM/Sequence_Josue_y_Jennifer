@@ -13,7 +13,7 @@ public class Main_Sequence {
     public static Settings ActualSetting;
     
     public static void main(String[] args) throws IOException, ClassNotFoundException{
-        ActualSetting = new Settings();
+        ActualSetting = new Settings("Default");
         
         PantallaPrincipal pantallaPrincipal = new PantallaPrincipal();
         ActualSetting = Settings.LoadFile("Default");

@@ -9,19 +9,19 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Calendar;
-import javax.swing.JOptionPane;
 
 public class User implements Serializable{
     private final ArrayList<String> Historial;
     private String Name, Username, Password, Ficha;
+    private final Calendar Created;
     private ImageIcon PlayerIcon;
-    private Calendar Created;
     private int points;
     
     public User(String Name, String Username, String Password, ImageIcon PlayerIcon){
         EditData(Name, Username, Password, PlayerIcon);
         Created = Calendar.getInstance();
         Historial = new ArrayList();
+        Ficha = "Tokens1.png";
         points = 0;
     }
     

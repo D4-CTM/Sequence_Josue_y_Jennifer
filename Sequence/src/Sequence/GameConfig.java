@@ -593,7 +593,7 @@ public class GameConfig extends javax.swing.JFrame {
                         }
                     }
                 }
-                Settings Ajustes = new Settings();
+                Settings Ajustes = new Settings(Nombre);
                 String CardsUrl = "Icons\\";
                 
                 switch(ElegirTipoDeCartas.getSelectedIndex()){

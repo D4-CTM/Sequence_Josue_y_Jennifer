@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 
 public class Player {
     private final String[] Cards;
+    private ImageIcon UserToken;
     private final User Jugador;
     private final int Team;
     private int Fichas;
@@ -20,6 +21,14 @@ public class Player {
         this.Team = Team;
         Fichas = 48;
         startDeck();
+    }
+    
+    public void setUserToken(ImageIcon Token){
+        UserToken = Token;
+    }
+    
+    public ImageIcon getUserToken(){
+        return UserToken;
     }
     
     public int getCoins(){

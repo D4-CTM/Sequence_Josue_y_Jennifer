@@ -15,18 +15,20 @@ import java.io.Serializable;
 public class Settings implements Serializable {
     private boolean CompartirFichas, ModificadoresActivos;
     private String CardsUrl, CardStyle;
+    private int CantPlayer, CardsCant;
     private final boolean[] Active;
     private final String[] MCards; 
+    private final String Name;
     
-    public Settings() throws IOException{
+    public Settings(String Name) throws IOException{
         Active = new boolean[8];
         MCards = new String[8];
+        this.Name = Name;
         setDefault();
     }
     
     private void setDefault() throws IOException{
-        File DefaultFile = new File("Configurations\\Default.SQC");
-        if (!DefaultFile.exists()){
+        if (!new File("Configurations\\Default.SQC").exists()){
             setCardsUrl("Icons\\Estilo clasico\\", "Estilo clasico");
             setElegirCarta("GG", false);
             setBloquearEspacio("J2", true);
@@ -36,6 +38,8 @@ public class Settings implements Serializable {
             setEliminarFichas("GG", false);
             setLiberarEspacio("J1", true);
             setOcuparEspacio("A", true);
+            CantPlayer = 4;
+            CardsCant = 8;
             
             setFichasCompartidas(false);
             setModificadores(true);
@@ -171,6 +175,26 @@ public class Settings implements Serializable {
         if (Active[7]){
             return MCards[7];
         } else return "GG";
+    }
+    
+    public void setCardsCants(int Cards){
+        this.CardsCant = Cards;
+    }
+    
+    public int getCardsCant(){
+        return this.CardsCant;
+    }
+    
+    public void setPlayerCant(int Players){
+        this.CantPlayer = Players;
+    }
+    
+    public int getPlayersCant(){
+        return this.CantPlayer;
+    }
+    
+    public String getName(){
+        return Name;
     }
     
 }
