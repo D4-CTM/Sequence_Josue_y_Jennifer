@@ -6,6 +6,7 @@ import Sequence.Main_Sequence;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -50,6 +51,7 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         initComponents();
         setBoardBTNS();
         
+        setMiniCardsListeners();
         Deck.EmptyDeck();
         Deck.setDeck();
         Deck.setDeck();
@@ -66,6 +68,57 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         StartThread();
     }
 
+    private void setMiniCardsListeners(){
+        Card1MI.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Card1MouseClicked(evt);
+            }
+        });
+        Card2MI.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Card2MouseClicked(evt);
+            }
+        });
+        Card3MI.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Card3MouseClicked(evt);
+            }
+        });
+        Card3MI.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Card3MouseClicked(evt);
+            }
+        });
+        Card4MI.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Card4MouseClicked(evt);
+            }
+        });
+        Card5MI.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Card5MouseClicked(evt);
+            }
+        });
+        Card6MI.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Card6MouseClicked(evt);
+            }
+        });
+        Card7MI.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Card7MouseClicked(evt);
+            }
+        });
+    }
+    
     private void setTeams(ArrayList<Player> Jugadores){
         int Limit = Jugadores.size();
         int JugadoresAgregados = 0;
@@ -149,6 +202,13 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         TeamPanel = new javax.swing.JPanel();
         PlayerIcon = new javax.swing.JLabel();
         Timer = new javax.swing.JLabel();
+        Card1MI = new javax.swing.JLabel();
+        Card5MI = new javax.swing.JLabel();
+        Card2MI = new javax.swing.JLabel();
+        Card3MI = new javax.swing.JLabel();
+        Card4MI = new javax.swing.JLabel();
+        Card7MI = new javax.swing.JLabel();
+        Card6MI = new javax.swing.JLabel();
         LastCardTXT = new javax.swing.JLabel();
         LastCardIcon = new javax.swing.JLabel();
         BarajaDeCartasTXT = new javax.swing.JLabel();
@@ -210,13 +270,20 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         PlayerIcon.setText("[Player 1 Icon]");
         PlayerIcon.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         PlayerIcon.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        TeamPanel.add(PlayerIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 160, 160));
+        TeamPanel.add(PlayerIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 160, 160));
 
         Timer.setForeground(new java.awt.Color(0, 0, 0));
         Timer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Timer.setText("Timer");
         Timer.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         TeamPanel.add(Timer, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 220, 30));
+        TeamPanel.add(Card1MI, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 60, 40));
+        TeamPanel.add(Card5MI, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, 60, 40));
+        TeamPanel.add(Card2MI, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 60, 40));
+        TeamPanel.add(Card3MI, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 50, 60, 40));
+        TeamPanel.add(Card4MI, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 100, 60, 40));
+        TeamPanel.add(Card7MI, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 150, 60, 40));
+        TeamPanel.add(Card6MI, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 150, 60, 40));
 
         Fondo.add(TeamPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 220, 190));
 
@@ -638,7 +705,6 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         }
     }//GEN-LAST:event_Card7MouseClicked
 
-    //Los botones que se observan en en el tablero, si, es un tanto intuitivo solo con el nombre.
     private void setBoardBTNS() {
         try {
             CartasDelTablero = new JCard[10][10];
@@ -1014,40 +1080,62 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
 
     private void CheckSequence() {
         for (int X = 0; X < 10; X++) {
+            
             for (int Y = 0; Y < 10; Y++) {
+            
                 if (CheckHorizontal(CartasDelTablero[X][Y].getTeamWhoTakeIt(), X, Y)) {
+                
                     JOptionPane.showMessageDialog(this, "Se ha formado una linea vertical");
+                    Player[Turn].AddPuntos();
+                    
                 } else if (CheckVertical(CartasDelTablero[X][Y].getTeamWhoTakeIt(), X, Y)) {
+                    
                     JOptionPane.showMessageDialog(this, "Se ha formado una linea Horizontal");
+                    Player[Turn].AddPuntos();
+                
                 } else if (CheckDiagonalFront(CartasDelTablero[X][Y].getTeamWhoTakeIt(), X, Y)) {
+                
                     JOptionPane.showMessageDialog(this, "Se ha formado una linea diagonal (frontal)");
+                    Player[Turn].AddPuntos();
+                
                 } else if (CheckDiagonalBack(CartasDelTablero[X][Y].getTeamWhoTakeIt(), X, Y)) {
+                
                     JOptionPane.showMessageDialog(this, "Se ha formado una linea diagonal (pa'tras)");
+                    Player[Turn].AddPuntos();
+                
                 }
+
                 CartasDelTablero[X][Y].isCardBlock();
+
             }
+
         }
     }
 
     private boolean CheckDiagonalFront(int Team, int X, int Y) {
         try {
             for (int i = 0; i < 5; i++) {
-                if (!CartasDelTablero[X + i][Y + i].isCardTaken() || CartasDelTablero[X + i][Y + i].getTeamWhoTakeIt() != Team) {
-                    if (!CartasDelTablero[X + i][Y + i].isLineComplete()) {
+                if (!CartasDelTablero[X+i][Y+i].getCard().equals("0F")){
+                    if (!CartasDelTablero[X+i][Y+i].isCardTaken() && CartasDelTablero[X+i][Y+i].getTeamWhoTakeIt() != Team){
                         return false;
                     }
-                } else if (!CartasDelTablero[X + i][Y + i].getCard().equals("0F")) {
-                    return false;
                 }
             }
-            if (!CartasDelTablero[X][Y].isLineComplete()) {
-                for (int i = 0; i < 5; i++) {
-                    CartasDelTablero[X + i][Y + i].takeLine();
+            int SequenceFound = 0;
+            for (int i = 0; i < 5; i++) {
+                if (CartasDelTablero[X+i][Y+i].isLineComplete()){
+                    SequenceFound++;
                 }
-                return true;
-            } else {
+            }
+            if (SequenceFound != 5){
                 return false;
             }
+            for (int i = 0; i < 5; i++) {
+                if (!CartasDelTablero[X+i][Y+i].getCard().equals("0F")){
+                    CartasDelTablero[X+i][Y+i].takeLine();
+                }
+            }
+            return true;
         } catch (IndexOutOfBoundsException e) {
             return false;
         }
@@ -1056,22 +1144,27 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
     private boolean CheckDiagonalBack(int Team, int X, int Y) {
         try {
             for (int i = 0; i < 5; i++) {
-                if (!CartasDelTablero[X + i][Y + (i * -1)].isCardTaken() || CartasDelTablero[X + i][Y + (i * -1)].getTeamWhoTakeIt() != Team) {
-                    if (!CartasDelTablero[X + i][Y + (i * -1)].isLineComplete()) {
+                if (!CartasDelTablero[X-i][Y+i].getCard().equals("0F")){
+                    if (!CartasDelTablero[X-i][Y+i].isCardTaken() && CartasDelTablero[X-i][Y+i].getTeamWhoTakeIt() != Team){
                         return false;
                     }
-                } else if (!CartasDelTablero[X + i][Y + (i * -1)].getCard().equals("0F")) {
-                    return false;
                 }
             }
-            if (!CartasDelTablero[X][Y].isLineComplete()) {
-                for (int i = 0; i < -5; i--) {
-                    CartasDelTablero[X + i][Y + (i * -1)].takeLine();
+            int SequenceFound = 0;
+            for (int i = 0; i < 5; i++) {
+                if (CartasDelTablero[X-i][Y+i].isLineComplete()){
+                    SequenceFound++;
                 }
-                return true;
-            } else {
+            }
+            if (SequenceFound != 5){
                 return false;
             }
+            for (int i = 0; i < 5; i++) {
+                if (!CartasDelTablero[X-i][Y+i].getCard().equals("0F")){
+                    CartasDelTablero[X-i][Y+i].takeLine();
+                }
+            }
+            return true;
         } catch (IndexOutOfBoundsException e) {
             return false;
         }
@@ -1080,22 +1173,27 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
     private boolean CheckHorizontal(int Team, int X, int Y) {
         try {
             for (int i = 0; i < 5; i++) {
-                if (!CartasDelTablero[X][Y + i].isCardTaken() || CartasDelTablero[X][Y + i].getTeamWhoTakeIt() != Team) {
-                    if (!CartasDelTablero[X][Y + i].isLineComplete()) {
+                if (!CartasDelTablero[X][Y+i].getCard().equals("0F")){
+                    if (!CartasDelTablero[X][Y + i].isCardTaken() && CartasDelTablero[X][Y+i].getTeamWhoTakeIt() != Team){
                         return false;
                     }
-                } else if (!CartasDelTablero[X + i][Y + (i * -1)].getCard().equals("0F")) {
-                    return false;
                 }
             }
-            if (!CartasDelTablero[X][Y].isLineComplete()) {
-                for (int i = 0; i < 5; i++) {
-                    CartasDelTablero[X][Y + i].takeLine();
+            int SequenceFound = 0;
+            for (int i = 0; i < 5; i++) {
+                if (CartasDelTablero[X][Y+i].isLineComplete()){
+                    SequenceFound++;
                 }
-                return true;
-            } else {
+            }
+            if (SequenceFound != 5){
                 return false;
             }
+            for (int i = 0; i < 5; i++) {
+                if (!CartasDelTablero[X][Y+i].getCard().equals("0F")){
+                    CartasDelTablero[X][Y+i].takeLine();
+                }
+            }
+            return true;
         } catch (IndexOutOfBoundsException e) {
             return false;
         }
@@ -1104,22 +1202,27 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
     private boolean CheckVertical(int Team, int X, int Y) {
         try {
             for (int i = 0; i < 5; i++) {
-                if (!CartasDelTablero[X + i][Y].isCardTaken() || CartasDelTablero[X + i][Y].getTeamWhoTakeIt() != Team) {
-                    if (!CartasDelTablero[X + i][Y].isLineComplete()) {
+                if (!CartasDelTablero[X+i][Y].getCard().equals("0F")){
+                    if (!CartasDelTablero[X+i][Y].isCardTaken() && CartasDelTablero[X+i][Y].getTeamWhoTakeIt() != Team){
                         return false;
                     }
-                } else if (!CartasDelTablero[X + i][Y + (i * -1)].getCard().equals("0F")) {
-                    return false;
                 }
-            }        
-            if (!CartasDelTablero[X][Y].isLineComplete()) {
-                for (int i = 0; i < 5; i++) {
-                    CartasDelTablero[X + i][Y].takeLine();
+            }
+            int SequenceFound = 0;
+            for (int i = 0; i < 5; i++) {
+                if (CartasDelTablero[X+i][Y].isLineComplete()){
+                    SequenceFound++;
                 }
-                return true;
-            } else {
+            }
+            if (SequenceFound != 5){
                 return false;
             }
+            for (int i = 0; i < 5; i++) {
+                if (!CartasDelTablero[X+i][Y].getCard().equals("0F")){
+                    CartasDelTablero[X+i][Y].takeLine();
+                }
+            }
+            return true;
         } catch (IndexOutOfBoundsException e) {
             return false;
         }
@@ -1148,20 +1251,34 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
     
     private void PlayerCards() {
         try {
-            if (Card1.isVisible())
-                Card1.setIcon(ScaledImage(Main_Sequence.ActualSetting.getCardsUrl() + Player[Turn].getCard(0) + ".png", Card1.getWidth(), Card1.getHeight()));
-            if (Card2.isVisible())
+            if (Card1.isVisible()){
+                    Card1.setIcon(ScaledImage(Main_Sequence.ActualSetting.getCardsUrl() + Player[Turn].getCard(0) + ".png", Card1.getWidth(), Card1.getHeight()));
+                    Card1MI.setIcon(ScaledImage(Main_Sequence.ActualSetting.getCardsUrl() + Player[Turn].getCard(0) + ".png", Card1MI.getWidth(), Card1MI.getHeight()));
+            }
+            if (Card2.isVisible()){
                 Card2.setIcon(ScaledImage(Main_Sequence.ActualSetting.getCardsUrl() + Player[Turn].getCard(1) + ".png", Card2.getWidth(), Card2.getHeight()));
-            if (Card3.isVisible())
+                Card2MI.setIcon(ScaledImage(Main_Sequence.ActualSetting.getCardsUrl() + Player[Turn].getCard(1) + ".png", Card2MI.getWidth(), Card2MI.getHeight()));
+            }
+            if (Card3.isVisible()){
                 Card3.setIcon(ScaledImage(Main_Sequence.ActualSetting.getCardsUrl() + Player[Turn].getCard(2) + ".png", Card3.getWidth(), Card3.getHeight()));
-            if (Card4.isVisible())
+                Card3MI.setIcon(ScaledImage(Main_Sequence.ActualSetting.getCardsUrl() + Player[Turn].getCard(2) + ".png", Card3MI.getWidth(), Card3MI.getHeight()));
+            }
+            if (Card4.isVisible()){
                 Card4.setIcon(ScaledImage(Main_Sequence.ActualSetting.getCardsUrl() + Player[Turn].getCard(3) + ".png", Card4.getWidth(), Card4.getHeight()));
-            if (Card5.isVisible())
+                Card4MI.setIcon(ScaledImage(Main_Sequence.ActualSetting.getCardsUrl() + Player[Turn].getCard(3) + ".png", Card4MI.getWidth(), Card4MI.getHeight()));
+            }
+            if (Card5.isVisible()){
                 Card5.setIcon(ScaledImage(Main_Sequence.ActualSetting.getCardsUrl() + Player[Turn].getCard(4) + ".png", Card5.getWidth(), Card5.getHeight()));
-            if (Card6.isVisible())
+                Card5MI.setIcon(ScaledImage(Main_Sequence.ActualSetting.getCardsUrl() + Player[Turn].getCard(4) + ".png", Card5MI.getWidth(), Card5MI.getHeight()));
+            }
+            if (Card6.isVisible()){
                 Card6.setIcon(ScaledImage(Main_Sequence.ActualSetting.getCardsUrl() + Player[Turn].getCard(5) + ".png", Card6.getWidth(), Card6.getHeight()));
-            if (Card7.isVisible())
+                Card6MI.setIcon(ScaledImage(Main_Sequence.ActualSetting.getCardsUrl() + Player[Turn].getCard(5) + ".png", Card6MI.getWidth(), Card6MI.getHeight()));
+            }
+            if (Card7.isVisible()){
                 Card7.setIcon(ScaledImage(Main_Sequence.ActualSetting.getCardsUrl() + Player[Turn].getCard(6) + ".png", Card7.getWidth(), Card7.getHeight()));
+                Card7MI.setIcon(ScaledImage(Main_Sequence.ActualSetting.getCardsUrl() + Player[Turn].getCard(6) + ".png", Card7MI.getWidth(), Card7MI.getHeight()));
+            }
         } catch (Exception Ex) {
 
         }
@@ -1215,6 +1332,17 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         Pause = false;
     }
 
+    private String ChangeInfoBox(int Team, String Data){
+        if (Team < 3){
+            for (Player Jugador : Player){
+                if (Jugador.getTeam() == Team){
+                    
+                }
+            }
+        }
+        return Data;
+    }
+    
     // -- SWING ELEMENTS --
     private JCard[][] CartasDelTablero;
     // -- SWING ELEMENTS --
@@ -1229,12 +1357,19 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
     private javax.swing.JPanel BGPlayer8;
     private javax.swing.JLabel BarajaDeCartasTXT;
     private javax.swing.JLabel Card1;
+    private javax.swing.JLabel Card1MI;
     private javax.swing.JLabel Card2;
+    private javax.swing.JLabel Card2MI;
     private javax.swing.JLabel Card3;
+    private javax.swing.JLabel Card3MI;
     private javax.swing.JLabel Card4;
+    private javax.swing.JLabel Card4MI;
     private javax.swing.JLabel Card5;
+    private javax.swing.JLabel Card5MI;
     private javax.swing.JLabel Card6;
+    private javax.swing.JLabel Card6MI;
     private javax.swing.JLabel Card7;
+    private javax.swing.JLabel Card7MI;
     private javax.swing.JLabel CardDeckIcon;
     private javax.swing.JPanel Fondo;
     private javax.swing.JLabel LastCardIcon;
