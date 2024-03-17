@@ -52,9 +52,7 @@ public class GameConfig extends javax.swing.JFrame {
         PresionarBTN(LiberarEspacioBTN);
         PresionarBTN(OcuparEspacioBTN);
 
-        PresionarBTN(ModificadoresActivos);
-        PresionarBTN(CompartirFichas);
-        
+        PresionarBTN(ModificadoresActivos);        
     }
     
     private void setComboBoxes(){
@@ -96,10 +94,8 @@ public class GameConfig extends javax.swing.JFrame {
         ModifierSeparator = new javax.swing.JSeparator();
         TeamSettingsTXT = new javax.swing.JLabel();
         Modif8TXT = new javax.swing.JLabel();
-        FichasCompartidas1 = new javax.swing.JLabel();
         ActivarModificadoresTXT = new javax.swing.JLabel();
         ModificadoresActivos = new javax.swing.JToggleButton();
-        CompartirFichas = new javax.swing.JToggleButton();
         ElegirTipoDeCartas = new javax.swing.JComboBox<>();
         SeleccionarEstiloTXT = new javax.swing.JLabel();
         ComboBoxes = new javax.swing.JPanel();
@@ -201,15 +197,10 @@ public class GameConfig extends javax.swing.JFrame {
         Modif8TXT.setText("Eliminar fichas");
         jPanel1.add(Modif8TXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 410, 180, -1));
 
-        FichasCompartidas1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        FichasCompartidas1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        FichasCompartidas1.setText("Compartir fichas");
-        jPanel1.add(FichasCompartidas1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 480, 180, -1));
-
         ActivarModificadoresTXT.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         ActivarModificadoresTXT.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         ActivarModificadoresTXT.setText("Activar modificadores");
-        jPanel1.add(ActivarModificadoresTXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 510, 180, -1));
+        jPanel1.add(ActivarModificadoresTXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 500, 180, -1));
 
         ModificadoresActivos.setFocusable(false);
         ModificadoresActivos.addActionListener(new java.awt.event.ActionListener() {
@@ -217,15 +208,7 @@ public class GameConfig extends javax.swing.JFrame {
                 ModificadoresActivosActionPerformed(evt);
             }
         });
-        jPanel1.add(ModificadoresActivos, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 510, 100, 20));
-
-        CompartirFichas.setFocusable(false);
-        CompartirFichas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CompartirFichasActionPerformed(evt);
-            }
-        });
-        jPanel1.add(CompartirFichas, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 480, 100, 20));
+        jPanel1.add(ModificadoresActivos, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 500, 100, 20));
 
         ElegirTipoDeCartas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         ElegirTipoDeCartas.setName("TipoDeCartas"); // NOI18N
@@ -478,13 +461,6 @@ public class GameConfig extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_ModificadoresActivosActionPerformed
 
-    private void CompartirFichasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CompartirFichasActionPerformed
-        PresionarBTN((javax.swing.JToggleButton) evt.getSource());
-        if (((javax.swing.JToggleButton) evt.getSource()).isSelected()){
-            Description.setText("Compartir fichas\nAntes de iniciar la partida debera elegirse una ficha que represente al equipo en cuestion.");
-        } else Description.setText("Fichas individuales\nAntes de iniciar la partida cada jugador tendra la posibilidad de elegir sus propias fichas que usara para representarse a si mismo en el juago (este es un cambio meramente visual, el equipo que llegue primero a 2 Sequences siempre habra ganado)");
-    }//GEN-LAST:event_CompartirFichasActionPerformed
-
     private void CargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CargarActionPerformed
         File Configuraciones = new File("Configurations");
         ArrayList<String> Setting = new ArrayList();
@@ -514,10 +490,6 @@ public class GameConfig extends javax.swing.JFrame {
                 ModificadoresActivos.setSelected(Ajustes.areModificadoresActivos());
                 ModificadoresActivos.setBackground((Ajustes.areModificadoresActivos())?Color.GREEN:Color.RED);
                 ModificadoresActivos.setText((Ajustes.areModificadoresActivos())?"Activo":"Desactivo");
-                
-                CompartirFichas.setSelected(Ajustes.areFichasCompartidas());
-                CompartirFichas.setBackground((Ajustes.areFichasCompartidas())?Color.GREEN:Color.RED);
-                CompartirFichas.setText((Ajustes.areFichasCompartidas())?"Activo":"Desactivo");
                 
                 ElegirTipoDeCartas.setSelectedItem(Ajustes.getCardsStyle());
             } catch (Exception Ex){
@@ -611,10 +583,10 @@ public class GameConfig extends javax.swing.JFrame {
                 Ajustes.setLiberarEspacio(this.Cards[LiberarEspacio.getSelectedIndex()], LiberarEspacioBTN.isSelected());
                 Ajustes.setOcuparEspacio(this.Cards[OcuparEspacio.getSelectedIndex()], OcuparEspacioBTN.isSelected());
                 
-                Ajustes.setFichasCompartidas(CompartirFichas.isSelected());
                 Ajustes.setModificadores(ModificadoresActivos.isSelected());
                 
                 Ajustes.SaveData(Nombre);
+                Main_Sequence.ActualSetting = Ajustes;
                 JOptionPane.showMessageDialog(this, "Configuracion guardad con exito!", "Configuracion", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(getIconImage()));
                 RestartData();
             } else JOptionPane.showMessageDialog(this, "¡Por favor no deje el campo de nombre vacio!", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -745,10 +717,6 @@ public class GameConfig extends javax.swing.JFrame {
         ModificadoresActivos.setText("activo");
         ModificadoresActivos.setSelected(true);
         
-        CompartirFichas.setBackground(Color.RED);
-        CompartirFichas.setText("Desactivo");
-        CompartirFichas.setSelected(false);
-        
         ElegirTipoDeCartas.setSelectedIndex(0);
     }
     
@@ -767,7 +735,6 @@ public class GameConfig extends javax.swing.JFrame {
     private javax.swing.JToggleButton CambiarFichasBTN;
     private javax.swing.JButton Cargar;
     private javax.swing.JPanel ComboBoxes;
-    private javax.swing.JToggleButton CompartirFichas;
     private javax.swing.JTextArea Description;
     private javax.swing.JToggleButton ElegirCartaBTN;
     private javax.swing.JComboBox ElegirCartas;
@@ -777,7 +744,6 @@ public class GameConfig extends javax.swing.JFrame {
     private javax.swing.JToggleButton EliminarFichaBTN;
     private javax.swing.JComboBox EliminarFichas;
     private javax.swing.JLabel ExampleIcon;
-    private javax.swing.JLabel FichasCompartidas1;
     private javax.swing.JLabel GameModifiersTXT;
     private javax.swing.JButton Guardar;
     private javax.swing.JButton Left;

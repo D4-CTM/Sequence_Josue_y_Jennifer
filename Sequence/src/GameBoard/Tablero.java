@@ -1,8 +1,10 @@
 package GameBoard;
 
 import Logic.UI_Elements.JCard;
+import Logic.Users.GestorUsuarios;
 import Logic.Users.Player;
 import Sequence.Main_Sequence;
+import Sequence.PantallaPrincipal;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -13,7 +15,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.Border;
 
@@ -38,7 +43,9 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
     private final boolean[] Tryed = new boolean[8];
     private final Random Randy;
     private int CardsPlayed;
-
+    
+    private boolean DebugMode;
+    
     public Tablero(ArrayList<Player> Jugadores, int Players) throws IOException, ClassNotFoundException {
         Randy = new Random();
         SelectCard = true;
@@ -60,11 +67,12 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         setPlayersinfo(Players);
         setResizable(false);
         setIconImage(new javax.swing.ImageIcon(getClass().getResource("/Elementos/GameIcon.png")).getImage());
-
+        TeamReport.setText(ChangeInfoBox(1, ""));
+        
         this.Players = Players;
         Pause = false;
         Turn = 0;
-
+        
         StartThread();
     }
 
@@ -239,6 +247,7 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         BGPlayer5 = new javax.swing.JPanel();
         Player5 = new javax.swing.JLabel();
         Card6 = new javax.swing.JLabel();
+        DebugModeBTN = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sequence");
@@ -307,7 +316,7 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
 
         TeamReport.setEditable(false);
         TeamReport.setColumns(20);
-        TeamReport.setForeground(new java.awt.Color(255, 255, 255));
+        TeamReport.setForeground(new java.awt.Color(0, 0, 0));
         TeamReport.setLineWrap(true);
         TeamReport.setRows(5);
         TeamReport.setWrapStyleWord(true);
@@ -436,6 +445,14 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         });
         Fondo.add(Card6, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 550, 70, 50));
 
+        DebugModeBTN.setText("Debug mode");
+        DebugModeBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DebugModeBTNActionPerformed(evt);
+            }
+        });
+        Fondo.add(DebugModeBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 570, -1, -1));
+
         getContentPane().add(Fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 600));
 
         pack();
@@ -461,7 +478,7 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
                 SelectedCard = "IDK";
                 if (!BlockMode && !FreeMode)
                     ChangeTurn("");
-            }
+            } else JOptionPane.showMessageDialog(this, "¡Mejor suerte la proxima!", "Ha fallado la oportunidad", JOptionPane.INFORMATION_MESSAGE);
         } else {
             setBorders(BorderFactory.createLineBorder(
                     switch (Main_Sequence.ActualSetting.getCardsStyle()) {
@@ -497,7 +514,7 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
                 SelectedCard = "IDK";
                 if (!BlockMode && !FreeMode)
                     ChangeTurn("");
-            }
+            } else JOptionPane.showMessageDialog(this, "¡Mejor suerte la proxima!", "Ha fallado la oportunidad", JOptionPane.INFORMATION_MESSAGE);
         } else {
             CartaJugada = 1;
             SelectedCard = Player[Turn].getCard(CartaJugada);
@@ -537,7 +554,7 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
                 SelectedCard = "IDK";
                 if (!BlockMode && !FreeMode)
                     ChangeTurn("");
-            }
+            } else JOptionPane.showMessageDialog(this, "¡Mejor suerte la proxima!", "Ha fallado la oportunidad", JOptionPane.INFORMATION_MESSAGE);
         } else {
             setBorders(BorderFactory.createLineBorder(
                     switch (Main_Sequence.ActualSetting.getCardsStyle()) {
@@ -574,7 +591,7 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
                 SelectedCard = "IDK";
                 if (!BlockMode && !FreeMode)
                     ChangeTurn("");
-            }
+            } else JOptionPane.showMessageDialog(this, "¡Mejor suerte la proxima!", "Ha fallado la oportunidad", JOptionPane.INFORMATION_MESSAGE);
         } else {
             setBorders(BorderFactory.createLineBorder(
                     switch (Main_Sequence.ActualSetting.getCardsStyle()) {
@@ -612,7 +629,7 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
                 SelectedCard = "IDK";
                 if (!BlockMode && !FreeMode)
                     ChangeTurn("");
-            }
+            } else JOptionPane.showMessageDialog(this, "¡Mejor suerte la proxima!", "Ha fallado la oportunidad", JOptionPane.INFORMATION_MESSAGE);
         } else {
             setBorders(BorderFactory.createLineBorder(
             switch (Main_Sequence.ActualSetting.getCardsStyle()) {
@@ -649,7 +666,7 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
                 SelectedCard = "IDK";
                 if (!BlockMode && !FreeMode)
                     ChangeTurn("");
-            }
+            } else JOptionPane.showMessageDialog(this, "¡Mejor suerte la proxima!", "Ha fallado la oportunidad", JOptionPane.INFORMATION_MESSAGE);
         } else {
             setBorders(BorderFactory.createLineBorder(
                     switch (Main_Sequence.ActualSetting.getCardsStyle()) {
@@ -687,7 +704,7 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
                 SelectedCard = "IDK";
                 if (!BlockMode && !FreeMode)
                     ChangeTurn("");
-            }
+            } else JOptionPane.showMessageDialog(this, "¡Mejor suerte la proxima!", "Ha fallado la oportunidad", JOptionPane.INFORMATION_MESSAGE);
         } else {
             setBorders(BorderFactory.createLineBorder(
             switch (Main_Sequence.ActualSetting.getCardsStyle()) {
@@ -704,6 +721,12 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
             }), SelectedCard);
         }
     }//GEN-LAST:event_Card7MouseClicked
+
+    private void DebugModeBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DebugModeBTNActionPerformed
+        DebugMode = !DebugMode;
+        Pause = DebugMode;
+        if (DebugMode) JOptionPane.showMessageDialog(this, "Debug mode activated");
+    }//GEN-LAST:event_DebugModeBTNActionPerformed
 
     private void setBoardBTNS() {
         try {
@@ -751,6 +774,41 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
     private void TakeCard(int Row, int Column) {
         File CartaPNG = new File(Main_Sequence.ActualSetting.getCardsUrl() + Player[Turn].getPlayer().getFicha());
         ImageIcon neoIcon = ScaledImage(CartaPNG.getAbsolutePath(), CartasDelTablero[Row][Column].getWidth(), CartasDelTablero[Row][Column].getHeight());
+
+        if (DebugMode){
+            CartasDelTablero[Row][Column].TakeCard(neoIcon, Player[Turn].getPlayer().getUsername(), Player[Turn].getTeam());
+            LastCardIcon.setIcon(ScaledImage(CartasDelTablero[Row][Column].getCardUrl(), LastCardIcon.getWidth(), LastCardIcon.getHeight()));
+            setBorders(null, "");
+
+            CheckSequence();
+//            CheckEvent(SelectedCard);
+
+            if (!SelectCard) Player[Turn].PlayCard(CartaJugada);
+                CardsPlayed++;
+
+            SelectCard = false;
+            SelectedCard = "IDK";
+            Player[Turn].RemoveCoin(1);
+
+            PlayerCards();
+            Image scaledCard = Player[Turn].getPlayer().getPlayerIcon().getImage().getScaledInstance(PlayerIcon.getWidth() / 2, PlayerIcon.getHeight() / 2, Image.SCALE_SMOOTH);
+
+            restartTries();
+            try {
+                
+                TeamReport.setText(ChangeInfoBox(1, ""));
+
+            } catch (IOException ex) {
+                Logger.getLogger(Tablero.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            PlayerIcon.setIcon(new ImageIcon(scaledCard));
+            PlayerIcon.setText(Player[Turn].getPlayer().getUsername());
+            Pause = false;
+
+            return ;
+        }
+        
         Pause = true;
         if (!SelectedCard.equals("IDK") && !BlockMode && !FreeMode) {
             if (!CartasDelTablero[Row][Column].getCard().equals("0F")) {
@@ -819,6 +877,7 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
 
                         FreeMode = false;
                         CardsPlayed--;
+
                     } else {
                         JOptionPane.showMessageDialog(this, "¡Esta ficha conforma una linea!\nIntente tomar otro espacio", "Tomar espacio", JOptionPane.INFORMATION_MESSAGE);
                     }
@@ -865,7 +924,7 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
             Tryed[4] = true;
             if (Randy.nextInt(10) == 1){
                 DeleteDeck();
-            }
+            } else System.out.println("\t Mejor suerte la proxima");
             return true;
             
         } else if (!Tryed[5] && Selected.contains(Main_Sequence.ActualSetting.getEliminarFichas())) {
@@ -990,13 +1049,15 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
             }
             
             JOptionPane.showMessageDialog(this, "Se ha reiniciado la baraja de " + Jugador.toString(), "Reiniciar deck", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(getIconImage()));
-        } catch (Exception Ex){}
+        } catch (Exception Ex){
+            Ex.printStackTrace();
+        }
     }
     
     private void BlockCard() {
         for (int X = 0; X < 10; X++) {
             for (int Y = 0; Y < 10; Y++) {
-                if (!CartasDelTablero[X][Y].isCardTaken()) {
+                if (!CartasDelTablero[X][Y].isCardTaken() && !CartasDelTablero[X][Y].getCard().equals("0F")) {
                     CartasDelTablero[X][Y].setBorder(BorderFactory.createLineBorder(
                             switch (Main_Sequence.ActualSetting.getCardsStyle()) {
                         default ->
@@ -1085,22 +1146,22 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
             
                 if (CheckHorizontal(CartasDelTablero[X][Y].getTeamWhoTakeIt(), X, Y)) {
                 
-                    JOptionPane.showMessageDialog(this, "Se ha formado una linea vertical");
+                    JOptionPane.showMessageDialog(this, "Se ha formado un sequence");
                     Player[Turn].AddPuntos();
                     
                 } else if (CheckVertical(CartasDelTablero[X][Y].getTeamWhoTakeIt(), X, Y)) {
                     
-                    JOptionPane.showMessageDialog(this, "Se ha formado una linea Horizontal");
+                    JOptionPane.showMessageDialog(this, "Se ha formado un sequence");
                     Player[Turn].AddPuntos();
                 
                 } else if (CheckDiagonalFront(CartasDelTablero[X][Y].getTeamWhoTakeIt(), X, Y)) {
                 
-                    JOptionPane.showMessageDialog(this, "Se ha formado una linea diagonal (frontal)");
+                    JOptionPane.showMessageDialog(this, "Se ha formado un sequence");
                     Player[Turn].AddPuntos();
                 
                 } else if (CheckDiagonalBack(CartasDelTablero[X][Y].getTeamWhoTakeIt(), X, Y)) {
                 
-                    JOptionPane.showMessageDialog(this, "Se ha formado una linea diagonal (pa'tras)");
+                    JOptionPane.showMessageDialog(this, "Se ha formado un sequence");
                     Player[Turn].AddPuntos();
                 
                 }
@@ -1112,120 +1173,116 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         }
     }
 
-    private boolean CheckDiagonalFront(int Team, int X, int Y) {
+    private boolean CheckDiagonalBack(int Team, int X, int Y) {
         try {
-            for (int i = 0; i < 5; i++) {
-                if (!CartasDelTablero[X+i][Y+i].getCard().equals("0F")){
-                    if (!CartasDelTablero[X+i][Y+i].isCardTaken() && CartasDelTablero[X+i][Y+i].getTeamWhoTakeIt() != Team){
+            for (int i = 0; i < 5; i++){
+                if (!CartasDelTablero[X+i][Y-i].isCardTaken() || CartasDelTablero[X+i][Y-i].getTeamWhoTakeIt() != Team){
+                    if (!CartasDelTablero[X+i][Y-i].getCard().equals("0F")){
                         return false;
                     }
                 }
             }
-            int SequenceFound = 0;
+            
             for (int i = 0; i < 5; i++) {
-                if (CartasDelTablero[X+i][Y+i].isLineComplete()){
-                    SequenceFound++;
+                if (CartasDelTablero[X+i][Y-i].isLineComplete()){
+                    return false;
                 }
             }
-            if (SequenceFound != 5){
-                return false;
+            
+            for (int i = 0; i < 5; i++) {
+                if (!CartasDelTablero[X+i][Y-i].getCard().equals("0F")){
+                    CartasDelTablero[X+i][Y-i].takeLine();
+                }
             }
+            
+        } catch (Exception Ex){
+        return false;
+        }
+        return true;
+    }
+    
+    private boolean CheckDiagonalFront(int Team, int X, int Y) {
+        try {
+            for (int i = 0; i < 5; i++){
+                if (!CartasDelTablero[X+i][Y+i].isCardTaken() || CartasDelTablero[X+i][Y+i].getTeamWhoTakeIt() != Team){
+                    if (!CartasDelTablero[X+i][Y+i].getCard().equals("0F")){
+                        return false;
+                    }
+                }
+            }
+            
+            for (int i = 0; i < 5; i++) {
+                if (CartasDelTablero[X+i][Y+i].isLineComplete()){
+                    return false;
+                }
+            }
+            
             for (int i = 0; i < 5; i++) {
                 if (!CartasDelTablero[X+i][Y+i].getCard().equals("0F")){
                     CartasDelTablero[X+i][Y+i].takeLine();
                 }
             }
-            return true;
-        } catch (IndexOutOfBoundsException e) {
-            return false;
+            
+        } catch (Exception Ex){
+        return false;
         }
+        return true;
     }
-
-    private boolean CheckDiagonalBack(int Team, int X, int Y) {
+    
+    private boolean CheckVertical(int Team, int X, int Y) {
         try {
-            for (int i = 0; i < 5; i++) {
-                if (!CartasDelTablero[X-i][Y+i].getCard().equals("0F")){
-                    if (!CartasDelTablero[X-i][Y+i].isCardTaken() && CartasDelTablero[X-i][Y+i].getTeamWhoTakeIt() != Team){
+            for (int i = 0; i < 5; i++){
+                if (!CartasDelTablero[X][Y+i].isCardTaken() || CartasDelTablero[X][Y+i].getTeamWhoTakeIt() != Team){
+                    if (!CartasDelTablero[X][Y+i].getCard().equals("0F")){
                         return false;
                     }
                 }
             }
-            int SequenceFound = 0;
-            for (int i = 0; i < 5; i++) {
-                if (CartasDelTablero[X-i][Y+i].isLineComplete()){
-                    SequenceFound++;
-                }
-            }
-            if (SequenceFound != 5){
-                return false;
-            }
-            for (int i = 0; i < 5; i++) {
-                if (!CartasDelTablero[X-i][Y+i].getCard().equals("0F")){
-                    CartasDelTablero[X-i][Y+i].takeLine();
-                }
-            }
-            return true;
-        } catch (IndexOutOfBoundsException e) {
-            return false;
-        }
-    }
-
-    private boolean CheckHorizontal(int Team, int X, int Y) {
-        try {
-            for (int i = 0; i < 5; i++) {
-                if (!CartasDelTablero[X][Y+i].getCard().equals("0F")){
-                    if (!CartasDelTablero[X][Y + i].isCardTaken() && CartasDelTablero[X][Y+i].getTeamWhoTakeIt() != Team){
-                        return false;
-                    }
-                }
-            }
-            int SequenceFound = 0;
+            
             for (int i = 0; i < 5; i++) {
                 if (CartasDelTablero[X][Y+i].isLineComplete()){
-                    SequenceFound++;
+                    return false;
                 }
             }
-            if (SequenceFound != 5){
-                return false;
-            }
+            
             for (int i = 0; i < 5; i++) {
                 if (!CartasDelTablero[X][Y+i].getCard().equals("0F")){
                     CartasDelTablero[X][Y+i].takeLine();
                 }
             }
-            return true;
-        } catch (IndexOutOfBoundsException e) {
-            return false;
+            
+        } catch (Exception Ex){
+        return false;
         }
+        return true;
     }
-
-    private boolean CheckVertical(int Team, int X, int Y) {
+    
+    private boolean CheckHorizontal(int Team, int X, int Y) {
         try {
-            for (int i = 0; i < 5; i++) {
-                if (!CartasDelTablero[X+i][Y].getCard().equals("0F")){
-                    if (!CartasDelTablero[X+i][Y].isCardTaken() && CartasDelTablero[X+i][Y].getTeamWhoTakeIt() != Team){
+            for (int i = 0; i < 5; i++){
+                if (!CartasDelTablero[X+i][Y].isCardTaken() || CartasDelTablero[X+i][Y].getTeamWhoTakeIt() != Team){
+                    if (!CartasDelTablero[X+i][Y].getCard().equals("0F")){
                         return false;
                     }
                 }
             }
-            int SequenceFound = 0;
+            
             for (int i = 0; i < 5; i++) {
                 if (CartasDelTablero[X+i][Y].isLineComplete()){
-                    SequenceFound++;
+                    return false;
                 }
             }
-            if (SequenceFound != 5){
-                return false;
-            }
+            
             for (int i = 0; i < 5; i++) {
                 if (!CartasDelTablero[X+i][Y].getCard().equals("0F")){
                     CartasDelTablero[X+i][Y].takeLine();
                 }
             }
-            return true;
-        } catch (IndexOutOfBoundsException e) {
-            return false;
+            
+        } catch (Exception Ex){
+        return false;
         }
+        return true;
     }
 
     private void setBorders(Border Borde, String CardSearch) {
@@ -1252,8 +1309,8 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
     private void PlayerCards() {
         try {
             if (Card1.isVisible()){
-                    Card1.setIcon(ScaledImage(Main_Sequence.ActualSetting.getCardsUrl() + Player[Turn].getCard(0) + ".png", Card1.getWidth(), Card1.getHeight()));
-                    Card1MI.setIcon(ScaledImage(Main_Sequence.ActualSetting.getCardsUrl() + Player[Turn].getCard(0) + ".png", Card1MI.getWidth(), Card1MI.getHeight()));
+                Card1.setIcon(ScaledImage(Main_Sequence.ActualSetting.getCardsUrl() + Player[Turn].getCard(0) + ".png", Card1.getWidth(), Card1.getHeight()));
+                Card1MI.setIcon(ScaledImage(Main_Sequence.ActualSetting.getCardsUrl() + Player[Turn].getCard(0) + ".png", Card1MI.getWidth(), Card1MI.getHeight()));
             }
             if (Card2.isVisible()){
                 Card2.setIcon(ScaledImage(Main_Sequence.ActualSetting.getCardsUrl() + Player[Turn].getCard(1) + ".png", Card2.getWidth(), Card2.getHeight()));
@@ -1279,9 +1336,7 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
                 Card7.setIcon(ScaledImage(Main_Sequence.ActualSetting.getCardsUrl() + Player[Turn].getCard(6) + ".png", Card7.getWidth(), Card7.getHeight()));
                 Card7MI.setIcon(ScaledImage(Main_Sequence.ActualSetting.getCardsUrl() + Player[Turn].getCard(6) + ".png", Card7MI.getWidth(), Card7MI.getHeight()));
             }
-        } catch (Exception Ex) {
-
-        }
+        } catch (Exception Ex) {}
     }
 
     @Override
@@ -1326,21 +1381,77 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         Image scaledCard = Player[Turn].getPlayer().getPlayerIcon().getImage().getScaledInstance(PlayerIcon.getWidth() / 2, PlayerIcon.getHeight() / 2, Image.SCALE_SMOOTH);
 
         restartTries();
+
+        try {
+            
+            TeamReport.setText(ChangeInfoBox(1, ""));
+
+        } catch (IOException ex) {
+            Logger.getLogger(Tablero.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         PlayerIcon.setIcon(new ImageIcon(scaledCard));
         PlayerIcon.setText(Player[Turn].getPlayer().getUsername());
         Pause = false;
     }
 
-    private String ChangeInfoBox(int Team, String Data){
-        if (Team < 3){
-            for (Player Jugador : Player){
+    private String ChangeInfoBox(int Team, String Data) throws IOException{
+        Pause = true;
+
+        int Puntos = 0;
+        if (Team <= 
+                switch (Main_Sequence.ActualSetting.getPlayersCant()) {
+                    case 3 -> 3;
+                    case 6 -> 3;
+                    default -> 2;
+                }
+                ){
+            for (Player Jugador : Player) {
+                if (Jugador != null) {
+                    if (Jugador.getTeam() == Team) {
+                        Puntos += Jugador.getPuntos();
+                    }
+                }
+            }
+            if (Puntos >= 2){
+                JOptionPane.showMessageDialog(this, "El equipo #"+Team+" ha ganado la partida", "PARTIDA GANADA", JOptionPane.INFORMATION_MESSAGE);
+                SaveMatchData(Team);
+
+                new PantallaPrincipal().setVisible(true);
+                dispose();
+            }
+            Data = Data + "El equipo #" + Team + " cuenta con " + Puntos + " Pts\n";
+            return ChangeInfoBox(Team + 1, Data);
+        }
+        return Data;
+    }
+    
+    private String getWinnerTeam(int Team){
+        String Integrantes = "";
+        for (Player Jugador : Player){
+            if (Jugador != null){
                 if (Jugador.getTeam() == Team){
-                    
+                    Integrantes += Jugador.getPlayer().getUsername() + "\n";
                 }
             }
         }
-        return Data;
+        return Integrantes;
+    }
+    
+    private void SaveMatchData(int Team) throws IOException{
+        String WinnerTeam = getWinnerTeam(Team);
+        String Fecha = Calendar.getInstance().getTime().toString();
+        
+        for (Player Jugador : Player){
+            if (Jugador != null){
+                if (Jugador.getTeam() == Team){
+                    Jugador.getPlayer().MatchWon();
+                }
+                Jugador.getPlayer().AddMatchData("\t" + Fecha + "\nLa partida fue ganada por el equipo #"+ Team +" conformado por : \n" + WinnerTeam);
+                Jugador.getPlayer().SaveData(Jugador.getPlayer().getUsername());
+            }
+        }
+        Main_Sequence.gestorUsuarios = new GestorUsuarios();
     }
     
     // -- SWING ELEMENTS --
@@ -1371,6 +1482,7 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
     private javax.swing.JLabel Card7;
     private javax.swing.JLabel Card7MI;
     private javax.swing.JLabel CardDeckIcon;
+    private javax.swing.JButton DebugModeBTN;
     private javax.swing.JPanel Fondo;
     private javax.swing.JLabel LastCardIcon;
     private javax.swing.JLabel LastCardTXT;

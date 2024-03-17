@@ -82,7 +82,9 @@ public class Player {
     }
     
     public final String getCard(int Carta){
-        return Cards[Carta];
+        try {
+            return Cards[Carta];
+        } catch (Exception Ex){return "";}
     }
     
     public final void PlayCard(int Carta){

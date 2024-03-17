@@ -24,6 +24,7 @@ public class Settings implements Serializable {
         Active = new boolean[8];
         MCards = new String[8];
         this.Name = Name;
+        CantPlayer = 4;
         setDefault();
     }
     

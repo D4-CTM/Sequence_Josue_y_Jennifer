@@ -5,13 +5,17 @@
 package Sequence;
 
 import GameBoard.Tablero;
+import Logic.UI_Elements.Tokens;
 import Logic.Users.Player;
 import Logic.Users.Settings;
 import Logic.Users.User;
 import java.awt.Color;
+import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -22,7 +26,8 @@ import javax.swing.JOptionPane;
 public class CharacterSelect extends javax.swing.JFrame {
     private final ArrayList<Player> Jugadores;
     private final ArrayList<String> Usernames;
-    private final int PlayersXTeam;
+    private final ArrayList<Tokens> Fichas;
+    private int PlayersXTeam;
     
     /**
      * Creates new form CharacterSelect
@@ -30,6 +35,7 @@ public class CharacterSelect extends javax.swing.JFrame {
     public CharacterSelect() throws IOException, ClassNotFoundException {
         Usernames = new ArrayList();
         Jugadores = new ArrayList();
+        Fichas = new ArrayList();
         
         initComponents();
         
@@ -42,25 +48,67 @@ public class CharacterSelect extends javax.swing.JFrame {
                 PlayersXTeam =  2;
                 ThirdTeam.setVisible(false);
             }
-            case 6 -> PlayersXTeam =  2;
+            case 6 -> {
+                PlayersXTeam =  2;
+                ThirdTeam.setVisible(true);
+            }
             case 8 -> {
                 PlayersXTeam = 4;
                 ThirdTeam.setVisible(false);
             }
-            default -> PlayersXTeam =  1;
+            default -> {
+                PlayersXTeam =  1;
+                ThirdTeam.setVisible(true);
+            }
         }
         
         setLocationRelativeTo(null);
-        PlayersXTeamTXT.setText(PlayersXTeamTXT.getText() + PlayersXTeam);
+        PlayersXTeamTXT.setText("Jugadores por equipo: " + PlayersXTeam);
         setIconImage(new javax.swing.ImageIcon(getClass().getResource("/Elementos/GameIcon.png")).getImage());
         
         setUsuariosBox();
         setConfigurationBox();
+        setFichas();
     }
-
+    
+    private void setFichas(){
+        for (int i = 0; i <= 8; i++){
+            try {
+                File CartaPNG = new File(Settings.LoadFile(SettingsBox.getSelectedItem().toString()).getCardsUrl() + "Tokens"+i+".png");
+                Fichas.add(new Tokens(CartaPNG.getAbsolutePath(), "Tokens"+i+".png", ScaledImage(CartaPNG.getAbsolutePath(),  20, 20)));
+            } catch (Exception Ex){}
+        }
+        ArrayList<ImageIcon> Ficha = new ArrayList();
+        for (Tokens Token : this.Fichas){
+            if (!Token.getToken().equals(Main_Sequence.gestorUsuarios.getUserLog().getFicha())){
+                Ficha.add(Token.getFicha());
+            }
+        }
+        
+        Ficha.remove(0);
+        
+        FichasEquipo2.setModel(new javax.swing.DefaultComboBoxModel(Ficha.toArray()));
+        FichasEquipo3.setModel(new javax.swing.DefaultComboBoxModel(Ficha.toArray()));
+    }
+    
+    private ImageIcon ScaledImage(String Url, int Width, int Height) {
+        ImageIcon neoIcon = new ImageIcon(Url);
+        Image scaledCard = neoIcon.getImage().getScaledInstance(Width, Height, Image.SCALE_SMOOTH);
+        neoIcon = new ImageIcon(scaledCard);
+        return neoIcon;
+    }
+    
     private void setUsuariosBox(){
         for (User Usuario : Main_Sequence.gestorUsuarios.getUsuariosLista()){
-            Usernames.add(Usuario.getUsername());
+            if (!Usuario.getUsername().equals(Main_Sequence.gestorUsuarios.getUserLog().getUsername())){
+                Usernames.add(Usuario.getUsername());
+            } else {
+                try {
+                    Player Jugador = new Player(User.LoadFile(Usuario.getUsername()),Main_Sequence.ActualSetting.getCardsCant(),1);
+                    Jugadores.add(Jugador);
+                    Team1Box.setText(Team1Box.getText() + Usuario.getUsername() + "\n");
+                } catch (Exception Ex){}
+            }
         }
         
         JugadoresDisponibles.setModel(new javax.swing.DefaultComboBoxModel(Usernames.toArray()));
@@ -124,6 +172,33 @@ public class CharacterSelect extends javax.swing.JFrame {
         if (!Added.equals("GG")){
             Data += Added + ": Ocupar espacio\n";
         }
+        
+        switch (Ajustes.getPlayersCant()){
+            case 2 ->{
+                PlayersXTeam = 1;
+                ThirdTeam.setVisible(false);
+            }
+            case 4 -> {
+                PlayersXTeam =  2;
+                ThirdTeam.setVisible(false);
+            }
+            case 6 -> {
+                PlayersXTeam =  2;
+                ThirdTeam.setVisible(true);
+            }
+            case 8 -> {
+                PlayersXTeam = 4;
+                ThirdTeam.setVisible(false);
+            }
+            default -> {
+                PlayersXTeam =  1;
+                ThirdTeam.setVisible(true);
+            }
+        }
+        
+        PlayersXTeamTXT.setText("Jugadores por equipo: " + PlayersXTeam);
+        
+        System.out.println(Data);
         return Data;
     }
     
@@ -160,6 +235,8 @@ public class CharacterSelect extends javax.swing.JFrame {
         Team3TXT = new javax.swing.JLabel();
         RemoveFromT3 = new javax.swing.JButton();
         AddPlayerToT3 = new javax.swing.JButton();
+        FichasEquipo3 = new javax.swing.JComboBox();
+        FichasEquipo2 = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sequence");
@@ -198,6 +275,11 @@ public class CharacterSelect extends javax.swing.JFrame {
         jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 60, 140, 260));
 
         SettingsBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        SettingsBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SettingsBoxActionPerformed(evt);
+            }
+        });
         jPanel2.add(SettingsBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 130, -1));
 
         ConfigTXT.setText("Configuracion deseada:");
@@ -255,7 +337,7 @@ public class CharacterSelect extends javax.swing.JFrame {
         Team2Box.setFocusable(false);
         jScrollPane4.setViewportView(Team2Box);
 
-        jPanel1.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 80, 110, 140));
+        jPanel1.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 110, 110, 110));
 
         RemoveFromT1.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
         RemoveFromT1.setText("Retirar jugador");
@@ -310,7 +392,7 @@ public class CharacterSelect extends javax.swing.JFrame {
         Team3Box.setFocusable(false);
         jScrollPane2.setViewportView(Team3Box);
 
-        ThirdTeam.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 110, 140));
+        ThirdTeam.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 110, 110));
 
         Team3TXT.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Team3TXT.setText("Equipo #3");
@@ -336,7 +418,11 @@ public class CharacterSelect extends javax.swing.JFrame {
         });
         ThirdTeam.add(AddPlayerToT3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, 110, 40));
 
+        ThirdTeam.add(FichasEquipo3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 110, 25));
+
         jPanel1.add(ThirdTeam, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 60, 130, 270));
+
+        jPanel1.add(FichasEquipo2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 80, 110, 25));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 610, 390));
 
@@ -345,8 +431,14 @@ public class CharacterSelect extends javax.swing.JFrame {
 
     private void IniciarPartidaBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IniciarPartidaBTNActionPerformed
         try {
-            if (Main_Sequence.ActualSetting.getPlayersCant() == Jugadores.size()){
-
+            if (ThirdTeam.isVisible() && FichasEquipo2.getSelectedIndex() == FichasEquipo3.getSelectedIndex()){
+                JOptionPane.showMessageDialog(this, "¡Dos equipos no pueden tener la misma ficha!", "Fichas", JOptionPane.WARNING_MESSAGE);
+                return ;
+            }
+            if (Settings.LoadFile(SettingsBox.getSelectedItem().toString()).getPlayersCant() == Jugadores.size()){
+                
+                setPlayersIcons();
+                
                 Main_Sequence.ActualSetting = Settings.LoadFile(SettingsBox.getSelectedItem().toString());
                 new Tablero(Jugadores, Main_Sequence.ActualSetting.getPlayersCant()).setVisible(true);
                 dispose();
@@ -356,7 +448,28 @@ public class CharacterSelect extends javax.swing.JFrame {
             ex.getStackTrace();
         }
     }//GEN-LAST:event_IniciarPartidaBTNActionPerformed
-
+    
+    private void setPlayersIcons(){
+        String Equipo2 = getToken(2);
+        String Equipo3 = getToken(3);
+        for (int i = 0; i < Jugadores.size(); i++){
+            switch (Jugadores.get(i).getTeam()){
+                case 1 -> Jugadores.get(i).getPlayer().setficha(Main_Sequence.gestorUsuarios.getUserLog().getFicha());
+                case 2 -> Jugadores.get(i).getPlayer().setficha(Equipo2);
+                case 3 -> Jugadores.get(i).getPlayer().setficha(Equipo3);
+            }
+        }
+    }
+    
+    private String getToken(int Team){
+        for (Tokens Ficha : this.Fichas){
+            if (Ficha.getFicha() == ((Team == 2)?FichasEquipo2.getSelectedItem():FichasEquipo3.getSelectedItem())){
+                return Ficha.getToken();
+            }
+        }
+        return "";
+    }
+    
     private void RegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegresarActionPerformed
         new MenuPrincipal().setVisible(true);
         dispose();
@@ -397,10 +510,13 @@ public class CharacterSelect extends javax.swing.JFrame {
             if (Usernames.get(i).equals(JugadorSeleccionado.toString())){
                 try {
                     Usernames.remove(i);
-                    Jugadores.add(new Player(User.LoadFile(JugadorSeleccionado.toString()),Main_Sequence.ActualSetting.getCardsCant(),1));
+                    Player Jugador = new Player(User.LoadFile(JugadorSeleccionado.toString()),Main_Sequence.ActualSetting.getCardsCant(),1);
+                    if (!Jugador.getPlayer().getUsername().equals(Main_Sequence.gestorUsuarios.getUserLog().getUsername())){
+                        
+                    }
+                    Jugadores.add(Jugador);
                     Team1Box.setText(Team1Box.getText() + JugadorSeleccionado.toString() + "\n");
                 } catch (Exception Ex){ 
-                    System.out.println("Cagaste :V");
                     return ;
                 }
             }
@@ -439,9 +555,7 @@ public class CharacterSelect extends javax.swing.JFrame {
                     JugadoresDisponibles.setModel(new javax.swing.DefaultComboBoxModel(Usernames.toArray()));
 
                 }
-            } catch (Exception Ex){
-                Ex.printStackTrace();
-            }
+            } catch (Exception Ex){            }
         }
     }//GEN-LAST:event_RemoveFromT1ActionPerformed
 
@@ -587,12 +701,26 @@ public class CharacterSelect extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_RemoveFromT3ActionPerformed
 
+    private void SettingsBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SettingsBoxActionPerformed
+        try {
+            SettingsDataBox.setText(DisplaySettings());
+            
+            setFichas();
+        } catch (IOException ex) {
+            Logger.getLogger(CharacterSelect.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(CharacterSelect.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_SettingsBoxActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddPlayerToT1;
     private javax.swing.JButton AddPlayerToT2;
     private javax.swing.JButton AddPlayerToT3;
     private javax.swing.JLabel AddPlayersTXT;
     private javax.swing.JLabel ConfigTXT;
+    private javax.swing.JComboBox FichasEquipo2;
+    private javax.swing.JComboBox FichasEquipo3;
     private javax.swing.JButton IniciarPartidaBTN;
     private javax.swing.JComboBox JugadoresDisponibles;
     private javax.swing.JLabel PlayersXTeamTXT;

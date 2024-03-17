@@ -44,7 +44,8 @@ public class JCard extends javax.swing.JButton{
                 this.Ficha.setIcon(Ficha);
                 this.FromTeam = FromTeam;
                 this.TakenBy = TakenBy;
-                return Taken = true;
+                Taken = true;
+                return Taken;
             }
         } catch (Exception Ex){}
         return false;

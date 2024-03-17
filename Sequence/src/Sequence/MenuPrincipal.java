@@ -4,14 +4,6 @@
  */
 package Sequence;
 
-import GameBoard.Tablero;
-import Logic.Users.Settings;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -68,6 +60,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jPanel1.add(BotonCartasEspeciales, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 410, 250, 70));
 
         BotonReportes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        BotonReportes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BotonReportesMouseClicked(evt);
+            }
+        });
         jPanel1.add(BotonReportes, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 410, 250, 70));
 
         BotonJugar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -131,6 +128,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
         new GameConfig().setVisible(true);
         dispose();
     }//GEN-LAST:event_BotonCartasEspecialesMouseClicked
+
+    private void BotonReportesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotonReportesMouseClicked
+        new Reportes().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_BotonReportesMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel BotonCartasEspeciales;

@@ -259,6 +259,7 @@ public class Configuracion extends javax.swing.JFrame {
             Main_Sequence.gestorUsuarios.getUserLog().setficha(fichaSeleccionada);
             Main_Sequence.gestorUsuarios.getUserLog().SaveData(Main_Sequence.gestorUsuarios.getUserLog().getUsername());
             
+            Main_Sequence.ActualSetting.setCardsCants(CantidadCartas);
             Main_Sequence.ActualSetting.setPlayerCant(cantidadJugadores);
             Main_Sequence.ActualSetting.SaveData(Main_Sequence.ActualSetting.getName());
             
