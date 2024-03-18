@@ -121,6 +121,7 @@ public class GameConfig extends javax.swing.JFrame {
         Left = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         Reiniciar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sequence");
@@ -408,6 +409,9 @@ public class GameConfig extends javax.swing.JFrame {
             }
         });
         jPanel1.add(Reiniciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 550, 160, 30));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Elementos/Modificadores.png"))); // NOI18N
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 40, 410, 70));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 800, 600));
 
@@ -767,6 +771,7 @@ public class GameConfig extends javax.swing.JFrame {
     private javax.swing.JSeparator TeamSeparator;
     private javax.swing.JLabel TeamSettingsTXT;
     private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables

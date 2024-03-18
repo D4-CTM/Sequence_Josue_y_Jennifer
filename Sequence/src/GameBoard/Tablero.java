@@ -385,57 +385,75 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         });
         Fondo.add(Card7, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 550, 70, 50));
 
+        BGPlayer4.setBackground(new java.awt.Color(102, 0, 102));
         BGPlayer4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        Player4.setForeground(new java.awt.Color(255, 255, 255));
         Player4.setText("Jugador 4");
         BGPlayer4.add(Player4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 30));
 
         Fondo.add(BGPlayer4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 360, 210, 30));
 
+        BGPlayer3.setBackground(new java.awt.Color(51, 102, 0));
         BGPlayer3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        Player3.setForeground(new java.awt.Color(255, 255, 255));
         Player3.setText("Jugador 3");
         BGPlayer3.add(Player3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 30));
 
         Fondo.add(BGPlayer3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 310, 210, 30));
 
+        BGPlayer2.setBackground(new java.awt.Color(102, 0, 51));
         BGPlayer2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        Player2.setBackground(new java.awt.Color(255, 255, 255));
+        Player2.setForeground(new java.awt.Color(255, 255, 255));
         Player2.setText("Jugador 2");
         BGPlayer2.add(Player2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 30));
 
         Fondo.add(BGPlayer2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 260, 210, 30));
 
+        BGPlayer1.setBackground(new java.awt.Color(0, 0, 102));
         BGPlayer1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        Player1.setBackground(new java.awt.Color(255, 255, 255));
+        Player1.setForeground(new java.awt.Color(255, 255, 255));
         Player1.setText("Jugador 1");
         BGPlayer1.add(Player1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 30));
 
         Fondo.add(BGPlayer1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 210, 30));
 
+        BGPlayer8.setBackground(new java.awt.Color(102, 0, 102));
         BGPlayer8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        Player8.setForeground(new java.awt.Color(255, 255, 255));
         Player8.setText("Jugador 8");
         BGPlayer8.add(Player8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 30));
 
         Fondo.add(BGPlayer8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 560, 210, 30));
 
+        BGPlayer7.setBackground(new java.awt.Color(51, 102, 0));
         BGPlayer7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        Player7.setForeground(new java.awt.Color(255, 255, 255));
         Player7.setText("Jugador 7");
         BGPlayer7.add(Player7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 30));
 
         Fondo.add(BGPlayer7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 510, 210, 30));
 
+        BGPlayer6.setBackground(new java.awt.Color(102, 0, 51));
         BGPlayer6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        Player6.setForeground(new java.awt.Color(255, 255, 255));
         Player6.setText("Jugador 6");
         BGPlayer6.add(Player6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 30));
 
         Fondo.add(BGPlayer6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 460, 210, 30));
 
+        BGPlayer5.setBackground(new java.awt.Color(0, 51, 102));
         BGPlayer5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        Player5.setForeground(new java.awt.Color(255, 255, 255));
         Player5.setText("Jugador 5");
         BGPlayer5.add(Player5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 30));
 
