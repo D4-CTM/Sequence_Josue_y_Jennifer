@@ -43,6 +43,7 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
     private final boolean[] Tryed = new boolean[8];
     private final Random Randy;
     private int CardsPlayed;
+    private final Border LineBorder;
     
     private boolean DebugMode;
     
@@ -52,6 +53,8 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         BlockMode = false;
         FreeMode = false;
         CardsPlayed = 0;
+        
+        LineBorder = BorderFactory.createLineBorder(Color.BLUE, 2);
         
         restartTries();
         
@@ -975,7 +978,11 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
             for (boolean Try : Tryed){
                 if (Try) return false;
             }
-            JOptionPane.showMessageDialog(this, "La carta: "+SelectedCard+" no cuenta con efecto alguno, sera cambiada por una nueva", "Sin efecto", JOptionPane.INFORMATION_MESSAGE);
+            if (Selected.contains(Main_Sequence.ActualSetting.getLiberarEspacio())){
+                if (JOptionPane.showConfirmDialog(this,"Esta carta no cuenta con efecto hasta que se haya jugado una carta, desea cambiarla?", "Liberar carta", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION){
+                    return false;
+                }
+            } else JOptionPane.showMessageDialog(this, "La carta: "+SelectedCard+" no cuenta con efecto alguno, sera cambiada por una nueva", "Sin efecto", JOptionPane.INFORMATION_MESSAGE);
             Player[Turn].PlayCard(CartaJugada);
             PlayerCards();
         }
@@ -1217,6 +1224,7 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
             
             for (int i = 0; i < 5; i++) {
                 if (!CartasDelTablero[X+i][Y-i].getCard().equals("0F")){
+                    CartasDelTablero[X+i][Y-i].setBorder(LineBorder);
                     CartasDelTablero[X+i][Y-i].takeLine();
                 }
             }
@@ -1245,6 +1253,7 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
             
             for (int i = 0; i < 5; i++) {
                 if (!CartasDelTablero[X+i][Y+i].getCard().equals("0F")){
+                    CartasDelTablero[X+i][Y+i].setBorder(LineBorder);
                     CartasDelTablero[X+i][Y+i].takeLine();
                 }
             }
@@ -1273,6 +1282,7 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
             
             for (int i = 0; i < 5; i++) {
                 if (!CartasDelTablero[X][Y+i].getCard().equals("0F")){
+                    CartasDelTablero[X][Y+i].setBorder(LineBorder);
                     CartasDelTablero[X][Y+i].takeLine();
                 }
             }
@@ -1301,6 +1311,7 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
             
             for (int i = 0; i < 5; i++) {
                 if (!CartasDelTablero[X+i][Y].getCard().equals("0F")){
+                    CartasDelTablero[X+i][Y].setBorder(LineBorder);
                     CartasDelTablero[X+i][Y].takeLine();
                 }
             }
@@ -1315,10 +1326,12 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         boolean Found = false;
         for (int Fila = 0; Fila < 10; Fila++) {
             for (int Columna = 0; Columna < 10; Columna++) {
-                CartasDelTablero[Fila][Columna].setBorder(null);
-                if (CartasDelTablero[Fila][Columna].getCard().equals(CardSearch) && !CartasDelTablero[Fila][Columna].isCardTaken()) {
-                    CartasDelTablero[Fila][Columna].setBorder(Borde);
-                    Found = true;
+                if (CartasDelTablero[Fila][Columna].getBorder() != LineBorder){
+                    CartasDelTablero[Fila][Columna].setBorder(null);
+                    if (CartasDelTablero[Fila][Columna].getCard().equals(CardSearch) && !CartasDelTablero[Fila][Columna].isCardTaken()) {
+                        CartasDelTablero[Fila][Columna].setBorder(Borde);
+                        Found = true;
+                    }
                 }
             }
         }
