@@ -842,7 +842,6 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
                 if (SelectedCard.equals(CartasDelTablero[Row][Column].getCard())) {
                     if (!CartasDelTablero[Row][Column].isCardTaken()) {
                         if (!CartasDelTablero[Row][Column].isLineComplete()) {
-
                             if (!BlockMode && CartasDelTablero[Row][Column].TakeCard(neoIcon, Player[Turn].getPlayer().getUsername(), Player[Turn].getTeam())) {
                                 LastCardIcon.setIcon(ScaledImage(CartasDelTablero[Row][Column].getCardUrl(), LastCardIcon.getWidth(), LastCardIcon.getHeight()));
                                 setBorders(null, "");
@@ -1086,7 +1085,7 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
             for (int Y = 0; Y < 10; Y++) {
                 if (!CartasDelTablero[X][Y].isCardTaken() && !CartasDelTablero[X][Y].getCard().equals("0F")) {
                     CartasDelTablero[X][Y].setBorder(BorderFactory.createLineBorder(
-                            switch (Main_Sequence.ActualSetting.getCardsStyle()) {
+                    switch (Main_Sequence.ActualSetting.getCardsStyle()) {
                         default ->
                             Color.RED;
                         case "Estilo retro" ->
@@ -1408,7 +1407,11 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         Image scaledCard = Player[Turn].getPlayer().getPlayerIcon().getImage().getScaledInstance(PlayerIcon.getWidth() / 2, PlayerIcon.getHeight() / 2, Image.SCALE_SMOOTH);
 
         restartTries();
+        setBorders(null, "");
 
+        SelectCard = false;
+        SelectedCard = "IDK";
+        
         try {
             
             TeamReport.setText(ChangeInfoBox(1, ""));

@@ -207,7 +207,6 @@ public class CharacterSelect extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        Regresar = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         IniciarPartidaBTN = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -237,6 +236,7 @@ public class CharacterSelect extends javax.swing.JFrame {
         AddPlayerToT3 = new javax.swing.JButton();
         FichasEquipo3 = new javax.swing.JComboBox();
         FichasEquipo2 = new javax.swing.JComboBox();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sequence");
@@ -244,14 +244,6 @@ public class CharacterSelect extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        Regresar.setFocusable(false);
-        Regresar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RegresarActionPerformed(evt);
-            }
-        });
-        jPanel1.add(Regresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 330, 50, 50));
 
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -424,6 +416,14 @@ public class CharacterSelect extends javax.swing.JFrame {
 
         jPanel1.add(FichasEquipo2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 80, 110, 25));
 
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Elementos/Home.png"))); // NOI18N
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel1MouseClicked(evt);
+            }
+        });
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 336, 50, 50));
+
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 610, 390));
 
         pack();
@@ -470,11 +470,6 @@ public class CharacterSelect extends javax.swing.JFrame {
         return "";
     }
     
-    private void RegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegresarActionPerformed
-        new MenuPrincipal().setVisible(true);
-        dispose();
-    }//GEN-LAST:event_RegresarActionPerformed
-
     private void AddPlayersTXTMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AddPlayersTXTMouseEntered
         ((javax.swing.JLabel) evt.getSource()).setForeground(Color.RED);
     }//GEN-LAST:event_AddPlayersTXTMouseEntered
@@ -529,7 +524,9 @@ public class CharacterSelect extends javax.swing.JFrame {
         ArrayList<String> Usuarios = new ArrayList();
         for (Player Players : Jugadores){
             if (Players.getTeam() == 1){
-                Usuarios.add(Players.getPlayer().getUsername());
+                if (Players.getPlayer().getUsername().equals(Main_Sequence.gestorUsuarios.getUserLog().getUsername())){
+                    Usuarios.add(Players.getPlayer().getUsername());
+                }
             }
         }
         if (!Usuarios.isEmpty()){
@@ -586,7 +583,7 @@ public class CharacterSelect extends javax.swing.JFrame {
                     Jugadores.add(new Player(User.LoadFile(JugadorSeleccionado.toString()),Main_Sequence.ActualSetting.getCardsCant(),2));
                     Team2Box.setText(Team2Box.getText() + JugadorSeleccionado.toString() + "\n");
                 } catch (Exception Ex){ 
-                    System.out.println("Cagaste :V");
+                    System.out.println("Cagaste");
                     return ;
                 }
             }
@@ -713,6 +710,11 @@ public class CharacterSelect extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_SettingsBoxActionPerformed
 
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+        new MenuPrincipal().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jLabel1MouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddPlayerToT1;
     private javax.swing.JButton AddPlayerToT2;
@@ -724,7 +726,6 @@ public class CharacterSelect extends javax.swing.JFrame {
     private javax.swing.JButton IniciarPartidaBTN;
     private javax.swing.JComboBox JugadoresDisponibles;
     private javax.swing.JLabel PlayersXTeamTXT;
-    private javax.swing.JButton Regresar;
     private javax.swing.JButton RemoveFromT1;
     private javax.swing.JButton RemoveFromT2;
     private javax.swing.JButton RemoveFromT3;
@@ -738,6 +739,7 @@ public class CharacterSelect extends javax.swing.JFrame {
     private javax.swing.JLabel Team3TXT;
     private javax.swing.JPanel ThirdTeam;
     private javax.swing.JLabel UserSelectTXT;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
