@@ -175,6 +175,7 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
             Player5.setText(Player[4].getPlayer().getUsername() + " - Equipo #" + Player[4].getTeam());
             Player6.setText(Player[5].getPlayer().getUsername() + " - Equipo #" + Player[5].getTeam());
             Player7.setText(Player[6].getPlayer().getUsername() + " - Equipo #" + Player[6].getTeam());
+            Player8.setText(Player[7].getPlayer().getUsername() + " - Equipo #" + Player[7].getTeam());
         } catch (Exception Ex) {}
 
         Card1.setText(null);
