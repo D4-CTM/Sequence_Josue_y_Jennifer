@@ -168,13 +168,13 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         BGPlayer8.setVisible(Players >= 8);
 
         try {
-            Player1.setText(Player[0].getPlayer().getUsername());
-            Player2.setText(Player[1].getPlayer().getUsername());
-            Player3.setText(Player[2].getPlayer().getUsername());
-            Player4.setText(Player[3].getPlayer().getUsername());
-            Player5.setText(Player[4].getPlayer().getUsername());
-            Player6.setText(Player[5].getPlayer().getUsername());
-            Player7.setText(Player[6].getPlayer().getUsername());
+            Player1.setText(Player[0].getPlayer().getUsername() + " - Equipo #" + Player[0].getTeam());
+            Player2.setText(Player[1].getPlayer().getUsername() + " - Equipo #" + Player[1].getTeam());
+            Player3.setText(Player[2].getPlayer().getUsername() + " - Equipo #" + Player[2].getTeam());
+            Player4.setText(Player[3].getPlayer().getUsername() + " - Equipo #" + Player[3].getTeam());
+            Player5.setText(Player[4].getPlayer().getUsername() + " - Equipo #" + Player[4].getTeam());
+            Player6.setText(Player[5].getPlayer().getUsername() + " - Equipo #" + Player[5].getTeam());
+            Player7.setText(Player[6].getPlayer().getUsername() + " - Equipo #" + Player[6].getTeam());
         } catch (Exception Ex) {}
 
         Card1.setText(null);
@@ -248,27 +248,30 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         Player5 = new javax.swing.JLabel();
         Card6 = new javax.swing.JLabel();
         DebugModeBTN = new javax.swing.JButton();
+        BG = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sequence");
         setMinimumSize(new java.awt.Dimension(1100, 600));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        Fondo.setBackground(new java.awt.Color(0, 0, 0));
+        Fondo.setBackground(new java.awt.Color(255, 255, 255));
+        Fondo.setForeground(new java.awt.Color(255, 255, 255));
         Fondo.setPreferredSize(new java.awt.Dimension(1100, 600));
         Fondo.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         Tablero.setBackground(new java.awt.Color(255, 153, 153));
+        Tablero.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 153, 153), 2));
 
         javax.swing.GroupLayout TableroLayout = new javax.swing.GroupLayout(Tablero);
         Tablero.setLayout(TableroLayout);
         TableroLayout.setHorizontalGroup(
             TableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 700, Short.MAX_VALUE)
+            .addGap(0, 696, Short.MAX_VALUE)
         );
         TableroLayout.setVerticalGroup(
             TableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 500, Short.MAX_VALUE)
+            .addGap(0, 496, Short.MAX_VALUE)
         );
 
         Fondo.add(Tablero, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 50, 700, 500));
@@ -296,6 +299,7 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
 
         Fondo.add(TeamPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 220, 190));
 
+        LastCardTXT.setForeground(new java.awt.Color(0, 102, 102));
         LastCardTXT.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         LastCardTXT.setText("Ultima carta jugada");
         Fondo.add(LastCardTXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 50, 160, -1));
@@ -304,6 +308,7 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
         LastCardIcon.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 204, 204), 2, true));
         Fondo.add(LastCardIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 100, 140, 100));
 
+        BarajaDeCartasTXT.setForeground(new java.awt.Color(0, 102, 102));
         BarajaDeCartasTXT.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         BarajaDeCartasTXT.setText("Baraja de cartas");
         Fondo.add(BarajaDeCartasTXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 380, 160, -1));
@@ -451,9 +456,12 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
                 DebugModeBTNActionPerformed(evt);
             }
         });
-        Fondo.add(DebugModeBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 570, -1, -1));
+        Fondo.add(DebugModeBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 10, -1, -1));
 
-        getContentPane().add(Fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 600));
+        BG.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Elementos/Tablero.png"))); // NOI18N
+        Fondo.add(BG, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -10, 1100, 620));
+
+        getContentPane().add(Fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1100, 600));
 
         pack();
         setLocationRelativeTo(null);
@@ -704,7 +712,7 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
                 SelectedCard = "IDK";
                 if (!BlockMode && !FreeMode)
                     ChangeTurn("");
-            } else JOptionPane.showMessageDialog(this, "¡Mejor suerte la proxima!", "Ha fallado la oportunidad", JOptionPane.INFORMATION_MESSAGE);
+            }
         } else {
             setBorders(BorderFactory.createLineBorder(
             switch (Main_Sequence.ActualSetting.getCardsStyle()) {
@@ -1458,6 +1466,7 @@ public class Tablero extends javax.swing.JFrame implements Runnable {
     private JCard[][] CartasDelTablero;
     // -- SWING ELEMENTS --
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel BG;
     private javax.swing.JPanel BGPlayer1;
     private javax.swing.JPanel BGPlayer2;
     private javax.swing.JPanel BGPlayer3;
